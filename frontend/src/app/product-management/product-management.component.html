@@ -1,0 +1,114 @@
+<div class="bakground"></div>
+<div class="productManagmentContainer">
+
+    
+    <div *ngIf="username$ | async as username">
+        <h1>Product managment for  {{ username }}</h1>
+      </div>
+      
+    <div class="addProduct">
+        <span class="material-symbols-outlined" (click)="addproduct()">
+            add
+        </span>
+    </div>
+    <div class="productManagmentList">
+        <div *ngFor="let product of products" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
+            <div class="productImageDiv" >
+                <img [src]="getMediaUrl(product.id)" alt="" class="productImage">
+            </div>
+            <div class="productInfoDiv">
+                <h2>{{ product.name }}</h2>
+                <!-- Check if the description is longer than 50 characters -->
+                <p *ngIf="product.description.length > 50">
+                    <span *ngIf="product.isReadMore">{{ product.description | slice:0:50 }}...</span>
+                    <span *ngIf="!product.isReadMore">{{ product.description }}</span>
+                    <span *ngIf="product.isExpanded" class="material-symbols-outlined closeIcon" (click)="toggleDescription(product)">close</span>
+
+                    <a (click)="toggleDescription(product)">{{ product.isReadMore ? 'Read More' : ' Read Less' }}</a>
+                </p>
+                <!-- If not, just display the description -->
+                <p *ngIf="product.description.length <= 50">{{ product.description }}</p>
+                <p>{{product.price}}€</p>
+                <p>{{ product.quantity }}</p>
+                <p class="productId">{{ product.id }}</p>
+            </div>
+            
+            <div class="productsControll">
+                <span class="material-symbols-outlined" (click)="editProduct(product.id)" *ngIf="!showDelete()">
+                    edit
+                </span>
+                <span class="material-symbols-outlined" *ngIf="!showDelete()" (click)="confirmDelete()">
+                    delete
+                </span>
+                <div class="deleteProduct" *ngIf="showDelete()" >
+                    <h4 class="deleteProductHeading">Do you want to delete  {{ product.name }}?</h4>
+                    <button (click)="deleteProduct(product.id)" class="yesDelete">YES</button>
+                    <button (click)="confirmDelete()" class="noDelete">NO</button>
+                </div>
+                <span class="material-symbols-outlined" (click)="showUploadMedia(product.id)" *ngIf="!showDelete()">
+                    image
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add product -->
+<div class="addProductContainer" *ngIf="showProduct()">
+    <div class="addProductModal">
+        <span class="material-symbols-outlined closeModal" (click)="closeModal()">
+            close
+        </span>
+        <h1>Add a product</h1>
+        <form action="" class="formClass">
+            <input type="text" placeholder="name" id="name" class="name">
+            <textarea name="description" class="description" placeholder="description" id="description"></textarea>
+            <input type="number" placeholder="price" id="price" class="price">
+            <input type="number" placeholder="quantity" id="quantity" class="quantity">
+            <input type="file" id="fileAdd" class="fileAdd">
+            <button type="submit" (click)="createProduct();">add</button>
+        </form>
+        
+    </div>
+</div>
+
+<!-- edit product -->
+<div class="editProductContainer" *ngIf="showEditProduct()">
+    <div class="editProductModal">
+        <span class="material-symbols-outlined closeModal" (click)="closeModal()">
+            close
+        </span>
+        <h1>Edit a product</h1>
+        <div *ngFor="let editProduct of editProducts">
+            <form action="" class="formClass">
+                <label for="editProductName">Name:</label>
+                <input type="text" [(ngModel)]="editProduct.name" name="name" class="name" id="editProductName">
+                <label for="editProductDescription">Description:</label>
+                <textarea [(ngModel)]="editProduct.description" name="description" class="description"
+                    id="editProductDescription"></textarea>
+                <label for="editProductPrice">Price:</label>
+                <input type="number" [(ngModel)]="editProduct.price" name="price" class="price" id="editProductPrice">
+                <label for="editProductQuantity{{editProduct.id}}">Quantity:</label>
+                <input type="number" [(ngModel)]="editProduct.quantity" name="quantity" class="quantity" id="editProductQuantity{{editProduct.id}}">
+                <button type="submit"
+                    (click)="updateProduct(editProduct.id,editProduct.name,editProduct.description,editProduct.price,editProduct.quantity)">Edit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- upload media -->
+<div class="mediaUploadContainer" *ngIf="showMediaUpload()">
+    <div class="mediaUploadModal">
+        <span class="material-symbols-outlined closeModal" (click)="closeModal()">
+            close
+        </span>
+
+        <form (submit)="uploadMedia(); $event.preventDefault()" class="formClass">
+            <p>{{errorMessage}}</p>
+            <input type="file" name="file" id="file" class="file">
+            <button type="submit">upload</button>
+          </form>
+    </div>
+</div>
+

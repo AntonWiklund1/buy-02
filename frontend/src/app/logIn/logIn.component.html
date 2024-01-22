@@ -1,0 +1,81 @@
+<div class="loginContainer">
+  <form action="" class="logInForm">
+    <h1 *ngIf="showLogIn()">Log in</h1>
+    <h1 *ngIf="showSignUp()">Sign up</h1>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <input
+      type="text"
+      placeholder="Username"
+      class="username"
+      name="username"
+      [(ngModel)]="username"
+      required
+    />
+
+    <input
+      type="text"
+      placeholder="Email"
+      class="email"
+      name="email"
+      [(ngModel)]="email"
+      *ngIf="showEmail()"
+    />
+
+    <input
+      type="password"
+      placeholder="Password"
+      id="password"
+      class="password"
+      name="password"
+      [(ngModel)]="password"
+      required
+    />
+
+    <input
+      type="password"
+      placeholder="Confirm Password"
+      class="password"
+      id="confirmPassword"
+      name="confirmPassword"
+      *ngIf="showSignUp()"
+    />
+
+    <!-- checkbox to check when you want to sign up as a seller -->
+    <div class="sellerCheckbox" *ngIf="showSignUp()">
+      <label for="seller">I want to be a seller </label>
+      <input
+        type="checkbox"
+        class="seller"
+        [(ngModel)]="isSeller"
+        name="isSeller"
+      />
+    </div>
+
+    <!-- input to upload avatar when you want to sign up as a seller -->
+    <div class="sellerMediaUpload" *ngIf="isSeller">
+      <label for="mediaUpload">Upload avatar </label>
+      <input
+        type="file"
+        class="mediaUpload"
+        id="mediaUpload"
+        (change)="onFileSelected($event)"
+      />
+      <button type="button" class="uploadButton" (click)="triggerFileInput()">
+        Choose File
+      </button>
+      <span class="fileName">{{ selectedFileName }}</span>
+    </div>
+
+    <button class="submit" (click)="LogIn()" *ngIf="showLogIn()">Log in</button>
+    <button class="signUp" (click)="validateForm()" *ngIf="showSignUp()">
+      Sign Up
+    </button>
+
+    <p *ngIf="!showLogIn()">
+      Already have an account? <a (click)="goLogIn()">Log in</a>
+    </p>
+    <p *ngIf="!showSignUp()">
+      Don't have an account? <a (click)="goSignUp()"> Sign Up </a>
+    </p>
+  </form>
+</div>

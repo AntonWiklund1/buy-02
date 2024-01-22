@@ -1,0 +1,121 @@
+version: "3.8"
+
+services:
+  api-gateway:
+    build:
+      context: ..
+      dockerfile: ./backend/microservices/api-gateway/Dockerfile
+    image: api-gateway:latest
+    ports:
+      - "8443:8443"
+
+  user-ms:
+    build:
+      context: ..
+      dockerfile: ./backend/microservices/user-ms/Dockerfile
+    image: user-ms:latest
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - kafka
+    environment:
+      - MONGO_HOST=mongodb
+      - ENV_KAFKA_HOST=kafka
+    volumes:
+      - ./media:/app/media # Shared volume with media-ms
+
+  product-ms:
+    build:
+      context: ..
+      dockerfile: ./backend/microservices/product-ms/Dockerfile
+    image: product-ms:latest
+    ports:
+      - "8082:8082"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - kafka
+    environment:
+      - MONGO_HOST=mongodb
+      - ENV_KAFKA_HOST=kafka
+
+  media-ms:
+    build:
+      context: ..
+      dockerfile: ./backend/microservices/media-ms/Dockerfile
+    image: media-ms:latest
+    ports:
+      - "8083:8083"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - kafka
+    environment:
+      - MONGO_HOST=mongodb
+      - ENV_KAFKA_HOST=kafka
+    volumes:
+      - ./temp:/app/temp
+      - ./media:/app/media
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: frontend/dockerfile.frontend
+    image: frontend:latest
+    ports:
+      - "4200:443"
+
+  # mongodb:
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo-data:/data/db
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "29092:29092" # Port for external connections from the host
+      - "29093:29093" # Port for internal connections from within Docker
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29093,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29093,EXTERNAL://0.0.0.0:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    healthcheck:
+      test: "CMD echo ruok | nc localhost 2181 | grep imok"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  mongo-data:
+    driver: local
+

@@ -1,0 +1,117 @@
+.profileManagmentContainer {
+  margin-left: 15rem;
+  display: flex;
+  width: calc(100vw - 15rem);
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+
+}
+.profileManagmentCard {
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 70%;
+  gap: 1rem;
+
+  /* box-shadow: 0 0 10px rgba(96, 96, 96, 0.5); */
+}
+.editProfileFildsDiv,
+.editProfilePictureDiv,
+.deleteProfileDiv {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+}
+.deleteProfileButtonConfirm {
+  background-color: red;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.manageProfileHeadning{
+    position: relative;
+    top: 3rem;
+}
+.deleteProfileButton {
+  background-color:var(--first-color);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.deleteProfileButtonDont {
+  background-color: green;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.editProfileFields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.7rem;
+}
+.editProfileFields input, .editProfileFields select {
+  padding: 0.5rem;
+}
+.editProfileFields button {
+  background-color: var(--fifth-color);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.editProfileFields button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.editProfilePicture {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.editProfilePicture button {
+  background-color: var(--fifth-color);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+}
+.editProfilePicture h3 {
+  position: relative;
+  top: 1rem;
+}
+.profilePic{
+  
+}
+@media screen and (max-width: 768px) {
+  .profileManagmentContainer {
+    margin-left: 6rem;
+    width: calc(100vw - 6rem);
+  }
+  .profileManagmentContainer h1 {
+    font-size: 1.4rem;
+  }
+  .editProfileFields {
+    width: 90%;
+  }
+  .editProfilePicture {
+    width: 90%;
+  }
+  .profileManagmentCard {
+    width: 90%;
+    
+  }
+}

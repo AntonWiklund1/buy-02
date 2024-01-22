@@ -1,0 +1,44 @@
+---
+- name: Deploy to production
+  gather_facts: false
+  hosts: deployservers
+  become: true
+  become_user: root
+  tasks:
+    - name: Navigate to the repository directory and pull the latest changes
+      shell: |
+        cd ../buy-01/mr-jenk
+        git pull origin main
+
+    - name: Run create.sh
+      shell: ../buy-01/mr-jenk/create.sh
+
+    - name: Ensure pip is installed (Debian)
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker SDK for Python
+      apt:
+        name: python3-docker
+        state: present
+
+    - name: Download Docker Compose installation script
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
+
+    - name: Make Docker Compose executable
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
+
+    - name: Run the Docker Compose command
+      command:
+        cmd: docker-compose up -d --build
+        chdir: ../buy-01/mr-jenk/backend
+      environment:
+        mongodbusername: Gritlab
+        mongodbpass: Gritlab
+      

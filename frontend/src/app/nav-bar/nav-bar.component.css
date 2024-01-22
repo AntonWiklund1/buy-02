@@ -1,0 +1,187 @@
+.navBar {
+  background-color: var(--fifth-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.navBarLogo {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  position: relative;
+  top: 5vh;
+}
+.navBarLogo img {
+  width: 10rem;
+  height: auto;
+  position: relative;
+  left: -2.5rem;
+}
+.navBarlinks {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  position: relative;
+  bottom: 30vh;
+}
+.navBarlinks .link:hover {
+  color: var(--first-color);
+  transform: translateX(0.5rem);
+}
+.navBarlinks .link {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--second-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+.profileName {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--second-color);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+}
+.linkDiv {
+  display: none;
+}
+.profile {
+  position: relative;
+  bottom: -30vh;
+  border-radius: 4px;
+  width: min-content;
+  text-align: center;
+  cursor: pointer;
+}
+.profile img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.profile:hover {
+  transform: scale(1.04);
+}
+.logStatus a {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--second-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logStatus {
+  /* visibility: hidden; */
+  position: relative;
+  bottom: -30vh;
+}
+.logOutLink {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.spanLink {
+  font-size: 2.2rem;
+  padding: 0.25rem;
+  position: relative;
+  left: -0.6rem;
+  color: var(--second-color);
+  border: 1.5px solid var(--second-color);
+  border-radius: 4px;
+  width: fit-content;
+}
+.visibleIcon {
+  visibility: hidden;
+}
+
+.logInLink {
+  display: none;
+}
+
+.logSpan {
+  display: none;
+  font-size: 1.5rem;
+  padding: 0.25rem;
+  position: relative;
+  left: -0.6rem;
+  color: var(--second-color);
+  border: 1.5px solid var(--second-color);
+  border-radius: 4px;
+  width: fit-content;
+
+}
+.visible {
+  display: block;
+}
+.visibleIcon {
+  display: block;
+}
+.homeLinkIcon {
+  display: none;
+  position: relative;
+  top: -30vh;
+}
+
+/* styling for phone screen */
+@media screen and (max-width: 768px) {
+  .navBar {
+    width: 1.5rem;
+    gap: 0rem;
+  }
+  .link {
+    display: none;
+  }
+  .logOutLink,
+  .logInLink,
+  .navBarLogo {
+    visibility: hidden;
+  }
+  .navBarlinks .spanLink {
+    visibility: visible;
+  }
+  .linkDiv {
+    display: block;
+    position: relative;
+    top: 5rem;
+  }
+  .visibleIcon {
+    visibility: visible;
+  }
+  .visible {
+    display: none;
+  }
+  .homeLinkIcon {
+    display: block;
+  }
+  .profile span {
+    font-size: 2rem;
+  }
+  .profile {
+    position: relative;
+    left: -1.5rem;
+  }
+  .profile img {
+    width: 3rem;
+    height: 3rem;
+  }
+  .logSpan {
+    display: block;
+    font-size: 2rem;
+  }
+}
+.showNavbar {
+  visibility: visible;
+}

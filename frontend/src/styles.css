@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+:root{
+    --first-color: #E63946;
+    --second-color: #f1f1f1;
+    --third-color: #A8DADC;
+    --fourth-color: #5394bd;
+    --fifth-color: #1D3557;
+}
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    background-color: var(--second-color);
+}

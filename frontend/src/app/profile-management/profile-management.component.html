@@ -1,0 +1,49 @@
+<div class="profileManagmentContainer">
+    <div class="profileManagmentCard">
+        <h1 class="manageProfileHeadning">Manage your profile: {{username}}</h1>
+        <p>Only make changes if you know what you are doing</p>
+        <div class="editProfileFildsDiv">
+            <form action="" class="editProfileFields">
+                <h3>Edit profile</h3>
+                <input type="text" class="newName" id="newName" placeholder="New name">
+                <input type="text" class="newEmail" id="newEmail" placeholder="New email">
+                <input type="password" class="newPassword" id="newPassword" placeholder="New password">
+                <!-- dropdown -->
+                <select name="newRole" id="newRole">
+                    <option value="ROLE_ClIENT">CLIENT</option>
+                    <option value="ROLE_SELLER">SELLER</option>
+                </select>
+                <button (click)="editProfile()">Submit changes</button>
+            </form>
+        </div>
+        <div class="editProfilePictureDiv" *ngIf="isAdmin$ | async">
+            <!-- Prevent the default form submission with (submit)="$event.preventDefault()" -->
+            <form (submit)="editProfilePicture(); $event.preventDefault()" class="editProfilePicture">
+                <h3>Edit profile picture</h3>
+                <p *ngIf="confirmedProfilePicChange">You updated the profile picture</p>
+
+                <!-- Use [src] for property binding and provide a descriptive alt text -->
+                <label for="profilePic">Current profile picture:</label>
+                <img *ngIf="(avatarUrl$ | async) as avatarUrl" [src]="avatarUrl" alt="Profile Picture"
+                    class="profilePic">
+
+                <!-- Display the error message only if there is one -->
+                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+
+                <input type="file" class="newProfilePicture" id="newProfilePicture">
+
+                <!-- Specify the button type to "button" to prevent form submission -->
+                <button type="button" (click)="editProfilePicture()">Submit changes</button>
+            </form>
+        </div>
+
+        <div class="deleteProfileDiv">
+            <h3>Delete profile</h3>
+            <button (click)="checkDelete()" *ngIf="!showDelete()" class="deleteProfileButton">Delete profile</button>
+            <button (click)="deleteProfile()" *ngIf="showDelete()" class="deleteProfileButtonConfirm">Confirm
+                delete</button>
+            <button (click)="checkDelete() " *ngIf="showDelete()" class="deleteProfileButtonDont">Don't delete</button>
+        </div>
+    </div>
+
+</div>

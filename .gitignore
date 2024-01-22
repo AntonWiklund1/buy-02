@@ -1,0 +1,27 @@
+.DS_Store
+*.cert
+*.key
+
+# Ignore media directory
+backend/media/
+# backend/target/
+
+backend/src/main/resources/application.properties
+backend/temp/
+backend/microservices/api-gateway/src/main/resources/localhost.p12
+backend/microservices/api-gateway/src/main/resources/localhost.pem
+backend/microservices/api-gateway/src/main/resources/localhost-key.pem
+backend/microservices/api-gateway/target/
+
+backend/microservices/media-ms/target/
+backend/microservices/product-ms/target/
+backend/microservices/user-ms/target/
+
+# Ignore java compiled files
+*.class
+*.jar
+*.war
+
+.idea
+.vscode
+

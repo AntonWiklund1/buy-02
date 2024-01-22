@@ -1,0 +1,140 @@
+.bakground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2; /* Adjusted z-index */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mediaManagementContainer {
+  margin-left: 14rem;
+}
+
+.mediaUrlContainer {
+  position: relative;
+  width: calc(100% - 1rem);
+  display: flex;
+  gap: 1rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.mediaItem {
+  position: relative;
+  margin-bottom: 20px;
+  z-index: 1;
+  height: 15rem;
+  width: 15rem;
+}
+.mediaImage {
+  object-fit: cover;
+  height: 15rem;
+  width: 15rem;
+}
+.infoDiv {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  gap: 1rem;
+}
+.edit {
+  cursor: pointer;
+  z-index: 3;
+}
+.delete {
+  cursor: pointer;
+  z-index: 3;
+}
+.close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  z-index: 5;
+}
+.mediaEditContainer,
+.mediaDeleteContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 1rem;
+  height: 50vh;
+  width: 40vw;
+}
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 50%;
+  position: relative;
+  left: 25%;
+}
+.editForm input {
+  position: relative;
+  left: 25%;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  cursor: pointer;
+  transform: scale(1.5);
+}
+.editForm button {
+  background-color: var(--fifth-color);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+.editForm button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.mediaUrlContainer div:hover .infoDiv {
+  opacity: 1; /* Make infoDiv visible on hover */
+}
+@media screen and (max-width: 768px) {
+  .mediaManagementContainer {
+    margin-left: 6rem;
+  }
+  .mediaItem,
+  .mediaImage {
+    height: 10rem;
+    width: 10rem;
+  }
+  .mediaEditContainer,
+  .mediaDeleteContainer {
+    width: 60vw;
+  }
+  .editForm {
+    width: 70%;
+    left: 15%;
+  }
+}
+@media (max-width: 576px) {
+  .mediaItem,
+  .mediaImage {
+    max-height: 9rem;
+    max-width: 9rem;
+  }
+}

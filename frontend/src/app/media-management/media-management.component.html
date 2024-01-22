@@ -1,0 +1,56 @@
+<div class="bakground" *ngIf="showEdit || showDelete"></div>
+<div class="mediaManagementContainer">
+  <div *ngIf="username$ | async as username">
+    <h1>Media management for {{ username }}</h1>
+  </div>
+
+  <!-- Display all of the user's media -->
+  <div class="mediaUrlContainer">
+    <div *ngFor="let media of allMedia" class="mediaItem">
+      <div class="infoDiv">
+        <span
+          class="material-symbols-outlined edit"
+          (click)="toggleEdit(media.productId)"
+        >
+          edit
+        </span>
+        <span
+          class="material-symbols-outlined delete"
+          (click)="toggleDelete(media.productId)"
+        >
+          delete
+        </span>
+      </div>
+      <img
+        [src]="'https://164.90.180.143:8443/' + media.mediaUrl"
+        alt="User's media"
+        class="mediaImage"
+      />
+    </div>
+  </div>
+
+  <!-- edit media modal -->
+  <div class="mediaEditContainer" *ngIf="showEdit">
+    <span class="material-symbols-outlined close" (click)="toggleEdit()">
+      close
+    </span>
+    <form (ngSubmit)="submitEditMedia()" class="editForm">
+      <p *ngIf="errorMessage">{{ errorMessage }}</p>
+      <h1>Edit</h1>
+      <input type="file" class="file" id="file" />
+      <button type="submit">Edit</button>
+    </form>
+  </div>
+
+  <!-- delete media modal -->
+  <div class="mediaDeleteContainer" *ngIf="showDelete">
+    <span class="material-symbols-outlined close" (click)="toggleDelete()">
+      close
+    </span>
+    <form (ngSubmit)="submitDeleteMedia()" class="deleteForm">
+      <h1>Delete</h1>
+      <p>Are you sure you want to delete this media?</p>
+      <button type="submit">Delete</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,224 @@
+.productManagmentContainer {
+  margin-left: 15rem;
+}
+/* Flex container */
+.productManagmentList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Adjusted to maintain even spacing */
+  width: calc(100% - 2rem);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Flex child */
+.productCard {
+  background-color: #ffffff;
+  flex: 0 0 calc(15% - 1rem); /* Will not grow, will not shrink, with the width adjusted for gap */
+  min-width: 15rem;
+  height: 30rem;
+  border-radius: 5px;
+  padding: 1rem; /* Added padding */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added box shadow */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  transition: transform 0.3s; /* Transition for hover effect */
+  position: relative;
+}
+
+.productImageDiv {
+  position: relative;
+  left: -1rem;
+  top: -1rem;
+  height: 15rem;
+  width: calc(100% + 2rem);
+  display: flex;
+}
+.productImage {
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 5px; /* Rounded top-left corner */
+  border-top-right-radius: 5px; /* Rounded top-right corner */
+}
+
+.productsControll {
+  position: absolute;
+  bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+}
+.productsControll span {
+  cursor: pointer;
+}
+
+.addProductContainer,
+.editProductContainer,
+.mediaUploadContainer {
+  position: fixed;
+  top: 0;
+  left: 7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  z-index: 1; /* Adjusted z-index */
+}
+.bakground {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* Adjusted z-index */
+}
+
+.darkBackground {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: block;
+}
+.addProductModal,
+.editProductModal,
+.mediaUploadModal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  width: 50vw;
+  background-color: #ffffff;
+  z-index: 3;
+}
+.addProduct {
+  cursor: pointer;
+}
+.closeModal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+  cursor: pointer;
+}
+.expanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: auto;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 3rem;
+}
+.closeIcon {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  cursor: pointer;
+  z-index: 11; /* Ensure it's above other content */
+  color: var(--first-color);
+}
+.formClass {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 20vw;
+  gap: 1rem;
+}
+
+.formClass input {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid var(--fifth-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.formClass button {
+  background-color: var(--fifth-color);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+.description {
+  width: 100%; /* Set the width for the textarea */
+  height: 5rem;
+  padding: 10px; /* Add padding if needed */
+  margin: 5px 0;
+  border: 1px solid var(--fifth-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.formClass button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.productId {
+  display: none;
+}
+.deleteProduct {
+  position: relative;
+  left: -0.5rem;
+  top: 0.6rem;
+}
+.deleteProductHeading {
+  position: relative;
+  top: 10px;
+}
+.yesDelete {
+  background-color: red;
+  color: white;
+  width: 50%;
+  height: 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.noDelete {
+  width: 50%;
+  height: 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* Responsive adjustments with fixed size */
+@media (max-width: 1400px) {
+  .productCard {
+    flex: 0 0 calc(20% - 1rem); /* 4 cards in a row */
+  }
+}
+
+@media (max-width: 992px) {
+  .productCard {
+    flex: 0 0 calc(33.333% - 1rem); /* 3 cards in a row */
+  }
+}
+
+@media (max-width: 768px) {
+  .productCard {
+    flex: 0 0 calc(50% - 1rem); /* 2 cards in a row */
+  }
+  .productManagmentContainer {
+    margin-left: 6rem;
+  }
+  .productManagmentList {
+    width: calc(100% - 4rem);
+  }
+  .expanded {
+    width: 80%; /* You can adjust the width to a suitable size for smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .productCard {
+    flex: 0 0 calc(100% - 1rem); /* 1 card in a row */
+  }
+}
