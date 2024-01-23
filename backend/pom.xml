@@ -18,6 +18,7 @@
         <module>microservices/product-ms</module>
         <module>microservices/api-gateway</module>
         <module>shared</module>
+        <module>microservices/order-ms</module>
     </modules>
 
     <properties>
