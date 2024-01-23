@@ -36,4 +36,10 @@ public class OrderController {
         Order newOrder = orderService.createOrder(order);
         return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Order> updateOrder(@PathVariable String id, @Valid @RequestBody Order order) {
+        Order updatedOrder = orderService.updateOrder(id, order);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+    }
 }

@@ -32,4 +32,19 @@ public class OrderService {
         order.setUpdatedAt(new Date());
         return orderRepository.save(order);
     }
+
+    public Order updateOrder(String id, Order order) {
+        Order orderToUpdate = orderRepository.findById(id).orElse(null);
+        if (orderToUpdate == null) {
+            return null;
+        }
+
+        orderToUpdate.setUserId(order.getUserId());
+        orderToUpdate.setProductIds(order.getProductIds());
+        orderToUpdate.setUpdatedAt(new Date());
+        orderToUpdate.setIsPaid(order.getIsPaid());
+        orderToUpdate.setIsDelivered(order.getIsDelivered());
+        orderToUpdate.setStatus(order.getStatus());
+        return orderRepository.save(orderToUpdate);
+    }
 }

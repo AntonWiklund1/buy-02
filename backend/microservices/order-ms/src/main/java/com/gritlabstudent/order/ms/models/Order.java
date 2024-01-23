@@ -1,14 +1,17 @@
 package com.gritlabstudent.order.ms.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +23,10 @@ import java.util.List;
 public class Order {
     @Id
     private String id;
-    @NotNull(message = "User ID is required")
+    @NotBlank(message = "User ID is required")
     private String userId;
 
-    @NotNull(message = "Product IDs are required")
+    @Size(min = 1, message = "At least one product ID is required")
     private List<String> productIds;
 
     @PastOrPresent(message = "The created date cannot be in the future")
