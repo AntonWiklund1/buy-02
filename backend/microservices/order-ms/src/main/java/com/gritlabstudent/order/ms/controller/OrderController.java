@@ -49,10 +49,15 @@ public class OrderController {
         return new ResponseEntity<>("Order deleted successfully", HttpStatus.OK);
     }
 
-    //delete all orders by user id
     @DeleteMapping("/user/{userId}")
     public ResponseEntity<String> deleteOrdersByUserId(@PathVariable String userId) {
         orderService.deleteOrdersByUserId(userId);
         return new ResponseEntity<>("Orders deleted successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/buy/{orderId}")
+    public ResponseEntity<String> buyProducts(@PathVariable String orderId) {
+        orderService.buyProducts(orderId);
+        return new ResponseEntity<>("Products bought successfully: " + orderId, HttpStatus.OK);
     }
 }

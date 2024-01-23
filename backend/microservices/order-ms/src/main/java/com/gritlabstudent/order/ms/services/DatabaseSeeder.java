@@ -28,8 +28,6 @@ public class DatabaseSeeder implements CommandLineRunner {
                     .productIds(Arrays.asList("p2", "p3"))
                     .createdAt(new Date())
                     .updatedAt(new Date())
-                    .isPaid(false)
-                    .isDelivered(false)
                     .status(Status.CREATED)
                     .build();
 

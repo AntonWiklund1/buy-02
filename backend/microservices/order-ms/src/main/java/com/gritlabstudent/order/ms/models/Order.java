@@ -37,12 +37,6 @@ public class Order {
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date updatedAt;
 
-    @NotNull(message = "Payment status cannot be null")
-    private Boolean isPaid;
-
-    @NotNull(message = "Delivery status cannot be null")
-    private Boolean isDelivered;
-
     @NotNull(message = "Order status cannot be null")
     private Status status;
 }

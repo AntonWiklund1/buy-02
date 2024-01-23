@@ -58,5 +58,4 @@ public class UserValidationResultConsumer {
             System.out.println("Request ID not found: " + requestId);
         }
     }
-
 }
