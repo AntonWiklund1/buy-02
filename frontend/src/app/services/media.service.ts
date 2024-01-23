@@ -11,10 +11,10 @@ import { map } from 'rxjs/operators';
 })
 export class MediaService {
 
-  private apiUploadUrl = 'https://164.90.180.143:8443/media/upload';
-  private apiGetMediaUrl = 'https://164.90.180.143:8443/media/product/';
-  private apiUploadAvatarUrl = 'https://164.90.180.143:8443/api/users';
-  private apiGetAvatarUrl = 'https://164.90.180.143:8443/api/users';
+  private apiUploadUrl = 'https://localhost:8443/media/upload';
+  private apiGetMediaUrl = 'https://localhost:8443/media/product/';
+  private apiUploadAvatarUrl = 'https://localhost:8443/api/users';
+  private apiGetAvatarUrl = 'https://localhost:8443/api/users';
 
   constructor(private http: HttpClient) { }
 

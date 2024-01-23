@@ -14,16 +14,21 @@ import { take } from 'rxjs/operators';
 })
 export class ProductListComponent {
   products: any[] | undefined;
+  filteredProducts: any[] | undefined; // Array to hold the filtered products
+  searchText: string = ''; // Initialize searchText
   productMediaUrls: Map<string, string> = new Map(); // Map to store media URLs
 
   token: string | null | undefined;
 
   constructor(
-    private store: Store<{ auth: AuthState, avatar: any }>,
+    private store: Store<{ auth: AuthState; avatar: any }>,
     private productService: ProductService,
     private MediaService: MediaService
   ) {
-    this.store.select(AuthSelectors.selectToken).pipe(take(1)).subscribe(token => this.token = token);
+    this.store
+      .select(AuthSelectors.selectToken)
+      .pipe(take(1))
+      .subscribe((token) => (this.token = token));
   }
 
   ngOnInit(): void {
@@ -35,12 +40,32 @@ export class ProductListComponent {
         console.error(error);
       }
     );
-
     this.loadProducts();
   }
+
   toggleDescription(product: any) {
     product.isReadMore = !product.isReadMore;
     product.isExpanded = !product.isExpanded; // Toggle the expanded state
+  }
+
+  search(): void {
+    if (!this.products) {
+      return;
+    }
+
+    if (this.searchText.trim() === '') {
+      // If search text is empty, display all products
+      this.filteredProducts = this.products;
+    } else {
+      // Else, filter the products based on search text
+      this.filteredProducts = this.products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          product.description
+            .toLowerCase()
+            .includes(this.searchText.toLowerCase())
+      );
+    }
   }
 
   loadProducts(): void {
@@ -50,6 +75,7 @@ export class ProductListComponent {
           ...product,
           isReadMore: true, // Add this line for each product
         }));
+        this.filteredProducts = this.products; // Set filteredProducts to all products
         this.preloadMediaForProducts(products);
       },
       (error) => {
@@ -59,7 +85,7 @@ export class ProductListComponent {
   }
 
   preloadMediaForProducts(products: any[]): void {
-    const backendUrl = 'https://164.90.180.143:8443/'; // Adjust this URL to where your backend serves media files
+    const backendUrl = 'https://localhost:8443/'; // Adjust this URL to where your backend serves media files
     products.forEach((product) => {
       this.MediaService.getMedia(product.id).subscribe(
         (mediaDataArray) => {

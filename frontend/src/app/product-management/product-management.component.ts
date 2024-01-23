@@ -99,7 +99,7 @@ export class ProductManagementComponent {
   }
 
   preloadMediaForProducts(products: any[]): void {
-    const backendUrl = 'https://164.90.180.143:8443/'; // Adjust this URL to where your backend serves media files
+    const backendUrl = 'https://localhost:8443/'; // Adjust this URL to where your backend serves media files
     products.forEach((product) => {
       this.MediaService.getMedia(product.id).subscribe(
         (mediaDataArray) => {
