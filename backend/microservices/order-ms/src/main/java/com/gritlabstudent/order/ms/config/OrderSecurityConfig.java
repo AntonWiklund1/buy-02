@@ -28,7 +28,6 @@ public class OrderSecurityConfig {
                         .requestMatchers("/api/orders/**").permitAll() // This should allow all requests to /api/orders/*
                         .anyRequest().permitAll() // All other requests need authentication
                 );
-
         return http.build();
     }
 }

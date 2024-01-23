@@ -47,4 +47,12 @@ public class OrderService {
         orderToUpdate.setStatus(order.getStatus());
         return orderRepository.save(orderToUpdate);
     }
+
+    public void deleteOrder(String id) {
+        orderRepository.deleteById(id);
+    }
+
+    public void deleteOrdersByUserId(String userId) {
+        orderRepository.deleteByUserId(userId);
+    }
 }
