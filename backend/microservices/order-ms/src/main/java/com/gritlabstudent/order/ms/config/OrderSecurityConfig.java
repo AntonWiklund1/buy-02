@@ -12,29 +12,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true) // Enable method-level security
+@EnableMethodSecurity(prePostEnabled = true)
 public class OrderSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .exceptionHandling(
-                        exceptionHandling -> exceptionHandling
-                                .authenticationEntryPoint((request, response, authException) -> response
-                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED)))
-                .authorizeHttpRequests(authorizeRequests -> {
-                    try {
-                        authorizeRequests
-                                .requestMatchers("/api/orders/**").permitAll()
-                                .anyRequest().authenticated(); // Require authentication for all other requests
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                ;
+        http.csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)
+                )
+                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/orders/").permitAll() // This should allow all requests to /api/orders/
+                        .requestMatchers("/api/orders/**").permitAll() // This should allow all requests to /api/orders/*
+                        .anyRequest().authenticated() // All other requests need authentication
+                );
 
-        // Build and return the configured HttpSecurity object
         return http.build();
     }
-
 }

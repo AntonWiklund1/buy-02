@@ -2,11 +2,11 @@ package com.gritlabstudent.order.ms.controller;
 
 import com.gritlabstudent.order.ms.models.Order;
 import com.gritlabstudent.order.ms.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +24,16 @@ public class OrderController {
     @GetMapping("/user/{userId}")
     public List<Order> getOrdersByUserId(@PathVariable String userId) {
         return orderService.getOrdersByUserId(userId);
+    }
+
+    @GetMapping("/{id}")
+    public Order getOrderById(@PathVariable String id) {
+        return orderService.getOrderById(id);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Order> createOrder(@Valid @RequestBody Order order) {
+        Order newOrder = orderService.createOrder(order);
+        return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     }
 }
