@@ -39,4 +39,6 @@ public class Order {
 
     @NotNull(message = "Order status cannot be null")
     private Status status;
+
+    private Boolean isInCart;
 }

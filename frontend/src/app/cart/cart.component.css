@@ -1,9 +1,88 @@
-.cartContainer{
-    margin-left: 15rem;
+.cartContainer {
+  margin-left: 15rem;
 }
-
+.cart {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  width: calc(100vw - 20rem);
+  gap: 1rem;
+}
+.order{
+    width: 40%;
+}
+.orderCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  background-color: #ffffff;
+  flex: 0 0 calc(15% - 1rem); /* Will not grow, will not shrink, with the width adjusted for gap */
+  min-width: 15rem;
+  height: max-content;
+  border-radius: 5px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin: 1rem 0;
+  border: 1px solid rgb(204, 204, 204);
+}
+.orderCard img {
+  width: 6rem;
+  object-fit: cover;
+}
+.orderInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  font-size: 1.3rem;
+  width: 50%;
+}
+.orderActions {
+  background-color: #ffffff;
+  height: max-content;
+  border-radius: 5px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin: 1rem 0;
+  border: 1px solid rgb(204, 204, 204);
+  width: 10rem;
+}
+.delete span {
+  cursor: pointer;
+}
+.Checkout {
+    align-items: center;
+    background-color: var(--fifth-color);
+    border: 0;
+    border-radius: 100px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 20px;
+    max-width: 480px;
+    min-height: 40px;
+    min-width: 0px;
+    overflow: hidden;
+    padding: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+}
+.Checkout:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+}
 @media (max-width: 768px) {
-    .cartContainer{
-        margin-left: 6rem;
-    }
+  .cartContainer {
+    margin-left: 6rem;
+  }
 }

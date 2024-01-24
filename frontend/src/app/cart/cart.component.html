@@ -1,15 +1,29 @@
 <div class="cartContainer">
-  <h1>Your shopping cart</h1>
+  <h1>My cart</h1>
 
-  <div *ngIf="orders.length > 0" class="orders-list">
-    <h2>Created Orders</h2>
-    <div *ngFor="let order of orders" class="order-item">
-      <h3>Order ID: {{ order.id }}</h3>
-      <p>Status: {{ order.status }}</p>
-        <p>Created at: {{ order.createdAt }}</p>
-        <p>Updated at: {{ order.updatedAt }}</p>
-        <p>Products:</p>
-        <p>{{order.productIds}}</p>
+  <div *ngIf="cart.length > 0" class="orders-list">
+    <div class="cart">
+      <div *ngFor="let order of cart" class="order">
+        <div *ngFor="let product of order.products" class="orderCard">
+          <div class="orderInfo">
+            <img
+              [src]="getMediaUrl(product.id)"
+              alt="{{ product.name }}"
+              class="productImage"
+            />
+            <p>{{ product.name }}</p>
+            <p>{{ product.price }}</p>
+          </div>
+          <div class="delete">
+            <span class="material-symbols-outlined"> delete </span>
+          </div>
+        </div>
+      </div>
+      <div class="orderActions">
+          <p>Total 55€</p>
+          <button class="Checkout">Checkout</button>
+      </div>
     </div>
   </div>
+
 </div>
