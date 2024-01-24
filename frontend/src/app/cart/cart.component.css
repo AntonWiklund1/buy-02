@@ -9,7 +9,7 @@
   gap: 1rem;
 }
 .order{
-    width: 40%;
+    width: 30%;
 }
 .orderCard {
   display: flex;
@@ -52,7 +52,12 @@
   border: 1px solid rgb(204, 204, 204);
   width: 10rem;
 }
-.delete span {
+.productActions{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.productActions span {
   cursor: pointer;
 }
 .Checkout {

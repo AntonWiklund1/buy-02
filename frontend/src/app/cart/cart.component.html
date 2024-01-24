@@ -11,19 +11,22 @@
               alt="{{ product.name }}"
               class="productImage"
             />
-            <p>{{ product.name }}</p>
-            <p>{{ product.price }}</p>
+            <div>
+              <p>{{ product.name }}</p>
+              <p>{{ product.price }}$</p>
+            </div>
           </div>
-          <div class="delete">
-            <span class="material-symbols-outlined"> delete </span>
+          <div class="productActions">
+            <span class="material-symbols-outlined delete"> delete </span>
+            <span class="material-symbols-outlined"> add </span>
+
           </div>
         </div>
       </div>
       <div class="orderActions">
-          <p>Total 55€</p>
-          <button class="Checkout">Checkout</button>
+        <p>Total 55€</p>
+        <button class="Checkout">Checkout</button>
       </div>
     </div>
   </div>
-
 </div>
