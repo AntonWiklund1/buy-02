@@ -1,0 +1,9 @@
+.cartContainer{
+    margin-left: 15rem;
+}
+
+@media (max-width: 768px) {
+    .cartContainer{
+        margin-left: 6rem;
+    }
+}

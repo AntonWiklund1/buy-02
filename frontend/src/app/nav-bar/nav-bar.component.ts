@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { AuthState } from '../state/auth/auth.reducer';
 import { selectIsAuthenticated, selectUserRole, selectUsername } from '../state/auth/auth.selector';
 import { logout } from '../state/auth/auth.actions';
-import { Observable } from 'rxjs';
+import { Observable, switchMap, catchError, of, take } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as AuthSelectors from '../state/auth/auth.selector';
@@ -12,7 +12,6 @@ import * as AvatarSelectors from '../state/avatar/profile.selector';
 import { AppState } from '../state/app.state';
 import * as AvatarActions from '../state/avatar/profile.actions';
 import { MediaService } from '../services/media.service';
-import { switchMap, catchError, of, take } from 'rxjs';
 
 
 @Component({

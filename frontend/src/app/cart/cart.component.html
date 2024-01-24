@@ -1,0 +1,15 @@
+<div class="cartContainer">
+  <h1>Your shopping cart</h1>
+
+  <div *ngIf="orders.length > 0" class="orders-list">
+    <h2>Created Orders</h2>
+    <div *ngFor="let order of orders" class="order-item">
+      <h3>Order ID: {{ order.id }}</h3>
+      <p>Status: {{ order.status }}</p>
+        <p>Created at: {{ order.createdAt }}</p>
+        <p>Updated at: {{ order.updatedAt }}</p>
+        <p>Products:</p>
+        <p>{{order.productIds}}</p>
+    </div>
+  </div>
+</div>

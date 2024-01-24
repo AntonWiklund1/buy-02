@@ -25,7 +25,8 @@
                 photo_library
             </span>
         </div>
-        <!-- Use username$ Observable with async pipe -->
+
+        <!-- profile -->
         <div class="profile" routerLink="/profileManagment">
             <div *ngIf="isAdmin$ | async">
                 <img *ngIf="(avatarUrl$ | async) as avatarUrl " [src]="avatarUrl || ''" alt="Profile Picture" >
@@ -34,6 +35,13 @@
             <a class="profileName" *ngIf="(isAuthenticated$ | async) && (username$ | async) as username">
                 {{ username.length > 6 ? (username.slice(0, 6) + '...') : username }}
             </a>
+        </div>
+
+        <!-- cart -->
+        <div class="cart" routerLink="/cart">
+            <span class="material-symbols-outlined cart" routerLink="/cart">
+                shopping_cart
+            </span>
         </div>
         <div class="logStatus">
             <!-- Use isAuthenticated$ Observable with async pipe -->
