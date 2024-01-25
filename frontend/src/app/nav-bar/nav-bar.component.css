@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 8rem;
+  width: 10rem;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,24 +11,27 @@
   padding-left: 2rem;
   padding-right: 2rem;
   padding-top: 4rem;
-  color: var(-);
   font-size: larger;
-  gap: 3rem;
-  
+  gap: 2rem;
+  z-index: 6;
 }
+
 hr {
   border: none;
-  border-top: 2px solid var(--sixth-color); 
-  margin: 10px 0; 
-  width: 100%; 
+  border-top: 2px solid var(--sixth-color);
+  margin-top: 15px 0;
+  width: 100%;
+
 }
-.section{
+
+.section {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
 }
-.linkSection{
+
+.linkSection {
   display: flex;
   cursor: pointer;
   margin-top: 1rem;
@@ -36,37 +39,178 @@ hr {
   align-items: center;
   gap: 0.4rem;
 }
-.linkSection:hover{
+
+.linkSection:hover {
   color: var(--first-color);
   transform: scale(1.04);
 }
-.firstSection{
+.homeLink{
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.firstSection {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
   margin-top: 5rem;
 }
+.secondSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  top: -1rem;
+}
+.thirdSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  top: -1rem;
+}
 .profileImage {
   width: 4rem;
   height: 4rem;
-  border-radius: 50%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
   border: 1px solid var(--sixth-color);
 }
+.profileName{
+  position: relative;
+  top: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.profileRole{
+  position: relative;
+  font-size: small;
+  color: var(--sixth-color);
+}
+.profile{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  left: -1rem;
+  cursor: pointer;
+}
+.profile:hover{
+  transform: scale(1.04);
+  color: var(--first-color);
+}
+.fourthSection{
+  position: fixed;
+  bottom: 2rem;
+}
+/* hamburger menu */
+.ham {
+  display: none;
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 400ms;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 7;
+}
+
+.hamRotate.active {
+  transform: rotate(45deg);
+}
+
+.hamRotate180.active {
+  transform: rotate(180deg);
+}
+
+.line {
+  fill: none;
+  transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+  stroke: #000;
+  stroke-width: 5.5;
+  stroke-linecap: round;
+}
+
+.ham1 .top {
+  stroke-dasharray: 40 139;
+}
+
+.ham1 .bottom {
+  stroke-dasharray: 40 180;
+}
+
+.ham1.active .top {
+  stroke-dashoffset: -98px;
+}
+
+.ham1.active .bottom {
+  stroke-dashoffset: -138px;
+}
+
 
 /* styling for phone screen */
 @media screen and (max-width: 768px) {
-  .navBar {
-    width: 1.5rem;
-    gap: 0rem;
+  .ham {
+    display: block;
   }
-  .profile img {
-    width: 3rem;
-    height: 3rem;
+
+  .navBar {
+    display: none;
+  }
+  .fourthSection{
+    font-size: smaller;
   }
 }
+
 .showNavbar {
-  visibility: visible;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--second-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 2rem;
+  padding: 0;
+  padding-top: 4rem;
+  animation: showNavbar 0.3s ease-in-out;
+  gap: 1rem;
+}
+.showNavbar .section{
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.showNavbar .homeLink{
+  font-size: 3rem;
+}
+.showNavbar hr{
+  position: relative;
+  width: 80vw;
+  padding-top: 1rem;
+}
+.showNavbar span{
+  display: none;
+}
+
+@keyframes showNavbar {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+.thirdSectionOnPhone img{
+  display: none;
 }

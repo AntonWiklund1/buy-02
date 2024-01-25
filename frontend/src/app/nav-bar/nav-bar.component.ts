@@ -24,6 +24,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   isAdmin$: Observable<boolean>;
   username$: Observable<string>;
   avatarUrl$: Observable<string>; // Observable for the avatar URL
+  userRole$: Observable<string>; // Observable for the user role
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -41,6 +43,17 @@ export class NavBarComponent implements OnInit, OnDestroy {
     );
 
     this.avatarUrl$ = this.store.select(AvatarSelectors.selectAvatarUrl);
+
+    this.userRole$ = this.store.select(selectUserRole).pipe(
+      map(role => {
+        switch(role) {
+          case 'ROLE_ADMIN': return 'Admin';
+          case 'ROLE_SELLER': return 'Seller';
+          default: return 'Client';
+        }
+      })
+    );
+
   }
 
   ngOnInit(): void {
@@ -99,5 +112,16 @@ export class NavBarComponent implements OnInit, OnDestroy {
   logOut(): void {
     this.store.dispatch(logout());
     this.router.navigate(['/logIn']);
+  }
+
+  toggleNavbar(): void {
+    const navbar = document.getElementById('navbar');
+    const thirdSection = document.getElementById('thirdSection');
+    if (navbar) {
+      navbar.classList.toggle('showNavbar');
+    }
+    if (thirdSection) {
+      thirdSection.classList.toggle('thirdSection');
+    }
   }
 }
