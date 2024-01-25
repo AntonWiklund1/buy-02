@@ -19,6 +19,34 @@ import { environment } from '../environments/environment';
 import { MediaManagementComponent } from './media-management/media-management.component';
 import { CommonModule } from '@angular/common';
 import { cartReducer } from './state/cart/cart.reducer';
+import { APP_INITIALIZER } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from './state/app.state';
+import { selectUserId } from './state/auth/auth.selector';
+import * as CartActions from './state/cart/cart.actions';
+import { OrderService } from './services/order.service';
+import { take } from 'rxjs';
+
+export function initializeApp(orderService: OrderService, store: Store<AppState>) {
+  return (): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      store.select(selectUserId).pipe(take(1)).subscribe((userId) => {
+        if (userId) {
+          orderService.getOrdersByUserId(userId).subscribe((ordersData) => {
+            const cartOrder = ordersData.find((order) => order.isInCart);
+            if (cartOrder) {
+              store.dispatch(CartActions.storeOrderId({ orderId: cartOrder.id }));
+            }
+            resolve(true);
+          }, reject);
+        } else {
+          resolve(true);
+        }
+      });
+    });
+  };
+}
+
 
 @NgModule({
   declarations: [
@@ -49,7 +77,16 @@ import { cartReducer } from './state/cart/cart.reducer';
       logOnly: environment.production,
     }),
   ],
-  providers: [],
+  providers: [
+    {
+
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [OrderService, Store],
+      multi: true
+    }
+
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
