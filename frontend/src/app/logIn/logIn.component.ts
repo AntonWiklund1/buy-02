@@ -142,7 +142,7 @@ export class LogInComponent {
                 }
                 // Handle response upon successful user creation
                 // Navigate to the desired route upon success
-                this.router.navigate(['/productList']);
+                this.router.navigate(['/cart']);
               },
               error: (userError: { error: string }) => {
                 this.errorMessage = userError.error;
@@ -177,7 +177,7 @@ export class LogInComponent {
 
         // Call getRole and pass a callback function for navigation
         this.getRole(response.userId, response.token, () => {
-          this.router.navigate(['/productList']); // Navigate after role is set
+          this.router.navigate(['/cart']); // Navigate after role is set
         });
 
       },

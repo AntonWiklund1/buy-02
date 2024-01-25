@@ -11,6 +11,11 @@ import { MediaService } from '../services/media.service';
 import { AuthState } from '../state/auth/auth.reducer';
 import * as AuthSelectors from '../state/auth/auth.selector';
 
+import * as CartActions from '../state/cart/cart.actions';
+import { CartState } from '../state/cart/cart.reducer';
+import { selectOrderId } from '../state/cart/cart.selectors';
+import { AppState } from '../state/app.state';
+
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -21,18 +26,21 @@ import * as AuthSelectors from '../state/auth/auth.selector';
 export class CartComponent implements OnInit {
   cart: any[] = []; // Replace 'any' with your order type
   userId$: Observable<string | null>;
+  orderId$: Observable<string | null>;
   userId: string | null = null;
   productMediaUrls: Map<string, string> = new Map();
   totalPrice = 0;
 
   constructor(
-    private store: Store<{ auth: AuthState }>,
+    private store: Store<AppState>,
     private orderService: OrderService,
     private productService: ProductService,
     private mediaService: MediaService,
     private route: ActivatedRoute
+    
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
+    this.orderId$ = this.store.select(selectOrderId);
   }
 
   ngOnInit(): void {
@@ -50,6 +58,7 @@ export class CartComponent implements OnInit {
       .getOrdersByUserId(this.userId!)
       .subscribe((ordersData) => {
         this.cart = ordersData.filter((order) => order.isInCart);
+        this.storeOrderIdInState(this.cart[0].id)
         const productIds = [
           ...new Set(this.cart.flatMap((order) => order.productIds)),
         ];
@@ -63,6 +72,7 @@ export class CartComponent implements OnInit {
     const productObservables: Observable<any>[] = [];
     this.cart.forEach((order) => {
       order.products = [];
+      
       order.productIds.forEach((productId: string) => {
         const productObservable = this.productService.getProductById(productId);
         productObservables.push(productObservable);
@@ -139,4 +149,9 @@ export class CartComponent implements OnInit {
       this.fetchOrdersAndProducts();
     });
   }
+  
+  storeOrderIdInState(orderId: string): void {
+    this.store.dispatch(CartActions.storeOrderId({ orderId }));
+  }
+  
 }

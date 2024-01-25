@@ -10,6 +10,7 @@ import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { AuthState } from '../state/auth/auth.reducer';
 import * as AuthActions from '../state/auth/auth.actions';
 import { selectUserRole } from '../state/auth/auth.selector';
+import { AppState } from '../state/app.state';
 
 interface Profile {
   name: string;
@@ -36,7 +37,7 @@ export class ProfileManagementComponent implements OnInit {
   username: string | null | undefined;
 
   constructor(
-    private store: Store<{ auth: AuthState, avatar: any }>,
+    private store: Store<AppState>,
     private userService: UserService,
     private router: Router,
     private mediaService: MediaService

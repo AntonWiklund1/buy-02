@@ -7,6 +7,13 @@ import { AuthState } from '../state/auth/auth.reducer';
 import * as AuthSelectors from '../state/auth/auth.selector';
 import { take } from 'rxjs/operators';
 
+import { OrderService } from '../services/order.service';
+import { selectOrderId } from '../state/cart/cart.selectors';
+import { Observable } from 'rxjs';
+import { CartState } from '../state/cart/cart.reducer';
+import { AppState } from '../state/app.state';
+
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -20,11 +27,18 @@ export class ProductListComponent {
 
   token: string | null | undefined;
 
+  orderId$: Observable<string | null>;
+  orderId: string | null = null; // You will use this in addToCart
+
   constructor(
-    private store: Store<{ auth: AuthState; avatar: any }>,
+    private store: Store<AppState>, // Add cart state if it's not already included
     private productService: ProductService,
-    private MediaService: MediaService
+    private MediaService: MediaService,
+    private orderService: OrderService,
+
   ) {
+    this.orderId$ = this.store.select(selectOrderId);
+
     this.store
       .select(AuthSelectors.selectToken)
       .pipe(take(1))
@@ -41,6 +55,10 @@ export class ProductListComponent {
       }
     );
     this.loadProducts();
+    this.orderId$.pipe(take(1)).subscribe((currentOrderId) => {
+      this.orderId = currentOrderId; // Store the orderId for later use
+    });
+
   }
 
   toggleDescription(product: any) {
@@ -121,4 +139,29 @@ export class ProductListComponent {
   getMediaUrl(productId: string): string | undefined {
     return this.productMediaUrls.get(productId);
   }
+
+  addToCart(productId: string): void {
+    // Check if orderId is available
+    console.log('Add to cart');
+    console.log(this.orderId);
+    if (!this.orderId) {
+      console.error('No order ID available');
+      // Here you might want to handle the case where there is no order ID
+      // For example, by creating a new order
+      return;
+    }
+
+    // Use the orderId to add a product to the order
+    this.orderService.addProductToOrder(this.orderId, productId).subscribe({
+      next: () => {
+        // Handle successful addition of the product to the cart
+        console.log(`Product ${productId} added to order ${this.orderId}`);
+      },
+      error: (error) => {
+        // Handle errors, for example, show a message to the user
+        console.error(`Error adding product to order: ${error}`);
+      }
+    });
+  }
+
 }

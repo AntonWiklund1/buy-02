@@ -18,6 +18,7 @@ import { avatarReducer } from './state/avatar/profile.reducer'; // Import the av
 import { environment } from '../environments/environment';
 import { MediaManagementComponent } from './media-management/media-management.component';
 import { CommonModule } from '@angular/common';
+import { cartReducer } from './state/cart/cart.reducer';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { CommonModule } from '@angular/common';
     StoreModule.forRoot({
       auth: authReducer,
       avatar: avatarReducer,
+      cart: cartReducer,
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({

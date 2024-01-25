@@ -46,7 +46,6 @@ export class ProductService {
 
   getProductById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrlGetProductById}/${id}`).pipe(
-      tap(data => console.log('Product Data:', data)), // Log the response
       catchError(this.handleError) // Handle errors appropriately
     );
   }

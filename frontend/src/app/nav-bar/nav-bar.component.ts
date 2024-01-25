@@ -28,7 +28,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private store: Store<{ auth: AuthState; avatar: any; }>,
+    private store: Store<AppState>,
     private mediaService: MediaService
   ) {
 

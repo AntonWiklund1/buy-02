@@ -55,6 +55,9 @@
   width: 15rem;
   
 }
+.productInfo{
+    margin-left: 1rem;
+}
 .productActions {
   display: flex;
   flex-direction: column;
