@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { AuthState } from '../state/auth/auth.reducer';
 import { selectIsAuthenticated, selectUserRole, selectUsername } from '../state/auth/auth.selector';
 import { logout } from '../state/auth/auth.actions';
-import { Observable } from 'rxjs';
+import { Observable, switchMap, catchError, of, take } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as AuthSelectors from '../state/auth/auth.selector';
@@ -12,7 +12,6 @@ import * as AvatarSelectors from '../state/avatar/profile.selector';
 import { AppState } from '../state/app.state';
 import * as AvatarActions from '../state/avatar/profile.actions';
 import { MediaService } from '../services/media.service';
-import { switchMap, catchError, of, take } from 'rxjs';
 
 
 @Component({
@@ -25,11 +24,13 @@ export class NavBarComponent implements OnInit, OnDestroy {
   isAdmin$: Observable<boolean>;
   username$: Observable<string>;
   avatarUrl$: Observable<string>; // Observable for the avatar URL
+  userRole$: Observable<string>; // Observable for the user role
+
   private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
-    private store: Store<{ auth: AuthState; avatar: any; }>,
+    private store: Store<AppState>,
     private mediaService: MediaService
   ) {
 
@@ -42,6 +43,17 @@ export class NavBarComponent implements OnInit, OnDestroy {
     );
 
     this.avatarUrl$ = this.store.select(AvatarSelectors.selectAvatarUrl);
+
+    this.userRole$ = this.store.select(selectUserRole).pipe(
+      map(role => {
+        switch(role) {
+          case 'ROLE_ADMIN': return 'Admin';
+          case 'ROLE_SELLER': return 'Seller';
+          default: return 'Client';
+        }
+      })
+    );
+
   }
 
   ngOnInit(): void {
@@ -85,7 +97,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       let avatarUrl = avatarPath;
       if (!avatarPath.startsWith('http') && !avatarPath.startsWith('/assets')) {
         // If avatarPath is neither a full URL nor an asset path, assume it's a relative path from the server
-        avatarUrl = `https://164.90.180.143:8443/${avatarPath}`;
+        avatarUrl = `https://localhost:8443/${avatarPath}`;
       }
       // Dispatch the action with the correct URL
       this.store.dispatch(AvatarActions.updateProfilePicture({ url: avatarUrl }));
@@ -100,5 +112,16 @@ export class NavBarComponent implements OnInit, OnDestroy {
   logOut(): void {
     this.store.dispatch(logout());
     this.router.navigate(['/logIn']);
+  }
+
+  toggleNavbar(): void {
+    const navbar = document.getElementById('navbar');
+    const thirdSection = document.getElementById('thirdSection');
+    if (navbar) {
+      navbar.classList.toggle('showNavbar');
+    }
+    if (thirdSection) {
+      thirdSection.classList.toggle('thirdSection');
+    }
   }
 }

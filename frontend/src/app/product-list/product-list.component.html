@@ -1,7 +1,12 @@
 <div class="productsListContainer">
-    <h1>Products change</h1>
+    <h1>Products</h1>
+    <div class="filterContainer">
+        <div class="search">
+            <input type="text" placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="search()" class="searchBox">
+        </div>
+    </div>
     <div class="productsList">
-        <div *ngFor="let product of products" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
+        <div *ngFor="let product of filteredProducts" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
             <div class="productImageDiv">
                 
                 <img [src]="getMediaUrl(product.id)" alt="" class="productImage">
@@ -19,7 +24,7 @@
 
                 <p>{{product.price}}€</p>
                 <p>{{ product.quantity}} products left</p>
-                <p>From {{product.userId}}</p>
+                <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
             </div>
         </div>
     </div>

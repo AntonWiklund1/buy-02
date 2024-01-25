@@ -25,3 +25,7 @@ backend/microservices/user-ms/target/
 .idea
 .vscode
 
+backend/microservices/order-ms/target/
+backend/microservices/order-ms/src/main/resources/localhost.p12
+backend/microservices/order-ms/src/main/resources/localhost.pem
+backend/microservices/order-ms/src/main/resources/localhost-key.pem

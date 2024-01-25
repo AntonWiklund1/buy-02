@@ -10,6 +10,7 @@ import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
 import { AuthState } from '../state/auth/auth.reducer';
 import * as AuthActions from '../state/auth/auth.actions';
 import { selectUserRole } from '../state/auth/auth.selector';
+import { AppState } from '../state/app.state';
 
 interface Profile {
   name: string;
@@ -36,7 +37,7 @@ export class ProfileManagementComponent implements OnInit {
   username: string | null | undefined;
 
   constructor(
-    private store: Store<{ auth: AuthState, avatar: any }>,
+    private store: Store<AppState>,
     private userService: UserService,
     private router: Router,
     private mediaService: MediaService
@@ -91,7 +92,7 @@ export class ProfileManagementComponent implements OnInit {
       let avatarUrl = avatarPath;
       if (!avatarPath.startsWith('http') && !avatarPath.startsWith('/assets')) {
         // If avatarPath is neither a full URL nor an asset path, assume it's a relative path from the server
-        avatarUrl = `https://164.90.180.143:8443/${avatarPath}`;
+        avatarUrl = `https://localhost:8443/${avatarPath}`;
       }
       // Dispatch the action with the correct URL
       this.store.dispatch(AvatarActions.updateProfilePicture({ url: avatarUrl }));
@@ -166,7 +167,7 @@ export class ProfileManagementComponent implements OnInit {
       const file = fileInput.files[0];
       this.mediaService.uploadAvatar(file, userId, token).subscribe(
         (response) => {
-          const newAvatarUrl = `https://164.90.180.143:8443/${response}`;
+          const newAvatarUrl = `https://localhost:8443/${response}`;
           this.store.dispatch(AvatarActions.updateProfilePicture({ url: newAvatarUrl }));
           console.log('Profile picture updated successfully');
           this.ngOnInit
