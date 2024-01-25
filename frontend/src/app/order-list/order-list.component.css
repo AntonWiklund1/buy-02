@@ -1,0 +1,60 @@
+.orderListContainer {
+
+    margin-left: 15rem;
+}
+
+.allOrders {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: calc(100vw - 20rem);
+}
+
+.orderCard {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgb(204, 204, 204);
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.status {
+    font-weight: bold;
+}
+
+.products {
+    position: absolute;
+    top: 5rem;
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - 20rem);
+}
+
+.productCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    background-color: #ffffff;
+    flex: 0 0 calc(15% - 1rem);
+    min-width: 15rem;
+    height: max-content;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    margin: 1rem 0;
+    border: 1px solid rgb(204, 204, 204);
+}
+.expand{
+    position: absolute;
+    right: 1rem;
+    top: 2rem;
+    cursor: pointer;
+}

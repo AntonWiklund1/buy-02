@@ -8,6 +8,7 @@ import { ProfileManagementComponent } from './profile-management/profile-managme
 import { MediaManagementComponent } from './media-management/media-management.component';
 import { CartComponent } from './cart/cart.component';
 import { HomeComponent } from './home/home.component';
+import { OrderListComponent } from './order-list/order-list.component';
 
 const routes: Routes = [
   { path: 'logIn', component: LogInComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'mediaManagement', component: MediaManagementComponent},
   { path: 'home', component: HomeComponent},
   { path: 'cart', component: CartComponent},
+  { path: 'orderList', component: OrderListComponent},
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 

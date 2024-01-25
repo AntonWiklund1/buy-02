@@ -1,0 +1,25 @@
+<div class="orderListContainer">
+    <h1>Orders</h1>
+    <div class="allOrders">
+        <!-- loop all the orders -->
+        <div *ngFor="let order of orders" class="orderCard">
+            <p>{{ order.id }}</p>
+            <p>Status: <span class="status">{{order.status}}</span></p>
+            <p>In cart: {{order.isInCart}}</p>
+            <p>Created at: {{order.createdAt}}</p>
+            <p>Updated at: {{order.updatedAt}}</p>
+            <span class="material-symbols-outlined expand" (click)="expandOrder(order)">
+                expand_more
+            </span>
+            <div class="products" *ngIf="order.expanded">
+                <p>Products:</p>
+                <!-- loop all the products in the order -->
+                <div *ngFor="let product of order.products" class="productCard">
+                    <!-- <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage"/> -->
+                        <p>{{ product.name }}</p>
+                        <p>{{ product.price }}$</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
