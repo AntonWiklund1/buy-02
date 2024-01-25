@@ -46,15 +46,19 @@ export class CartComponent implements OnInit {
 
   // this method is used to fetch all orders and products for the current user
   fetchOrdersAndProducts(): void {
-    this.orderService.getOrdersByUserId(this.userId!).subscribe((ordersData) => {
-      this.cart = ordersData.filter((order) => order.isInCart);
-      const productIds = [...new Set(this.cart.flatMap((order) => order.productIds))];
-      this.preloadMediaForProducts(productIds);
-      this.populateProductsAndCalculateTotal();
-    });
+    this.orderService
+      .getOrdersByUserId(this.userId!)
+      .subscribe((ordersData) => {
+        this.cart = ordersData.filter((order) => order.isInCart);
+        const productIds = [
+          ...new Set(this.cart.flatMap((order) => order.productIds)),
+        ];
+        this.preloadMediaForProducts(productIds);
+        this.populateProductsAndCalculateTotal();
+      });
   }
 
-  // this method is used to populate the products array in each order
+  // Fetches product details and calculates total price after all product data is fetched
   populateProductsAndCalculateTotal(): void {
     const productObservables: Observable<any>[] = [];
     this.cart.forEach((order) => {
@@ -66,6 +70,7 @@ export class CartComponent implements OnInit {
     });
 
     if (productObservables.length > 0) {
+      // Using forkJoin to wait for all product data to be fetched
       forkJoin(productObservables).subscribe((productsData) => {
         let productIndex = 0;
         this.cart.forEach((order) => {
@@ -93,7 +98,8 @@ export class CartComponent implements OnInit {
 
   preloadMediaForProducts(productIds: string[]): void {
     const backendUrl = 'https://localhost:8443/';
-    const defaultImageUrl = 'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png';
+    const defaultImageUrl =
+      'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png';
 
     productIds.forEach((productId) => {
       this.mediaService.getMedia(productId).subscribe(
@@ -120,5 +126,17 @@ export class CartComponent implements OnInit {
 
   getMediaUrl(productId: string): string | undefined {
     return this.productMediaUrls.get(productId);
+  }
+
+  removeFromCart(orderId: string, productId: string): void {
+    this.orderService.deleteProductFromOrder(orderId,productId).subscribe(() => {
+      this.fetchOrdersAndProducts();
+    });
+  }
+
+  addToCart(orderId: string, productId: string): void {
+    this.orderService.addProductToOrder(orderId, productId).subscribe(() => {
+      this.fetchOrdersAndProducts();
+    });
   }
 }
