@@ -11,7 +11,6 @@ import {
   logout,
 } from '../state/auth/auth.actions';
 import { AuthState } from '../state/auth/auth.reducer';
-import { selectAuthState } from '../state/auth/auth.selector';
 import { OrderService } from '../services/order.service';
 import * as CartActions from '../state/cart/cart.actions';
 

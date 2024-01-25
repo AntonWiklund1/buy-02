@@ -1,5 +1,5 @@
 .navBar {
-  background-color: var(--fifth-color);
+  background-color: var(--second-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -7,136 +7,53 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-
-  justify-content: space-between;
+  justify-content: flex-start;
   padding-left: 2rem;
   padding-right: 2rem;
+  padding-top: 4rem;
+  color: var(-);
+  font-size: larger;
+  gap: 3rem;
+  
 }
-.navBarLogo {
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2rem;
-  position: relative;
-  top: 5vh;
+hr {
+  border: none;
+  border-top: 2px solid var(--sixth-color); 
+  margin: 10px 0; 
+  width: 100%; 
 }
-.navBarLogo img {
-  width: 10rem;
-  height: auto;
-  position: relative;
-  left: -2.5rem;
-}
-.navBarlinks {
+.section{
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2rem;
-  position: relative;
-  bottom: 30vh;
+  justify-content: center;
+  gap: 1rem;
 }
-.navBarlinks .link:hover {
+.linkSection{
+  display: flex;
+  cursor: pointer;
+  margin-top: 1rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+}
+.linkSection:hover{
   color: var(--first-color);
-  transform: translateX(0.5rem);
-}
-.navBarlinks .link {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--second-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-.cart{
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-}
-.profileName {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--second-color);
-  text-decoration: none;
-  cursor: pointer;
-  position: relative;
-}
-.linkDiv {
-  display: none;
-}
-.profile {
-  position: relative;
-  bottom: -30vh;
-  border-radius: 4px;
-  width: min-content;
-  text-align: center;
-  cursor: pointer;
-}
-.profile img {
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
-}
-
-.profile:hover {
   transform: scale(1.04);
 }
-.logStatus a {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--second-color);
-  text-decoration: none;
-  cursor: pointer;
+.firstSection{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 5rem;
 }
-
-.logStatus {
-  position: relative;
-  bottom: -30vh;
-}
-.logOutLink {
-  position: relative;
-  margin-bottom: 2rem;
-}
-.spanLink {
-  font-size: 2.2rem;
-  padding: 0.25rem;
-  position: relative;
-  left: -0.6rem;
-  color: var(--second-color);
-  border: 1.5px solid var(--second-color);
-  border-radius: 4px;
-  width: fit-content;
-}
-.visibleIcon {
-  visibility: hidden;
-}
-
-.logInLink {
-  display: none;
-}
-
-.logSpan {
-  display: none;
-  font-size: 1.5rem;
-  padding: 0.25rem;
-  position: relative;
-  left: -0.6rem;
-  color: var(--second-color);
-  border: 1.5px solid var(--second-color);
-  border-radius: 4px;
-  width: fit-content;
-
-}
-.visible {
-  display: block;
-}
-.visibleIcon {
-  display: block;
-}
-.homeLinkIcon {
-  display: none;
-  position: relative;
-  top: -30vh;
+.profileImage {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--sixth-color);
 }
 
 /* styling for phone screen */
@@ -145,45 +62,9 @@
     width: 1.5rem;
     gap: 0rem;
   }
-  .link {
-    display: none;
-  }
-  .logOutLink,
-  .logInLink,
-  .navBarLogo {
-    visibility: hidden;
-  }
-  .navBarlinks .spanLink {
-    visibility: visible;
-  }
-  .linkDiv {
-    display: block;
-    position: relative;
-    top: 5rem;
-  }
-  .visibleIcon {
-    visibility: visible;
-  }
-  .visible {
-    display: none;
-  }
-  .homeLinkIcon {
-    display: block;
-  }
-  .profile span {
-    font-size: 2rem;
-  }
-  .profile {
-    position: relative;
-    left: -1.5rem;
-  }
   .profile img {
     width: 3rem;
     height: 3rem;
-  }
-  .logSpan {
-    display: block;
-    font-size: 2rem;
   }
 }
 .showNavbar {

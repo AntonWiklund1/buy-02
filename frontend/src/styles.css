@@ -2,9 +2,10 @@
 :root{
     --first-color: #E63946;
     --second-color: #f1f1f1;
-    --third-color: #A8DADC;
+    --third-color: #c1ddde;
     --fourth-color: #5394bd;
     --fifth-color: #1D3557;
+    --sixth-color: #8c8c8c;
 }
 body{
     margin: 0;

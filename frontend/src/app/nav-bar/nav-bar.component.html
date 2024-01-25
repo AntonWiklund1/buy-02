@@ -1,59 +1,64 @@
 <div class="navBar">
-    <div class="navBarLogo">
-        <img src="assets/images/logo.png" alt="">
+    <div class="home section">
+        <div class="homeLink linkSection" routerLink="/">
+            <span class="material-symbols-outlined">
+                home
+            </span>
+            <a class="link">Home</a>
+        </div>
     </div>
-    <span class="material-symbols-outlined spanLink homeLinkIcon" routerLink="/">
-        home
-    </span>
-    <div class="navBarlinks">
-        <a routerLink="/productList" class="link">Products</a>
-        <div class="products linkDiv">
-            <span class="material-symbols-outlined spanLink" routerLink="/productList">
+    <!-- basics -->
+    <div class="firstSection section">
+        <div class="productListLink linkSection" routerLink="/productList">
+            <span class="material-symbols-outlined">
                 shopping_bag
             </span>
+            <a class="link">Products</a>
         </div>
-        <!-- Use isAdmin$ Observable with async pipe -->
-        <a routerLink="/productManagement" class="link" *ngIf="isAdmin$ | async">Dashboard</a>
-        <div class="media linkDiv">
-            <span class="material-symbols-outlined spanLink" routerLink="/productManagement">
+        <!-- cart -->
+        <div class="cart linkSection" routerLink="/cart" >
+            <span class="material-symbols-outlined cart" routerLink="/cart">
+                shopping_cart
+            </span>
+            <a class="link">Cart</a>
+        </div>
+    </div>
+    <hr>
+    <!-- Sellers Links -->
+    <div class="secondSection section" *ngIf="isAdmin$ | async">
+
+        <div class="dashboardLink linkSection" routerLink="/productManagement">
+            <span class="material-symbols-outlined" >
                 Dashboard
             </span>
-        </div>
-        <a routerLink="/mediaManagement" class="link" *ngIf="isAdmin$ | async">Media</a>
-        <div class="media linkDiv">
-            <span class="material-symbols-outlined spanLink" routerLink="/mediaManagement">
-                photo_library
-            </span>
+            <a class="link">Dashboard</a>
         </div>
 
-        <!-- profile -->
+        <div class="mediaManagementLink linkSection" routerLink="/mediaManagement">
+            <span class="material-symbols-outlined">
+                photo_library
+            </span>
+            <a class="link">Medias</a>
+        </div>
+    </div>
+    <hr>
+    <!-- profile -->
+    <div class="thirdSection section">
         <div class="profile" routerLink="/profileManagment">
             <div *ngIf="isAdmin$ | async">
-                <img *ngIf="(avatarUrl$ | async) as avatarUrl " [src]="avatarUrl || ''" alt="Profile Picture" >
+                <img *ngIf="(avatarUrl$ | async) as avatarUrl " [src]="avatarUrl || ''" alt="Profile Picture" class="profileImage">
             </div>
 
             <a class="profileName" *ngIf="(isAuthenticated$ | async) && (username$ | async) as username">
                 {{ username.length > 6 ? (username.slice(0, 6) + '...') : username }}
             </a>
         </div>
-
-        <!-- cart -->
-        <div class="cart" routerLink="/cart">
-            <span class="material-symbols-outlined cart" routerLink="/cart">
-                shopping_cart
-            </span>
-        </div>
-        <div class="logStatus">
-            <!-- Use isAuthenticated$ Observable with async pipe -->
-            <a *ngIf="!(isAuthenticated$ | async)" class="logInLink" routerLink="/logIn">Log in/Sign up</a>
-            <span *ngIf="!(isAuthenticated$ | async)" class="material-symbols-outlined logSpan" routerLink="/logIn">
-                login
-            </span>
-            <a *ngIf="isAuthenticated$ | async" (click)="logOut()" class="logOutLink">Log out</a>
-            <span *ngIf="isAuthenticated$ | async" class="material-symbols-outlined logSpan" (click)="logOut()">
+        <hr>
+        <div class="logOutLink linkSection" (click)="logOut()">
+            <span *ngIf="isAuthenticated$ | async" class="material-symbols-outlined" >
                 logout
             </span>
-
+            <a *ngIf="isAuthenticated$ | async" (click)="logOut()" class="logOutLink">Log out</a>
         </div>
     </div>
 </div>
