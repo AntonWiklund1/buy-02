@@ -1,26 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OrderService } from '../services/order.service';
-import { CommonModule } from '@angular/common';
-import { Observable, of, take } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AuthState } from '../state/auth/auth.reducer';
-import * as AuthSelectors from '../state/auth/auth.selector';
+import { CommonModule } from '@angular/common';
+import { take } from 'rxjs/operators';
+
+import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { MediaService } from '../services/media.service';
+import { AuthState } from '../state/auth/auth.reducer';
+import * as AuthSelectors from '../state/auth/auth.selector';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.css',
+  styleUrls: ['./cart.component.css'],
 })
 export class CartComponent implements OnInit {
-  cart: any[] = []; // Assuming you have a type for your order, replace any with that type
+  cart: any[] = []; // Replace 'any' with your order type
   userId$: Observable<string | null>;
-  userId: string | undefined | null;
-  productMediaUrls: Map<string, string> = new Map(); // Map to store media URLs
+  userId: string | null = null;
+  productMediaUrls: Map<string, string> = new Map();
+  totalPrice = 0;
 
   constructor(
     private store: Store<{ auth: AuthState }>,
@@ -35,40 +38,62 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.userId$.pipe(take(1)).subscribe((id) => {
       this.userId = id;
-      // Fetch orders and products after the userId is set
       if (this.userId) {
         this.fetchOrdersAndProducts();
       }
     });
   }
 
+  // this method is used to fetch all orders and products for the current user
   fetchOrdersAndProducts(): void {
-    this.orderService
-      .getOrdersByUserId(this.userId!)
-      .subscribe((ordersData) => {
-        this.cart = ordersData.filter((order) => order.isInCart === true);
-        // Flatten productIds from all orders into a unique set to avoid duplicate requests
-        const productIds = [
-          ...new Set(this.cart.flatMap((order) => order.productIds)),
-        ];
-        this.preloadMediaForProducts(productIds);
+    this.orderService.getOrdersByUserId(this.userId!).subscribe((ordersData) => {
+      this.cart = ordersData.filter((order) => order.isInCart);
+      const productIds = [...new Set(this.cart.flatMap((order) => order.productIds))];
+      this.preloadMediaForProducts(productIds);
+      this.populateProductsAndCalculateTotal();
+    });
+  }
+
+  // this method is used to populate the products array in each order
+  populateProductsAndCalculateTotal(): void {
+    const productObservables: Observable<any>[] = [];
+    this.cart.forEach((order) => {
+      order.products = [];
+      order.productIds.forEach((productId: string) => {
+        const productObservable = this.productService.getProductById(productId);
+        productObservables.push(productObservable);
+      });
+    });
+
+    if (productObservables.length > 0) {
+      forkJoin(productObservables).subscribe((productsData) => {
+        let productIndex = 0;
         this.cart.forEach((order) => {
-          order.products = []; // Add a products array to each order
-          order.productIds.forEach((productId: string) => {
-            this.productService
-              .getProductById(productId)
-              .subscribe((productData) => {
-                order.products.push(productData); // Add product data to the order
-              });
+          order.products = [];
+          order.productIds.forEach(() => {
+            order.products.push(productsData[productIndex]);
+            productIndex++;
           });
         });
+
+        this.totalPrice = this.calculateTotalPrice();
       });
+    }
+  }
+
+  calculateTotalPrice(): number {
+    let totalPrice = 0;
+    this.cart.forEach((order) => {
+      order.products.forEach((product: any) => {
+        totalPrice += product.price;
+      });
+    });
+    return totalPrice;
   }
 
   preloadMediaForProducts(productIds: string[]): void {
-    const backendUrl = 'https://localhost:8443/'; // Adjust this URL to where your backend serves media files
-    const defaultImageUrl =
-      'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png';
+    const backendUrl = 'https://localhost:8443/';
+    const defaultImageUrl = 'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png';
 
     productIds.forEach((productId) => {
       this.mediaService.getMedia(productId).subscribe(
@@ -79,17 +104,14 @@ export class CartComponent implements OnInit {
               const imagePath = `${backendUrl}${mediaObject.imagePath}`;
               this.productMediaUrls.set(productId, imagePath);
             } else {
-              // If there is a mediaObject but no imagePath, set to default image
               this.productMediaUrls.set(productId, defaultImageUrl);
             }
           } else {
-            // If there is no media data array, set to default image
             this.productMediaUrls.set(productId, defaultImageUrl);
           }
         },
         (error) => {
           console.error(error);
-          // If there is an error fetching the media, set to default image
           this.productMediaUrls.set(productId, defaultImageUrl);
         }
       );
@@ -97,7 +119,6 @@ export class CartComponent implements OnInit {
   }
 
   getMediaUrl(productId: string): string | undefined {
-    console.log(this.productMediaUrls.get(productId));
     return this.productMediaUrls.get(productId);
   }
 }
