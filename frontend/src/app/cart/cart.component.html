@@ -3,7 +3,8 @@
 
   <div *ngIf="cart.length > 0" class="orders-list">
     <div class="cart">
-      <div *ngFor="let order of cart" class="order">
+        <div *ngFor="let order of cart" class="order">
+        <p>Order id: {{order.id}}</p>
         <div *ngFor="let product of order.products" class="orderCard">
           <div class="orderInfo">
             <img
@@ -24,6 +25,7 @@
         </div>
       </div>
       <div class="orderActions">
+        <p>Order Summary:</p>
         <p>Total 55€</p>
         <button class="Checkout">Checkout</button>
       </div>
