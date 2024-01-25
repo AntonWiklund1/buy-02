@@ -60,4 +60,16 @@ public class OrderController {
         orderService.buyProducts(orderId);
         return new ResponseEntity<>("Products bought successfully: " + orderId, HttpStatus.OK);
     }
+
+    @PostMapping("/{orderId}/{productId}")
+    public ResponseEntity<String> addProductToOrder(@PathVariable String orderId, @PathVariable String productId) {
+        orderService.addProductToOrder(orderId, productId);
+        return new ResponseEntity<>("Product added successfully: " + productId, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{orderId}/{productId}")
+    public ResponseEntity<String> removeProductFromOrder(@PathVariable String orderId, @PathVariable String productId) {
+        orderService.removeProductFromOrder(orderId, productId);
+        return new ResponseEntity<>("Product removed successfully: " + productId, HttpStatus.OK);
+    }
 }

@@ -72,4 +72,24 @@ public class OrderService {
         order.setUpdatedAt(new Date());
         orderRepository.save(order);
     }
+
+    public void addProductToOrder(String orderId, String productId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return;
+        }
+        order.getProductIds().add(productId);
+        order.setUpdatedAt(new Date());
+        orderRepository.save(order);
+    }
+
+    public void removeProductFromOrder(String orderId, String productId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return;
+        }
+        order.getProductIds().remove(productId);
+        order.setUpdatedAt(new Date());
+        orderRepository.save(order);
+    }
 }
