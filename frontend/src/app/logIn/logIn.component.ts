@@ -12,6 +12,8 @@ import {
 } from '../state/auth/auth.actions';
 import { AuthState } from '../state/auth/auth.reducer';
 import { selectAuthState } from '../state/auth/auth.selector';
+import { OrderService } from '../services/order.service';
+import * as CartActions from '../state/cart/cart.actions';
 
 @Component({
   selector: 'app-logIn',
@@ -35,8 +37,9 @@ export class LogInComponent {
     private userService: UserService,
     private authService: AuthService,
     private mediaService: MediaService,
+    private orderService: OrderService,
     private store: Store<{ auth: AuthState }>
-  ) { }
+  ) {}
 
   showEmail() {
     return this.signUp;
@@ -102,53 +105,42 @@ export class LogInComponent {
 
           // Call the userService to create a new user
           // Make sure to include the JWT token in your request if needed
-          this.userService
-            .createUser(newUser, bearer || '')
-            .subscribe({
-              next: (response: any) => {
+          this.userService.createUser(newUser, bearer || '').subscribe({
+            next: (response: any) => {
+              this.token = bearer;
+              this.userId = newUser.id;
 
+              const fileInput = document.getElementById(
+                'mediaUpload'
+              ) as HTMLInputElement;
+              if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                const file = fileInput.files[0]; // Access the first file in the files list
 
-                this.token = bearer;
-                this.userId = newUser.id;
-
-                const fileInput = document.getElementById(
-                  'mediaUpload'
-                ) as HTMLInputElement;
-                if (
-                  fileInput &&
-                  fileInput.files &&
-                  fileInput.files.length > 0
-                ) {
-                  const file = fileInput.files[0]; // Access the first file in the files list
-
-
-                  this.mediaService
-                    .uploadAvatar(file, this.userId, bearer)
-                    .subscribe(
-                      () => {
-                        console.log('Profile picture updated successfully');
-                      },
-                      (error: { status: number }) => {
-
-                        if (error.status === 413) {
-                          this.errorMessage =
-                            'The file is too large to upload.';
-                        } else if (error.status === 415) {
-                          this.errorMessage = 'The file type is not supported.';
-                        }
-                        console.error('Update profile picture error:', error);
+                this.mediaService
+                  .uploadAvatar(file, this.userId, bearer)
+                  .subscribe(
+                    () => {
+                      console.log('Profile picture updated successfully');
+                    },
+                    (error: { status: number }) => {
+                      if (error.status === 413) {
+                        this.errorMessage = 'The file is too large to upload.';
+                      } else if (error.status === 415) {
+                        this.errorMessage = 'The file type is not supported.';
                       }
-                    );
-                }
-                // Handle response upon successful user creation
-                // Navigate to the desired route upon success
-                this.router.navigate(['/cart']);
-              },
-              error: (userError: { error: string }) => {
-                this.errorMessage = userError.error;
-                console.error('Error creating user', userError);
-              },
-            });
+                      console.error('Update profile picture error:', error);
+                    }
+                  );
+              }
+              // Handle response upon successful user creation
+              // Navigate to the desired route upon success
+              this.router.navigate(['/home']);
+            },
+            error: (userError: { error: string }) => {
+              this.errorMessage = userError.error;
+              console.error('Error creating user', userError);
+            },
+          });
         },
         error: (error: any) => {
           console.error('Error obtaining JWT token', error);
@@ -177,9 +169,11 @@ export class LogInComponent {
 
         // Call getRole and pass a callback function for navigation
         this.getRole(response.userId, response.token, () => {
-          this.router.navigate(['/cart']); // Navigate after role is set
+          this.fetchAndStoreOrderId(response.userId, () => {
+            this.router.navigate(['/home']); // Navigate after orderId is set
+          });
+  
         });
-
       },
       error: (error: any) => {
         // Dispatch a loginFailure action
@@ -195,12 +189,14 @@ export class LogInComponent {
         this.userRole = userProfile.role;
 
         // Dispatch loginSuccess here, after the role has been retrieved
-        this.store.dispatch(loginSuccess({
-          userId: userId,
-          username: this.username,
-          token: token,
-          role: this.userRole
-        }));
+        this.store.dispatch(
+          loginSuccess({
+            userId: userId,
+            username: this.username,
+            token: token,
+            role: this.userRole,
+          })
+        );
 
         onRoleRetrieved(); // Call the callback function to navigate
       },
@@ -210,7 +206,6 @@ export class LogInComponent {
       },
     });
   }
-
 
   // File upload
   selectedFileName: string = '';
@@ -226,5 +221,23 @@ export class LogInComponent {
     if (fileInput) {
       fileInput.click();
     }
+  }
+
+  fetchAndStoreOrderId(userId: string, onOrderIdRetrieved: () => void) {
+    this.orderService.getOrdersByUserId(userId).subscribe({
+      next: (ordersData) => {
+        const cartOrder = ordersData.find((order) => order.isInCart);
+        if (cartOrder) {
+          // Dispatch an action to store the orderId
+          this.store.dispatch(
+            CartActions.storeOrderId({ orderId: cartOrder.id })
+          );
+        }
+        onOrderIdRetrieved(); // Call the callback to continue after orderId is set
+      },
+      error: (error) => {
+        console.error('Error fetching cart order', error);
+      },
+    });
   }
 }

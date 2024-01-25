@@ -27,6 +27,8 @@ import * as CartActions from './state/cart/cart.actions';
 import { OrderService } from './services/order.service';
 import { take } from 'rxjs';
 
+
+//stores the order id in the store if the user has a cart order
 export function initializeApp(orderService: OrderService, store: Store<AppState>) {
   return (): Promise<any> => {
     return new Promise((resolve, reject) => {
