@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,12 +45,14 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<String> deleteOrder(@PathVariable String id) {
         orderService.deleteOrder(id);
         return new ResponseEntity<>("Order deleted successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<String> deleteOrdersByUserId(@PathVariable String userId) {
         orderService.deleteOrdersByUserId(userId);
         return new ResponseEntity<>("Orders deleted successfully", HttpStatus.OK);
