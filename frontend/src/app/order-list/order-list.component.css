@@ -14,27 +14,33 @@
 .orderCard {
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
     background-color: #ffffff;
     border-radius: 10px;
     border: 1px solid rgb(204, 204, 204);
     padding: 1rem;
     gap: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
-
+.orderDetails{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+}
 .status {
     font-weight: bold;
 }
-
 .products {
-    position: absolute;
-    top: 5rem;
+top: 5rem;
     display: flex;
     flex-direction: column;
     width: calc(100vw - 20rem);
+    gap: 1rem;
 }
-
 .productCard {
     display: flex;
     flex-direction: row;
@@ -42,19 +48,28 @@
     align-items: center;
     gap: 1rem;
     background-color: #ffffff;
-    flex: 0 0 calc(15% - 1rem);
-    min-width: 15rem;
     height: max-content;
+    width: calc(100% - 4rem);
     border-radius: 5px;
     padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    margin: 1rem 0;
     border: 1px solid rgb(204, 204, 204);
+}
+.productImage{
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 5px;
 }
 .expand{
     position: absolute;
     right: 1rem;
     top: 2rem;
     cursor: pointer;
+    z-index: 5;
+}
+.extendOrder{
+    height: auto; /* This will allow the card to expand based on content */
+    overflow: visible;
 }
