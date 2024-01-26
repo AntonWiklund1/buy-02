@@ -24,52 +24,57 @@
     overflow: hidden;
     transition: all 0.3s ease;
 }
-.orderDetails{
+
+.orderDetails {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     gap: 2rem;
 }
+
 .status {
     font-weight: bold;
 }
+
 .products {
-top: 5rem;
+    top: 5rem;
     display: flex;
     flex-direction: column;
     width: calc(100vw - 20rem);
-    gap: 1rem;
 }
+
 .productCard {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     gap: 1rem;
-    background-color: #ffffff;
     height: max-content;
     width: calc(100% - 4rem);
-    border-radius: 5px;
     padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    border: 1px solid rgb(204, 204, 204);
+    border-bottom: 1px dashed rgb(204, 204, 204);
+    border-top: 1px dashed rgb(204, 204, 204);
 }
-.productImage{
+
+.productImage {
     width: 5rem;
     height: 5rem;
     object-fit: cover;
     border-radius: 5px;
 }
-.expand{
+
+.expand {
     position: absolute;
     right: 1rem;
     top: 2rem;
     cursor: pointer;
     z-index: 5;
 }
-.extendOrder{
-    height: auto; /* This will allow the card to expand based on content */
+
+.extendOrder {
+    height: auto;
+    /* This will allow the card to expand based on content */
     overflow: visible;
 }
