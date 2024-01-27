@@ -30,6 +30,9 @@ export class ProductListComponent {
   orderId$: Observable<string | null>;
   orderId: string | null = null; // You will use this in addToCart
 
+  userId$: Observable<string | null>;
+  userId: string | null = null;
+
   constructor(
     private store: Store<AppState>, // Add cart state if it's not already included
     private productService: ProductService,
@@ -43,6 +46,8 @@ export class ProductListComponent {
       .select(AuthSelectors.selectToken)
       .pipe(take(1))
       .subscribe((token) => (this.token = token));
+
+    this.userId$ = this.store.select(AuthSelectors.selectUserId);
   }
 
   ngOnInit(): void {
@@ -57,6 +62,10 @@ export class ProductListComponent {
     this.loadProducts();
     this.orderId$.pipe(take(1)).subscribe((currentOrderId) => {
       this.orderId = currentOrderId; // Store the orderId for later use
+    });
+
+    this.userId$.pipe(take(1)).subscribe((id) => {
+      this.userId = id;
     });
 
   }
@@ -144,15 +153,16 @@ export class ProductListComponent {
     // Check if orderId is available
     console.log('Add to cart');
     console.log(this.orderId);
-    if (!this.orderId) {
-      console.error('No order ID available');
-      // Here you might want to handle the case where there is no order ID
-      // For example, by creating a new order
+
+    // Check if userId is available
+    if (!this.userId) {
+      console.error('No user ID available');
+      // Here you might want to handle the case where there is no user ID
+      // For example, by showing a message to the user
       return;
     }
-
     // Use the orderId to add a product to the order
-    this.orderService.addProductToOrder(this.orderId, productId).subscribe({
+    this.orderService.addProductToCart(this.userId, productId).subscribe({
       next: () => {
         // Handle successful addition of the product to the cart
         console.log(`Product ${productId} added to order ${this.orderId}`);

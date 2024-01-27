@@ -66,6 +66,9 @@
 .productActions span {
   cursor: pointer;
 }
+.payOnDelivery{
+  margin-bottom: 1rem;
+}
 .Checkout {
   align-items: center;
   background-color: var(--fifth-color);

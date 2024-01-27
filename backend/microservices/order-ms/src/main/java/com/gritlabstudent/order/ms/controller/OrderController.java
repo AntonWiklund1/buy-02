@@ -70,6 +70,13 @@ public class OrderController {
         return new ResponseEntity<>("Product added successfully: " + productId, HttpStatus.OK);
     }
 
+    @PostMapping("/{userId}/cart/{productId}")
+    public ResponseEntity<String> addProductToCart(@PathVariable String userId, @PathVariable String productId) {
+        orderService.addProductToCart(userId, productId);
+        return new ResponseEntity<>("Product added successfully to the cart for user: " + userId, HttpStatus.OK);
+    }
+
+
     @DeleteMapping("/{orderId}/{productId}")
     public ResponseEntity<String> removeProductFromOrder(@PathVariable String orderId, @PathVariable String productId) {
         orderService.removeProductFromOrder(orderId, productId);

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +70,7 @@ public class OrderService {
         if (order == null) {
             return;
         }
+        order.setIsInCart(false);
         order.setStatus(Status.PENDING);
         order.setUpdatedAt(new Date());
         orderRepository.save(order);
@@ -76,7 +79,7 @@ public class OrderService {
     public void addProductToOrder(String orderId, String productId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order == null) {
-            return;
+
         }
         order.getProductIds().add(productId);
         order.setUpdatedAt(new Date());
@@ -92,4 +95,30 @@ public class OrderService {
         order.setUpdatedAt(new Date());
         orderRepository.save(order);
     }
+
+
+    //Add product to cart and create a new cart if one does not exist
+    public void addProductToCart(String userId, String productId) {
+        // Find the existing order which acts as the cart for this user
+        Order cartOrder = orderRepository.findByUserIdAndIsInCartTrue(userId);
+
+        if (cartOrder != null) {
+            // Directly add the new product to the existing cart
+            cartOrder.getProductIds().add(productId);
+            cartOrder.setUpdatedAt(new Date());
+            orderRepository.save(cartOrder);
+        } else {
+            // Create a new order as a cart and add the product to it
+            Order newOrder = Order.builder()
+                    .userId(userId)
+                    .productIds(new ArrayList<>(Collections.singletonList(productId)))
+                    .createdAt(new Date())
+                    .updatedAt(new Date())
+                    .status(Status.CART) // Assuming Status.CART represents a cart state
+                    .isInCart(true)
+                    .build();
+            orderRepository.save(newOrder);
+        }
+    }
+
 }
