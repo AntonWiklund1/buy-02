@@ -150,25 +150,20 @@ export class ProductListComponent {
   }
 
   addToCart(productId: string): void {
-    // Check if orderId is available
     console.log('Add to cart');
     console.log(this.orderId);
 
-    // Check if userId is available
     if (!this.userId) {
       console.error('No user ID available');
-      // Here you might want to handle the case where there is no user ID
-      // For example, by showing a message to the user
+      alert('Please log in to add products to your cart');
       return;
     }
-    // Use the orderId to add a product to the order
+
     this.orderService.addProductToCart(this.userId, productId).subscribe({
       next: () => {
-        // Handle successful addition of the product to the cart
         console.log(`Product ${productId} added to order ${this.orderId}`);
       },
       error: (error) => {
-        // Handle errors, for example, show a message to the user
         console.error(`Error adding product to order: ${error}`);
       }
     });
