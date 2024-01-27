@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+
 import java.util.Date;
 import java.util.List;
 
@@ -41,4 +43,6 @@ public class Order {
     private Status status;
 
     private Boolean isInCart;
+
+    private BigDecimal total;
 }

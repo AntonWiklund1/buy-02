@@ -1,6 +1,7 @@
 package com.gritlabstudent.order.ms.services;
 
 import com.gritlabstudent.order.ms.models.Order;
+import com.gritlabstudent.order.ms.models.ProductDTO;
 import com.gritlabstudent.order.ms.models.Status;
 import com.gritlabstudent.order.ms.producers.OrderValidationProducer;
 import com.gritlabstudent.order.ms.repositories.OrderRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,12 +20,13 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderValidationProducer orderValidationProducer;
+    private final ProductService productService; // Correctly autowired
 
+    // Include ProductService in the constructor parameters
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderValidationProducer orderValidationProducer) {
+    public OrderService(OrderRepository orderRepository, ProductService productService) {
         this.orderRepository = orderRepository;
-        this.orderValidationProducer = orderValidationProducer;
+        this.productService = productService; // Now correctly set
     }
 
 
@@ -65,16 +68,7 @@ public class OrderService {
         orderRepository.deleteByUserId(userId);
     }
 
-    public void buyProducts(String orderId) {
-        Order order = orderRepository.findById(orderId).orElse(null);
-        if (order == null) {
-            return;
-        }
-        order.setIsInCart(false);
-        order.setStatus(Status.PENDING);
-        order.setUpdatedAt(new Date());
-        orderRepository.save(order);
-    }
+
 
     public void addProductToOrder(String orderId, String productId) {
         Order order = orderRepository.findById(orderId).orElse(null);
@@ -103,7 +97,6 @@ public class OrderService {
         Order cartOrder = orderRepository.findByUserIdAndIsInCartTrue(userId);
 
         if (cartOrder != null) {
-            // Directly add the new product to the existing cart
             cartOrder.getProductIds().add(productId);
             cartOrder.setUpdatedAt(new Date());
             orderRepository.save(cartOrder);
@@ -120,5 +113,41 @@ public class OrderService {
             orderRepository.save(newOrder);
         }
     }
+    public void buyProducts(String orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return;
+        }
+        order.setIsInCart(false);
+        order.setStatus(Status.PENDING);
+        order.setUpdatedAt(new Date());
+        orderRepository.save(order);
+
+        BigDecimal total = calculateOrderTotal(orderId);
+        System.out.println("Order total calculated: " + total);
+
+    }
+    public BigDecimal calculateOrderTotal(String orderId) {
+        // Retrieve the order by ID
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // Sum the total cost of the products in the order
+        BigDecimal total = BigDecimal.ZERO;
+        for (String productId : order.getProductIds()) {
+            // Fetch the product details, such as price, from the product service
+            ProductDTO product = productService.getProductById(productId);
+
+            // Calculate the total cost for the product
+            BigDecimal productTotal = product.getPrice(); // Assuming each product is only one quantity
+            total = total.add(productTotal);
+        }
+
+        // Update the order with the total cost
+        order.setTotal(total);
+        orderRepository.save(order);
+
+        return total;
+    }
+
 
 }
