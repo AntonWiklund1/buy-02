@@ -176,4 +176,14 @@ public class UserService {
     }
 
 
+    public void deleteUserFavoriteProduct(String id, String productId) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getFavoriteProducts() != null) {
+                user.getFavoriteProducts().remove(productId);
+                userRepository.save(user);
+            }
+        }
+    }
 }
