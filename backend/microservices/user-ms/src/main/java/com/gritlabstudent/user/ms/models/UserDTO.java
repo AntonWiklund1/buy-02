@@ -16,5 +16,5 @@ public class UserDTO {
     private String role;
     private String avatarImagePath;
     private BigDecimal totalAmountSpent;
-    private List<String> favoriteProduct;
+    private List<String> favoriteProducts;
 }

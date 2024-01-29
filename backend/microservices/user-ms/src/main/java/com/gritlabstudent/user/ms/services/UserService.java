@@ -43,6 +43,7 @@ public class UserService {
         userDTO.setRole(user.getRole());
         userDTO.setAvatarImagePath(user.getAvatarImagePath());
         userDTO.setTotalAmountSpent(user.getTotalAmountSpent());
+        userDTO.setFavoriteProducts(user.getFavoriteProducts());
         return userDTO;
     }
 
