@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -158,4 +159,20 @@ public class UserService {
             userRepository.save(user);
         }
     }
+
+    public void updateUserFavoriteProduct(String id, String productId) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getFavoriteProducts() == null) {
+                user.setFavoriteProducts(new ArrayList<>());
+            }
+            if (!user.getFavoriteProducts().contains(productId)) {
+                user.getFavoriteProducts().add(productId);
+                userRepository.save(user);
+            }
+        }
+    }
+
+
 }

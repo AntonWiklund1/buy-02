@@ -78,7 +78,7 @@ public class OrderService {
     public void addProductToOrder(String orderId, String productId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order == null) {
-
+            return;
         }
         order.getProductIds().add(productId);
         order.setUpdatedAt(new Date());

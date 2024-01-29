@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 @RunWith(SpringRunner.class)
 public class UserControllerTest {
@@ -41,7 +42,7 @@ public class UserControllerTest {
     @Test
     public void test_CreateUser_ReturnsCreated() throws Exception {
         // Given
-        UserDTO userDTO = new UserDTO("1", "John Doe", "ROLE_CLIENT", "avatar.jpg", BigDecimal.ONE);
+        UserDTO userDTO = new UserDTO("1", "John Doe", "ROLE_CLIENT", "avatar.jpg", BigDecimal.ONE, Collections.singletonList("p2"));
         when(userService.createUser(any(User.class))).thenReturn(userDTO);
 
         User inputUser = new User();

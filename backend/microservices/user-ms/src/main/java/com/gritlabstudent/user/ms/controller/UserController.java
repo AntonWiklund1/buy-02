@@ -69,7 +69,6 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    // Read User by Id
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_CLIENT') or hasRole('ROLE_SELLER')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
@@ -190,5 +189,19 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    //update favorite product
+    @PostMapping("/{id}/updateFavoriteProduct/{productId}")
+    public ResponseEntity<?> updateUserFavoriteProduct(@PathVariable String id, @PathVariable String productId) {
+        try {
+            userService.updateUserFavoriteProduct(id, productId);
+            return new ResponseEntity<>("Update User with id " + id, HttpStatus.OK);
+        } catch (ConstraintViolationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
