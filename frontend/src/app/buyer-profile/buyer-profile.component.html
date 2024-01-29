@@ -1,0 +1,18 @@
+<div class="buyerProfielContainer">
+    <h1>Buying profile</h1>
+    <div *ngIf="user">
+        <h2>Favorite Products</h2>
+        <div class="favoriteProducts">
+
+            <div *ngFor="let product of favoriteProductsDetails" class="favoriteProductCard">
+                <span>{{ product.name }}</span>
+                <span>{{ product.price }}€</span>
+                <span>{{ product.description.slice(0, 20) }}</span>
+                <span class="material-symbols-outlined" (click)="removeFromFavorite(product.id)">remove</span>
+            </div>
+        </div>
+
+        <h2>Total amount spent</h2>
+        <p>{{ user.totalAmountSpent }}€</p>
+    </div>
+</div>

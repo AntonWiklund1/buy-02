@@ -168,5 +168,21 @@ export class ProductListComponent {
       }
     });
   }
+  addtoFavorite(productId: string): void {
+    
+    if (!this.userId) {
+      console.error('No user ID available');
+      alert('Please log in to add products to your favorite');
+      return;
+    }
 
+    this.productService.addProductToFavorite(this.userId, productId).subscribe({
+      next: () => {
+        console.log(`Product ${productId} added to favorite ${this.orderId}`);
+      },
+      error: (error) => {
+        console.error(`Error adding product to favorite: ${error}`);
+      }
+    });
+  }
 }

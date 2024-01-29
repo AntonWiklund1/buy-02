@@ -205,7 +205,6 @@ public class UserController {
 
     //delete favorite product
     @DeleteMapping("/{id}/deleteFavoriteProduct/{productId}")
-    @PreAuthorize("hasRole('ROLE_CLIENT') or hasRole('ROLE_SELLER')")
     public ResponseEntity<?> deleteUserFavoriteProduct(@PathVariable String id, @PathVariable String productId) {
         try {
             userService.deleteUserFavoriteProduct(id, productId);

@@ -1,0 +1,29 @@
+.buyerProfielContainer {
+    margin-left: 15rem;
+}
+
+.favoriteProducts {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+.favoriteProductCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background-color: #ffffff;
+    flex: 0 0 calc(15% - 1rem);
+    /* Will not grow, will not shrink, with the width adjusted for gap */
+    min-width: 15rem;
+    height: max-content;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    margin: 1rem 0;
+    border: 1px solid rgb(204, 204, 204);
+}
