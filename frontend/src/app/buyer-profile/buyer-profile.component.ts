@@ -6,6 +6,7 @@ import { Observable, combineLatest, take } from 'rxjs';
 import { AppState } from '../state/app.state';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../services/product.service';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-buyer-profile',
@@ -26,6 +27,7 @@ export class BuyerProfileComponent implements OnInit{
     private store: Store<AppState>,
     private userService: UserService,
     private productService: ProductService,
+    private orderService: OrderService
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
     this.token$ = this.store.select(AuthSelectors.selectToken);
@@ -72,6 +74,15 @@ export class BuyerProfileComponent implements OnInit{
     }
     this.productService.removeFromFavorites(this.userId, productId).subscribe(() => {
       this.favoriteProductsDetails = this.favoriteProductsDetails.filter(product => product.id !== productId);
+    });
+  }
+
+  addToCart(productId: string): void {
+    if (!this.userId) {
+      return;
+    }
+    this.orderService.addProductToCart(this.userId, productId).subscribe(() => {
+      console.log("Product added to cart");
     });
   }
 }

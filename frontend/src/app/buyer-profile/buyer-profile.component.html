@@ -5,10 +5,11 @@
         <div class="favoriteProducts">
 
             <div *ngFor="let product of favoriteProductsDetails" class="favoriteProductCard">
-                <span>{{ product.name }}</span>
-                <span>{{ product.price }}€</span>
-                <span>{{ product.description.slice(0, 20) }}</span>
-                <span class="material-symbols-outlined" (click)="removeFromFavorite(product.id)">remove</span>
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}€</p>
+                <p>{{ product.description.slice(0, 20) }}</p>
+                <span class="material-symbols-outlined productAction" (click)="removeFromFavorite(product.id)">remove</span>
+                <span class="material-symbols-outlined productAction" (click)="addToCart(product.id)"> add </span>
             </div>
         </div>
 
