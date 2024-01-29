@@ -13,6 +13,9 @@ import { Observable } from 'rxjs';
 import { CartState } from '../state/cart/cart.reducer';
 import { AppState } from '../state/app.state';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
 
 @Component({
   selector: 'app-product-list',
@@ -38,6 +41,8 @@ export class ProductListComponent {
     private productService: ProductService,
     private MediaService: MediaService,
     private orderService: OrderService,
+    private snackBar: MatSnackBar 
+
 
   ) {
     this.orderId$ = this.store.select(selectOrderId);
@@ -161,7 +166,7 @@ export class ProductListComponent {
 
     this.orderService.addProductToCart(this.userId, productId).subscribe({
       next: () => {
-        console.log(`Product ${productId} added to order ${this.orderId}`);
+        this.showNotification('Product added to cart');
       },
       error: (error) => {
         console.error(`Error adding product to order: ${error}`);
@@ -178,11 +183,20 @@ export class ProductListComponent {
 
     this.productService.addProductToFavorite(this.userId, productId).subscribe({
       next: () => {
-        console.log(`Product ${productId} added to favorite ${this.orderId}`);
+        this.showNotification('Product added to favorite');
       },
       error: (error) => {
         console.error(`Error adding product to favorite: ${error}`);
       }
     });
+  }
+
+  showNotification(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      panelClass: 'custom-snackbar',
+      duration: 30000,
+      verticalPosition: 'top', // This positions the snackbar at the top of the screen
+      horizontalPosition: 'center', // This centers the snackbar horizontally
+    });    
   }
 }

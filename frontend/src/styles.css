@@ -1,4 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+@import "src/app/snackbar-styles.css";
+
 :root{
     --first-color: #E63946;
     --second-color: #f1f1f1;
@@ -15,4 +16,4 @@ body{
     background-color: #FFFFFF;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

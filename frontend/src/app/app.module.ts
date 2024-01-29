@@ -27,6 +27,8 @@ import * as CartActions from './state/cart/cart.actions';
 import { OrderService } from './services/order.service';
 import { take } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 
 //stores the order id in the store if the user has a cart order
@@ -80,6 +82,7 @@ export function initializeApp(orderService: OrderService, store: Store<AppState>
       logOnly: environment.production,
     }),
     BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [
     {

@@ -7,6 +7,8 @@ import { AppState } from '../state/app.state';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../services/product.service';
 import { OrderService } from '../services/order.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-buyer-profile',
@@ -27,7 +29,8 @@ export class BuyerProfileComponent implements OnInit{
     private store: Store<AppState>,
     private userService: UserService,
     private productService: ProductService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private snackBar: MatSnackBar 
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
     this.token$ = this.store.select(AuthSelectors.selectToken);
@@ -74,6 +77,7 @@ export class BuyerProfileComponent implements OnInit{
     }
     this.productService.removeFromFavorites(this.userId, productId).subscribe(() => {
       this.favoriteProductsDetails = this.favoriteProductsDetails.filter(product => product.id !== productId);
+      this.showNotification('Product removed from favorites successfully');
     });
   }
 
@@ -83,6 +87,15 @@ export class BuyerProfileComponent implements OnInit{
     }
     this.orderService.addProductToCart(this.userId, productId).subscribe(() => {
       console.log("Product added to cart");
+      this.showNotification('Product added to cart successfully');
     });
   }
+
+
+  showNotification(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, 
+    });
+  }
+  
 }
