@@ -26,6 +26,7 @@ import { selectUserId } from './state/auth/auth.selector';
 import * as CartActions from './state/cart/cart.actions';
 import { OrderService } from './services/order.service';
 import { take } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 //stores the order id in the store if the user has a cart order
@@ -78,6 +79,7 @@ export function initializeApp(orderService: OrderService, store: Store<AppState>
       maxAge: 25,
       logOnly: environment.production,
     }),
+    BrowserAnimationsModule,
   ],
   providers: [
     {
