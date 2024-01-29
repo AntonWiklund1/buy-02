@@ -20,6 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.math.BigDecimal;
+
 @RunWith(SpringRunner.class)
 public class UserControllerTest {
 
@@ -39,7 +41,7 @@ public class UserControllerTest {
     @Test
     public void test_CreateUser_ReturnsCreated() throws Exception {
         // Given
-        UserDTO userDTO = new UserDTO("1", "John Doe", "ROLE_CLIENT", "avatar.jpg");
+        UserDTO userDTO = new UserDTO("1", "John Doe", "ROLE_CLIENT", "avatar.jpg", BigDecimal.ONE);
         when(userService.createUser(any(User.class))).thenReturn(userDTO);
 
         User inputUser = new User();

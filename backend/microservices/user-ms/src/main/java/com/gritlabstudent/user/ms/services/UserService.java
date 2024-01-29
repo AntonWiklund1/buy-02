@@ -41,7 +41,7 @@ public class UserService {
         userDTO.setName(user.getName());
         userDTO.setRole(user.getRole());
         userDTO.setAvatarImagePath(user.getAvatarImagePath());
-        System.out.println("userDTO fiudshgiufhd: " + userDTO);
+        userDTO.setTotalAmountSpent(user.getTotalAmountSpent());
         return userDTO;
     }
 
