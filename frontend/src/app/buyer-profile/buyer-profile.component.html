@@ -8,12 +8,20 @@
                 <p>{{ product.name }}</p>
                 <p>{{ product.price }}€</p>
                 <p>{{ product.description.slice(0, 20) }}</p>
-                <span class="material-symbols-outlined productAction" (click)="removeFromFavorite(product.id)">remove</span>
-                <span class="material-symbols-outlined productAction" (click)="addToCart(product.id)"> add_shopping_cart </span>
+                <span class="material-symbols-outlined productAction"
+                    (click)="removeFromFavorite(product.id)">remove</span>
+                <span class="material-symbols-outlined productAction" (click)="addToCart(product.id)"> add_shopping_cart
+                </span>
             </div>
         </div>
 
         <h2>Total amount spent</h2>
         <p>{{ user.totalAmountSpent }}€</p>
+
+        <h2>Most bought product</h2>
+        <div *ngIf="mostBoughtProductDetails">
+            <p>{{mostBoughtProductDetails.name}}</p>
+        </div>
     </div>
+
 </div>

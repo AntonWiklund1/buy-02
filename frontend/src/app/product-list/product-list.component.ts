@@ -38,7 +38,7 @@ export class ProductListComponent {
 
   constructor(
     private store: Store<AppState>, // Add cart state if it's not already included
-    private productService: ProductService,
+    public productService: ProductService,
     private MediaService: MediaService,
     private orderService: OrderService,
     private snackBar: MatSnackBar 

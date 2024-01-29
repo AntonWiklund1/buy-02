@@ -17,20 +17,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './buyer-profile.component.html',
   styleUrl: './buyer-profile.component.css'
 })
-export class BuyerProfileComponent implements OnInit{
+export class BuyerProfileComponent implements OnInit {
   userId: string | null | undefined;
   userId$: Observable<string | null>;
   token: string | null | undefined;
   token$: Observable<string | null>;
   favoriteProductsDetails: any[] = []; // Replace 'any' with your product type
-
+  orders: any[] = []; // Replace 'any' with your order type
   user: any;
+  productIds: string[] = [];
+  mostBoughtProduct = "";
+  mostBoughtProductDetails: any;
   constructor(
     private store: Store<AppState>,
     private userService: UserService,
     private productService: ProductService,
     private orderService: OrderService,
-    private snackBar: MatSnackBar 
+    private snackBar: MatSnackBar
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
     this.token$ = this.store.select(AuthSelectors.selectToken);
@@ -47,8 +50,9 @@ export class BuyerProfileComponent implements OnInit{
         this.fetchUser();
       }
     });
+    this.fetchBoughtProducts();
   }
-  
+
   fetchUser(): void {
     console.log("fetchUser: " + this.userId + " " + this.token);
     if (!this.userId || !this.token) {
@@ -63,15 +67,59 @@ export class BuyerProfileComponent implements OnInit{
 
   fetchFavoriteProductsDetails(): void {
     if (this.user?.favoriteProducts) {
-       this.user.favoriteProducts.forEach((productId: any) => {
-         this.productService.getProductById(productId).subscribe((product: any) => {
-           this.favoriteProductsDetails.push(product);
-         });
-       });
+      this.user.favoriteProducts.forEach((productId: any) => {
+        this.productService.getProductById(productId).subscribe((product: any) => {
+          this.favoriteProductsDetails.push(product);
+        });
+      });
     }
-   }
+  }
 
-   removeFromFavorite(productId: string): void {
+  fetchBoughtProducts(): void {
+
+    this.orderService
+      .getOrdersByUserId(this.userId!)
+      .subscribe((ordersData) => {
+        this.orders = ordersData.filter(order => !order.isInCart);
+        this.orders.forEach((order) => {
+          order.productIds.forEach((productId: string) => {
+            this.productIds.push(productId);
+            
+          });
+        });
+        this.getMostBoughtProduct()
+      });
+  }
+
+//get the most bought product from this.productIds
+  getMostBoughtProduct(): string {
+    let counts: any = {};
+    let compare = 0;
+    for (const word of this.productIds) {
+      if (counts[word] === undefined) {
+         counts[word] = 1;
+      } else {
+         counts[word] = counts[word] + 1;
+      }
+      if (counts[word] > compare) {
+         compare = counts[word];
+         this.mostBoughtProduct = word;
+      }
+     }
+     this.getProductById(this.mostBoughtProduct);
+    return this.mostBoughtProduct;
+  }
+
+  getProductById(productId: string): any {
+      this.productService.getProductById(productId).subscribe((product: any) => {
+        this.mostBoughtProductDetails = product;
+      }
+    );
+  }
+
+  
+
+  removeFromFavorite(productId: string): void {
     if (!this.userId) {
       return;
     }
@@ -94,8 +142,8 @@ export class BuyerProfileComponent implements OnInit{
 
   showNotification(message: string): void {
     this.snackBar.open(message, 'Close', {
-      duration: 3000, 
+      duration: 3000,
     });
   }
-  
+
 }
