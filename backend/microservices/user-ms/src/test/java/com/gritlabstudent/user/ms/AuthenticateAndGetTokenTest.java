@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -42,7 +43,7 @@ public class AuthenticateAndGetTokenTest {
     @Test
     public void test_returns_jwt_token() throws Exception {
         AuthRequest authRequest = new AuthRequest("username", "password");
-        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath");
+        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO);
         when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(true);
         when(jwtService.generateToken(user.getName(), user.getRole())).thenReturn("jwt_token");
@@ -73,7 +74,7 @@ public class AuthenticateAndGetTokenTest {
     @Test
     public void test_returns_401_when_password_is_incorrect() {
         AuthRequest authRequest = new AuthRequest("username", "password");
-        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath");
+        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO);
         when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
 
@@ -85,7 +86,11 @@ public class AuthenticateAndGetTokenTest {
     @Test
     public void test_returns_401_when_password_is_null() {
         AuthRequest authRequest = new AuthRequest("username", null);
-        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath");
+        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO);
+        when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
+        when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
         when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
 

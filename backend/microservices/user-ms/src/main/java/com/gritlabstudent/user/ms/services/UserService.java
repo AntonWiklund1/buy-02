@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -147,5 +148,14 @@ public class UserService {
     public boolean checkUserExistence(String userId) {
         System.out.println("Checking user existence for ID: " + userId);
         return userRepository.existsById(userId);
+    }
+
+    public void updateUserTotalAmount(String id, BigDecimal amount) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setTotalAmountSpent(user.getTotalAmountSpent().add(amount));
+            userRepository.save(user);
+        }
     }
 }

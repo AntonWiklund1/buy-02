@@ -62,21 +62,21 @@ services:
       - ./temp:/app/temp
       - ./media:/app/media
 
-  order-ms:
-    build:
-      context: ..
-      dockerfile: ./backend/microservices/order-ms/Dockerfile
-    image: order-ms:latest
-    ports:
-      - "8084:8084"
-    env_file:
-      - .env
-    depends_on:
-      - mongodb
-      - kafka
-    environment:
-      - MONGO_HOST=mongodb
-      - ENV_KAFKA_HOST=kafka
+  # order-ms:
+  #   build:
+  #     context: ..
+  #     dockerfile: ./backend/microservices/order-ms/Dockerfile
+  #   image: order-ms:latest
+  #   ports:
+  #     - "8084:8084"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - mongodb
+  #     - kafka
+  #   environment:
+  #     - MONGO_HOST=mongodb
+  #     - ENV_KAFKA_HOST=kafka
 
   # frontend:
   #   build:

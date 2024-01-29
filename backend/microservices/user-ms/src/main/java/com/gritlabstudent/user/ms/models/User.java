@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -36,6 +37,7 @@ public class User {
 
     private String avatarImagePath; // New field for avatar image path
 
+    private BigDecimal totalAmountSpent = BigDecimal.ZERO;
     public String uuidGenerator() {
         return UUID.randomUUID().toString();
     }

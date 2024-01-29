@@ -2,6 +2,7 @@ package com.gritlabstudent.user.ms.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gritlabstudent.user.ms.exceptions.UserCollectionException;
+import com.gritlabstudent.user.ms.models.AmountDTO;
 import com.gritlabstudent.user.ms.models.User;
 import com.gritlabstudent.user.ms.models.UserDTO;
 import com.gritlabstudent.user.ms.services.KafkaService;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -173,6 +175,19 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while retrieving the avatar path");
+        }
+    }
+
+    //update total amount spent
+    @PostMapping("/{id}/updateTotalAmount")
+    public ResponseEntity<?> updateUserTotalAmount(@PathVariable String id, @RequestBody AmountDTO amountDTO) {
+        try {
+            userService.updateUserTotalAmount(id, amountDTO.getAmount());
+            return new ResponseEntity<>("Update User with id " + id, HttpStatus.OK);
+        } catch (ConstraintViolationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

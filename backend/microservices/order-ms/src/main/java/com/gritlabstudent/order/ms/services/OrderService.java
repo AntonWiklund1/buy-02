@@ -3,6 +3,7 @@ package com.gritlabstudent.order.ms.services;
 import com.gritlabstudent.order.ms.models.Order;
 import com.gritlabstudent.order.ms.models.ProductDTO;
 import com.gritlabstudent.order.ms.models.Status;
+import com.gritlabstudent.order.ms.models.UserDTO;
 import com.gritlabstudent.order.ms.producers.OrderValidationProducer;
 import com.gritlabstudent.order.ms.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,15 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService; // Correctly autowired
 
+    private final UserService userService; // Correctly autowired
+
     // Include ProductService in the constructor parameters
     @Autowired
-    public OrderService(OrderRepository orderRepository, ProductService productService) {
+    public OrderService(OrderRepository orderRepository, ProductService productService, UserService UserService) {
         this.orderRepository = orderRepository;
         this.productService = productService; // Now correctly set
+        this.userService = UserService; // Now correctly set
+
     }
 
 
@@ -124,6 +129,7 @@ public class OrderService {
         orderRepository.save(order);
 
         BigDecimal total = calculateOrderTotal(orderId);
+        processOrder(orderId);
         System.out.println("Order total calculated: " + total);
 
     }
@@ -147,6 +153,15 @@ public class OrderService {
         orderRepository.save(order);
 
         return total;
+    }
+
+
+    //add the OrderTotal to the user totalAmountSpent
+    public void processOrder(String orderId) {
+        BigDecimal orderTotal = calculateOrderTotal(orderId);
+        Order order = getOrderById(orderId);
+        userService.updateUserTotalAmount(order.getUserId(), orderTotal);
+        // additional order processing logic...
     }
 
 
