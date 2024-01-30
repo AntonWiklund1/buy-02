@@ -1,14 +1,18 @@
 package com.gritlabstudent.order.ms.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gritlabstudent.order.ms.models.Order;
 import com.gritlabstudent.order.ms.models.ProductDTO;
 import com.gritlabstudent.order.ms.models.Status;
 import com.gritlabstudent.order.ms.models.UserDTO;
+import com.gritlabstudent.order.ms.producers.OrderPlacedProducer;
 import com.gritlabstudent.order.ms.producers.OrderValidationProducer;
 import com.gritlabstudent.order.ms.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.kafka.core.KafkaTemplate;
 
 
 import java.math.BigDecimal;
@@ -25,12 +29,15 @@ public class OrderService {
 
     private final UserService userService; // Correctly autowired
 
+    private final OrderPlacedProducer orderPlacedProducer; // Autowired producer
+
     // Include ProductService in the constructor parameters
     @Autowired
-    public OrderService(OrderRepository orderRepository, ProductService productService, UserService UserService) {
+    public OrderService(OrderRepository orderRepository, ProductService productService, UserService UserService, OrderPlacedProducer orderPlacedProducer) {
         this.orderRepository = orderRepository;
         this.productService = productService; // Now correctly set
         this.userService = UserService; // Now correctly set
+        this.orderPlacedProducer = orderPlacedProducer; // Now correctly set
 
     }
 
@@ -126,12 +133,27 @@ public class OrderService {
         order.setIsInCart(false);
         order.setStatus(Status.PENDING);
         order.setUpdatedAt(new Date());
-        orderRepository.save(order);
-
+        // Calculate the total once and save it
         BigDecimal total = calculateOrderTotal(orderId);
-        processOrder(orderId);
-        System.out.println("Order total calculated: " + total);
+        order.setTotal(total); // Set the total on the order before saving
+        orderRepository.save(order);
+        String orderJson = convertOrderToJson(order);
+        orderPlacedProducer.sendOrderPlaced(order.getId(), orderJson);
 
+        // Now you can use the total that was just calculated
+        processOrder(orderId, total); // Pass the total to the processOrder method
+        System.out.println("Order total calculated: " + total);
+    }
+
+    // Method to convert Order object to JSON string
+    private String convertOrderToJson(Order order) {
+        // Use a JSON library like Jackson to convert the order object to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(order);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
     public BigDecimal calculateOrderTotal(String orderId) {
         // Retrieve the order by ID
@@ -157,10 +179,9 @@ public class OrderService {
 
 
     //add the OrderTotal to the user totalAmountSpent
-    public void processOrder(String orderId) {
-        BigDecimal orderTotal = calculateOrderTotal(orderId);
+    public void processOrder(String orderId, BigDecimal total) {
         Order order = getOrderById(orderId);
-        userService.updateUserTotalAmount(order.getUserId(), orderTotal);
+        userService.updateUserTotalAmount(order.getUserId(), total);
         // additional order processing logic...
     }
 
