@@ -21,6 +21,7 @@ services:
     depends_on:
       - mongodb
       - kafka
+
     environment:
       - MONGO_HOST=mongodb
       - ENV_KAFKA_HOST=kafka

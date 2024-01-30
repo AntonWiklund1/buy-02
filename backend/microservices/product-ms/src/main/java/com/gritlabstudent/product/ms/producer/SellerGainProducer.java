@@ -1,6 +1,7 @@
 package com.gritlabstudent.product.ms.producer;
 
-import com.gritlabstudent.product.ms.models.SellerGainMessageDTO;
+import com.gritlabstudent.shared.ms.dtos.SellerGainMessageDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;

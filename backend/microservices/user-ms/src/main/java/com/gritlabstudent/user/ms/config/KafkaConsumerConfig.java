@@ -1,5 +1,6 @@
 package com.gritlabstudent.user.ms.config;
 
+import com.gritlabstudent.shared.ms.dtos.SellerGainMessageDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +11,6 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import com.gritlabstudent.user.ms.models.SellerGainMessageDTO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +33,6 @@ public class KafkaConsumerConfig {
 
         return new DefaultKafkaConsumerFactory<>(props);
     }
-
-
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, SellerGainMessageDTO> kafkaListenerContainerFactory() {

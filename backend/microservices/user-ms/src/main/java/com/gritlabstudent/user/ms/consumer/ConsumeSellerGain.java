@@ -1,10 +1,10 @@
 package com.gritlabstudent.user.ms.consumer;
 
-import com.gritlabstudent.user.ms.models.SellerGainMessageDTO;
 import com.gritlabstudent.user.ms.services.UserService;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import com.gritlabstudent.shared.ms.dtos.SellerGainMessageDTO;
 
 @Service
 public class ConsumeSellerGain {

@@ -1,4 +1,4 @@
-package com.gritlabstudent.product.ms.models;
+package com.gritlabstudent.shared.ms.dtos;
 
 import lombok.Data;
 
