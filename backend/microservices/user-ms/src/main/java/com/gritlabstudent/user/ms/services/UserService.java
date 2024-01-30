@@ -186,4 +186,14 @@ public class UserService {
             }
         }
     }
+
+    public void updateSellerEarnings(String id, BigDecimal earnings) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            BigDecimal currentEarnings = user.getTotalAmountGained();
+            user.setTotalAmountGained(currentEarnings.add(earnings));
+            userRepository.save(user);
+        }
+    }
 }

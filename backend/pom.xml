@@ -19,6 +19,7 @@
         <module>microservices/api-gateway</module>
         <module>shared</module>
         <module>microservices/order-ms</module>
+        <module>microservices/shared</module>
     </modules>
 
     <properties>

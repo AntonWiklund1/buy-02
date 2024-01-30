@@ -44,7 +44,7 @@ public class AuthenticateAndGetTokenTest {
     @Test
     public void test_returns_jwt_token() throws Exception {
         AuthRequest authRequest = new AuthRequest("username", "password");
-        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO, Collections.singletonList("p2"));
+        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO, Collections.singletonList("p2"), BigDecimal.ZERO );
         when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(true);
         when(jwtService.generateToken(user.getName(), user.getRole())).thenReturn("jwt_token");
@@ -75,7 +75,7 @@ public class AuthenticateAndGetTokenTest {
     @Test
     public void test_returns_401_when_password_is_incorrect() {
         AuthRequest authRequest = new AuthRequest("username", "password");
-        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO, Collections.singletonList("p2"));
+        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO, Collections.singletonList("p2"), BigDecimal.ZERO);
         when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
 
@@ -87,7 +87,9 @@ public class AuthenticateAndGetTokenTest {
     @Test
     public void test_returns_401_when_password_is_null() {
         AuthRequest authRequest = new AuthRequest("username", null);
-        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO, Collections.singletonList("p2"));
+        User user = new User("1", "username", "email", "password", "ROLE_CLIENT", "avatarImagePath", BigDecimal.ZERO, Collections.singletonList("p2"), BigDecimal.ZERO);
+        when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
         when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
         when(userRepository.findByName(authRequest.getUsername())).thenReturn(Optional.of(user));

@@ -25,7 +25,7 @@ public class OrderPlacedConsumer {
     }
 
     @KafkaListener(topics = "order-placed-topic", groupId = "product-ms-group")
-    public void consumeOrderPlacedEvent(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
+    public void consumeOrderPlacedEvent(ConsumerRecord<String, String> consumerRecord) {
         String orderJson = consumerRecord.value();
         try {
             // Deserialize the JSON string to an Order object
@@ -34,8 +34,6 @@ public class OrderPlacedConsumer {
             // Perform the business logic with the deserialized order object
             productService.processOrder(order);
 
-            // Optionally manually acknowledge the message
-            acknowledgment.acknowledge();
         } catch (IOException e) {
             // Handle the exception properly
             e.printStackTrace();

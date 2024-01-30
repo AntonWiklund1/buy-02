@@ -42,6 +42,7 @@ public class User {
 
     private List<String> favoriteProducts;
 
+    private BigDecimal totalAmountGained = BigDecimal.ZERO;
     public User() {
         this.favoriteProducts = new ArrayList<>();
     }

@@ -4,6 +4,7 @@ import com.gritlabstudent.product.ms.config.ValidateProduct;
 import com.gritlabstudent.product.ms.exceptions.ProductCollectionException;
 import com.gritlabstudent.product.ms.models.OrderDTO;
 import com.gritlabstudent.product.ms.models.Product;
+import com.gritlabstudent.product.ms.producer.SellerGainProducer;
 import com.gritlabstudent.product.ms.repositories.ProductRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +27,17 @@ public class ProductService {
     private final ProductRepository productRepository;
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-
+    private SellerGainProducer sellerGainProducer;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, SellerGainProducer sellerGainProducer) {
         this.productRepository = productRepository;
+        this.sellerGainProducer = sellerGainProducer;
     }
 
     public void createProduct(Product product) throws ConstraintViolationException, ProductCollectionException {
         ValidateProduct.validateProduct(product);
-
         productRepository.save(product);
     }
 
@@ -121,8 +122,12 @@ public class ProductService {
         updateProductDetails(products, productCount);
         logger.info("Updated product details for order");
 
-        // Process the gains per seller further if needed
-        // ...
+
+        sellerGains.forEach((userId, gain) -> {
+            sellerGainProducer.sendSellerGain(userId, gain);
+            logger.info("Sent seller gain to Kafka for sellerId {}: {}", userId, gain);
+        });
+
     }
 
     private Map<String, BigDecimal> calculateGainsPerSeller(List<Product> products, Map<String, Long> productCount) {
