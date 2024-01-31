@@ -17,7 +17,7 @@ public class UserValidationProducer {
 
 
     public void sendUserIdForValidation(String requestId, String userId) {
+        System.out.println("Sending userId for validation: " + userId + " with requestId: " + requestId);
         kafkaTemplate.send("validate-user-topic", requestId, userId);
-    }
-
+        }
 }
