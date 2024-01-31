@@ -17,6 +17,8 @@ import { selectOrderId } from '../state/cart/cart.selectors';
 import { AppState } from '../state/app.state';
 import { Router } from '@angular/router';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -40,6 +42,7 @@ export class CartComponent implements OnInit {
     private mediaService: MediaService,
     private route: ActivatedRoute,
     private router: Router,
+    private snackBar: MatSnackBar
 
     
   ) {
@@ -152,6 +155,7 @@ export class CartComponent implements OnInit {
   removeFromCart(orderId: string, productId: string): void {
     this.orderService.deleteProductFromOrder(orderId,productId).subscribe(() => {
       this.fetchOrdersAndProducts();
+      this.showNotification('Product removed from cart successfully');
     });
   }
 
@@ -162,6 +166,7 @@ export class CartComponent implements OnInit {
     }
     this.orderService.addProductToCart(this.userId, productId).subscribe(() => {
       this.fetchOrdersAndProducts();
+      this.showNotification('Product added to cart successfully');
     });
   }
   
@@ -175,5 +180,14 @@ export class CartComponent implements OnInit {
       //navigate to order history
       this.router.navigate(['/home']); // Navigate after orderId is set
     });
+  }
+
+  showNotification(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      panelClass: 'custom-snackbar',
+      duration: 3000,
+      verticalPosition: 'top',
+      horizontalPosition: 'center', 
+    });    
   }
 }

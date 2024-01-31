@@ -194,7 +194,7 @@ export class ProductListComponent {
   showNotification(message: string): void {
     this.snackBar.open(message, 'Close', {
       panelClass: 'custom-snackbar',
-      duration: 30000,
+      duration: 3000,
       verticalPosition: 'top', // This positions the snackbar at the top of the screen
       horizontalPosition: 'center', // This centers the snackbar horizontally
     });    

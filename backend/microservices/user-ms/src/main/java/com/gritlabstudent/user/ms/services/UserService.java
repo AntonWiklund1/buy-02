@@ -44,6 +44,7 @@ public class UserService {
         userDTO.setAvatarImagePath(user.getAvatarImagePath());
         userDTO.setTotalAmountSpent(user.getTotalAmountSpent());
         userDTO.setFavoriteProducts(user.getFavoriteProducts());
+        userDTO.setTotalAmountGained(user.getTotalAmountGained());
         return userDTO;
     }
 
