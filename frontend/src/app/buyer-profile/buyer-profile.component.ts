@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../services/product.service';
 import { OrderService } from '../services/order.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MediaService } from '../services/media.service';
 
 
 @Component({
@@ -28,11 +29,14 @@ export class BuyerProfileComponent implements OnInit {
   productIds: string[] = [];
   mostBoughtProduct = "";
   mostBoughtProductDetails: any;
+    productMediaUrls: Map<string, string> = new Map();
+
   constructor(
     private store: Store<AppState>,
     private userService: UserService,
     private productService: ProductService,
     private orderService: OrderService,
+    private mediaService: MediaService,
     private snackBar: MatSnackBar
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
@@ -66,14 +70,43 @@ export class BuyerProfileComponent implements OnInit {
   }
 
   fetchFavoriteProductsDetails(): void {
-    if (this.user?.favoriteProducts) {
-      this.user.favoriteProducts.forEach((productId: any) => {
-        this.productService.getProductById(productId).subscribe((product: any) => {
-          this.favoriteProductsDetails.push(product);
-        });
+  if (this.user?.favoriteProducts) {
+    this.user.favoriteProducts.forEach((productId: any) => {
+      this.productService.getProductById(productId).subscribe((product: any) => {
+        this.favoriteProductsDetails.push(product);
+        // Fetch media for each product
+        this.fetchMediaForProduct(productId);
       });
-    }
+    });
   }
+}
+
+fetchMediaForProduct(productId: string): void {
+  const backendUrl = 'https://localhost:8443/';
+
+  const defaultImageUrl = 'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png';
+  this.mediaService.getMedia(productId).subscribe(
+    (mediaDataArray) => {
+      let imageUrl = defaultImageUrl;
+      if (Array.isArray(mediaDataArray) && mediaDataArray.length > 0) {
+        const mediaObject = mediaDataArray[0];
+        if (mediaObject && mediaObject.imagePath) {
+          imageUrl = `${backendUrl}${mediaObject.imagePath}`;
+        }
+      }
+      this.productMediaUrls.set(productId, imageUrl);
+    },
+    (error) => {
+      console.error(error);
+      this.productMediaUrls.set(productId, defaultImageUrl);
+    }
+  );
+}
+
+getMediaUrl(productId: string): string | undefined {
+  return this.productMediaUrls.get(productId);
+}
+
 
   fetchBoughtProducts(): void {
 
@@ -113,11 +146,11 @@ export class BuyerProfileComponent implements OnInit {
   getProductById(productId: string): any {
       this.productService.getProductById(productId).subscribe((product: any) => {
         this.mostBoughtProductDetails = product;
+        console.log("mostBoughtProductDetails: " + JSON.stringify(this.mostBoughtProductDetails));
       }
     );
   }
 
-  
 
   removeFromFavorite(productId: string): void {
     if (!this.userId) {

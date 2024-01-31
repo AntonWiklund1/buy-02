@@ -178,7 +178,9 @@ export class CartComponent implements OnInit {
     console.log(this.orderId)
     this.orderService.buyProducts(this.orderId!).subscribe(() => {
       //navigate to order history
+
       this.router.navigate(['/home']); // Navigate after orderId is set
+      this.showNotification('Order placed successfully');
     });
   }
 
