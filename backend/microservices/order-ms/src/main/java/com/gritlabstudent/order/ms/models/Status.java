@@ -2,6 +2,8 @@ package com.gritlabstudent.order.ms.models;
 
 public enum Status {
     PENDING,
+
+    CART,
     PAID,
     DELIVERED,
     CANCELLED,

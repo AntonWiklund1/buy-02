@@ -10,10 +10,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
 @Document(collection = "users")
@@ -36,6 +38,14 @@ public class User {
 
     private String avatarImagePath; // New field for avatar image path
 
+    private BigDecimal totalAmountSpent = BigDecimal.ZERO;
+
+    private List<String> favoriteProducts;
+
+    private BigDecimal totalAmountGained = BigDecimal.ZERO;
+    public User() {
+        this.favoriteProducts = new ArrayList<>();
+    }
     public String uuidGenerator() {
         return UUID.randomUUID().toString();
     }

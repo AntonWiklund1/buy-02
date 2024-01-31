@@ -19,7 +19,7 @@
           </div>
           <div class="productActions">
             <span class="material-symbols-outlined delete" (click)="removeFromCart(order.id,product.id)"> delete </span>
-            <span class="material-symbols-outlined" (click)="addToCart(order.id,product.id)"> add </span>
+            <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
 
           </div>
         </div>
@@ -27,7 +27,12 @@
       <div class="orderActions">
         <p>Order Summary:</p>
         <p>Total {{totalPrice}}</p>
-        <button class="Checkout">Checkout</button>
+        <!-- pay on delivery box -->
+        <div class="payOnDelivery">
+          <input type="checkbox" id="payOnDelivery" name="payOnDelivery" value="payOnDelivery">
+          <label for="payOnDelivery">Pay on delivery</label>
+        </div>
+        <button class="Checkout" (click)="buy()">Checkout</button>
       </div>
     </div>
   </div>

@@ -12,11 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,7 +42,8 @@ public class UserService {
         userDTO.setName(user.getName());
         userDTO.setRole(user.getRole());
         userDTO.setAvatarImagePath(user.getAvatarImagePath());
-        System.out.println("userDTO fiudshgiufhd: " + userDTO);
+        userDTO.setTotalAmountSpent(user.getTotalAmountSpent());
+        userDTO.setFavoriteProducts(user.getFavoriteProducts());
         return userDTO;
     }
 
@@ -147,5 +150,50 @@ public class UserService {
     public boolean checkUserExistence(String userId) {
         System.out.println("Checking user existence for ID: " + userId);
         return userRepository.existsById(userId);
+    }
+
+    public void updateUserTotalAmount(String id, BigDecimal amount) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setTotalAmountSpent(user.getTotalAmountSpent().add(amount));
+            userRepository.save(user);
+        }
+    }
+
+    public void updateUserFavoriteProduct(String id, String productId) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getFavoriteProducts() == null) {
+                user.setFavoriteProducts(new ArrayList<>());
+            }
+            if (!user.getFavoriteProducts().contains(productId)) {
+                user.getFavoriteProducts().add(productId);
+                userRepository.save(user);
+            }
+        }
+    }
+
+
+    public void deleteUserFavoriteProduct(String id, String productId) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getFavoriteProducts() != null) {
+                user.getFavoriteProducts().remove(productId);
+                userRepository.save(user);
+            }
+        }
+    }
+
+    public void updateSellerEarnings(String id, BigDecimal earnings) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            BigDecimal currentEarnings = user.getTotalAmountGained();
+            user.setTotalAmountGained(currentEarnings.add(earnings));
+            userRepository.save(user);
+        }
     }
 }

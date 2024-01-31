@@ -1,0 +1,26 @@
+.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled):hover {
+    color: #e6394753;
+}
+
+/* Place this in your global styles.css file */
+.custom-snackbar {
+    justify-content: center !important; /* Center horizontally */
+  }
+  
+  /* This will be necessary if you want to center it vertically as well */
+  .mat-snack-bar-container {
+    align-items: center; /* Align vertically */
+    display: flex !important; /* Override display to use flex */
+    flex-direction: column; /* Stack flex items vertically */
+    height: 100%; /* Full height */
+  }
+
+.cdk-overlay-container{
+    z-index: 1;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+
+}
+  

@@ -20,6 +20,7 @@ public class UserValidationService {
     public void listenForUserValidation(ConsumerRecord<String, String> record) {
         String requestId = record.key(); // This is the ProductCreationRequest ID
         String userId = record.value(); // This is the User ID
+        System.out.println("Received record with key: " + requestId + ", and value: " + userId);
 
         boolean isValidUser = userService.checkUserExistence(userId);
         // Send back the validation result with the requestId as the key

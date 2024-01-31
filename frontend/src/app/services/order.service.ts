@@ -30,4 +30,17 @@ export class OrderService {
       responseType: 'text',
     });
   }
+
+  addProductToCart(userId: string, productId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/cart/${productId}`, null, {
+      responseType: 'text',
+    });
+  }
+
+
+  buyProducts(orderId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/buy/${orderId}`, null, {
+      responseType: 'text',
+    });
+  }
 }

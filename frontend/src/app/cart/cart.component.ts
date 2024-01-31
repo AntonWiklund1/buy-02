@@ -15,6 +15,7 @@ import * as CartActions from '../state/cart/cart.actions';
 import { CartState } from '../state/cart/cart.reducer';
 import { selectOrderId } from '../state/cart/cart.selectors';
 import { AppState } from '../state/app.state';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -27,6 +28,7 @@ export class CartComponent implements OnInit {
   cart: any[] = []; // Replace 'any' with your order type
   userId$: Observable<string | null>;
   orderId$: Observable<string | null>;
+  orderId: string | null = null;
   userId: string | null = null;
   productMediaUrls: Map<string, string> = new Map();
   totalPrice = 0;
@@ -36,7 +38,9 @@ export class CartComponent implements OnInit {
     private orderService: OrderService,
     private productService: ProductService,
     private mediaService: MediaService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+
     
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
@@ -50,7 +54,14 @@ export class CartComponent implements OnInit {
         this.fetchOrdersAndProducts();
       }
     });
+    this.orderId$.pipe(take(1)).subscribe((id) => {
+      if (id) {
+        this.orderId = id;
+      }
+    });
   }
+
+
 
   // this method is used to fetch all orders and products for the current user
   fetchOrdersAndProducts(): void {
@@ -144,8 +155,12 @@ export class CartComponent implements OnInit {
     });
   }
 
-  addToCart(orderId: string, productId: string): void {
-    this.orderService.addProductToOrder(orderId, productId).subscribe(() => {
+  addToCart(productId: string): void {
+    if (!this.userId) {
+      console.error('User is not logged in');
+      return;
+    }
+    this.orderService.addProductToCart(this.userId, productId).subscribe(() => {
       this.fetchOrdersAndProducts();
     });
   }
@@ -153,5 +168,12 @@ export class CartComponent implements OnInit {
   storeOrderIdInState(orderId: string): void {
     this.store.dispatch(CartActions.storeOrderId({ orderId }));
   }
-  
+
+  buy(): void {
+    console.log(this.orderId)
+    this.orderService.buyProducts(this.orderId!).subscribe(() => {
+      //navigate to order history
+      this.router.navigate(['/home']); // Navigate after orderId is set
+    });
+  }
 }

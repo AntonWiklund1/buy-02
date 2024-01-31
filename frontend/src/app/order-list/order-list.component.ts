@@ -109,6 +109,11 @@ export class OrderListComponent implements OnInit {
 
   expandOrder(order: any): void {
     order.expanded = !order.expanded;
+
+    const orderCard = document.getElementById(order.id);
+    if (orderCard) {
+      orderCard.classList.toggle('extendOrder');
+    }
   }
   
 }

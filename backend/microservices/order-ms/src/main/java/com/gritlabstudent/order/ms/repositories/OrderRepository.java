@@ -12,4 +12,6 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     List<Order> findByUserId(String userId);
 
     void deleteByUserId(String userId);
+
+    Order findByUserIdAndIsInCartTrue(String userId);
 }

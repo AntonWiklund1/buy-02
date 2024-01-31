@@ -2,6 +2,7 @@ package com.gritlabstudent.user.ms.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gritlabstudent.user.ms.exceptions.UserCollectionException;
+import com.gritlabstudent.user.ms.models.AmountDTO;
 import com.gritlabstudent.user.ms.models.User;
 import com.gritlabstudent.user.ms.models.UserDTO;
 import com.gritlabstudent.user.ms.services.KafkaService;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -67,7 +69,6 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    // Read User by Id
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_CLIENT') or hasRole('ROLE_SELLER')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
@@ -175,5 +176,45 @@ public class UserController {
                     .body("An error occurred while retrieving the avatar path");
         }
     }
+
+    //update total amount spent
+    @PostMapping("/{id}/updateTotalAmount")
+    public ResponseEntity<?> updateUserTotalAmount(@PathVariable String id, @RequestBody AmountDTO amountDTO) {
+        try {
+            userService.updateUserTotalAmount(id, amountDTO.getAmount());
+            return new ResponseEntity<>("Update User with id " + id, HttpStatus.OK);
+        } catch (ConstraintViolationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //update favorite product
+    @PostMapping("/{id}/updateFavoriteProduct/{productId}")
+    public ResponseEntity<?> updateUserFavoriteProduct(@PathVariable String id, @PathVariable String productId) {
+        try {
+            userService.updateUserFavoriteProduct(id, productId);
+            return new ResponseEntity<>("Update User with id " + id, HttpStatus.OK);
+        } catch (ConstraintViolationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //delete favorite product
+    @DeleteMapping("/{id}/deleteFavoriteProduct/{productId}")
+    public ResponseEntity<?> deleteUserFavoriteProduct(@PathVariable String id, @PathVariable String productId) {
+        try {
+            userService.deleteUserFavoriteProduct(id, productId);
+            return new ResponseEntity<>("Update User with id " + id, HttpStatus.OK);
+        } catch (ConstraintViolationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
