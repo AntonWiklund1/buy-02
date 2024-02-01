@@ -1,7 +1,15 @@
 .buyerProfielContainer {
     margin-left: 15rem;
+    margin-top: 5rem;
 }
-
+.favoriteProductsHeader{
+    display: flex;
+    align-items:stretch;
+    gap: 0.4rem;
+}
+.favoriteProductsHeader span{
+    margin-top: 4px;
+}
 .favoriteProducts {
     display: flex;
     flex-wrap: wrap;

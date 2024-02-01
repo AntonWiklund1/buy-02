@@ -1,5 +1,5 @@
 .orderListContainer {
-
+    margin-top: 5rem;
     margin-left: 15rem;
 }
 
@@ -75,6 +75,11 @@
 
 .extendOrder {
     height: auto;
-    /* This will allow the card to expand based on content */
     overflow: visible;
+}
+@media screen and (max-width: 768px) {
+    .orderListContainer {
+        margin-left: 0;
+    }
+    
 }

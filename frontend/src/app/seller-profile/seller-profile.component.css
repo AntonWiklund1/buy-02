@@ -1,3 +1,10 @@
 .SellerProfileContainer{
+    margin-top: 5rem;
     margin-left: 15rem;
+}
+@media screen and (max-width: 768px) {
+    .SellerProfileContainer {
+        margin: 1rem;
+    }
+    
 }

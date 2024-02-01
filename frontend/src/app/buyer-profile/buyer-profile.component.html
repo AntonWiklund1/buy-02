@@ -1,9 +1,18 @@
 <div class="buyerProfielContainer">
     <h1>Buying profile</h1>
     <div *ngIf="user">
-        <h2>Favorite Products</h2>
-        <div class="favoriteProducts">
-
+        <div class="favoriteProductsHeader">
+            <h2>Favorite Products</h2>
+            <!-- expand -->
+            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" *ngIf="showFavoriteProducts">
+                expand_more
+            </span>
+            <!-- collapse -->
+            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" *ngIf="!showFavoriteProducts">
+                expand_less
+            </span>
+        </div>
+        <div class="favoriteProducts" *ngIf="showFavoriteProducts">
             <div *ngFor="let product of favoriteProductsDetails" class="favoriteProductCard">
                 <div class="productImageDiv">
 
@@ -18,12 +27,13 @@
                 </div>
                 <div class="productActionDiv">
                     <span class="material-symbols-outlined productAction"
-                    (click)="removeFromFavorite(product.id)">remove</span>
+                        (click)="removeFromFavorite(product.id)">remove</span>
                     <span class="material-symbols-outlined productAction" (click)="addToCart(product.id)">
                         add_shopping_cart
                     </span>
                 </div>
             </div>
+
         </div>
 
         <h2>Total amount spent</h2>
@@ -33,7 +43,7 @@
         <div *ngIf="mostBoughtProductDetails">
             <div class="mostBoughtProductCard">
                 <div class="mostBoughtProductInfo">
-                        
+
                     <h3>{{mostBoughtProductDetails.name}}</h3>
                     <p>{{mostBoughtProductDetails.price}}€</p>
                     <p>{{mostBoughtProductDetails.description.slice(0, 20)}}</p>

@@ -30,6 +30,7 @@ export class BuyerProfileComponent implements OnInit {
   mostBoughtProduct = "";
   mostBoughtProductDetails: any;
     productMediaUrls: Map<string, string> = new Map();
+  showFavoriteProducts = true;
 
   constructor(
     private store: Store<AppState>,
@@ -180,6 +181,10 @@ getMediaUrl(productId: string): string | undefined {
       verticalPosition: 'top', // This positions the snackbar at the top of the screen
       horizontalPosition: 'center', // This centers the snackbar horizontally
     });    
+  }
+
+  toggleFavoriteProducts(){
+    this.showFavoriteProducts = !this.showFavoriteProducts;
   }
 
 }

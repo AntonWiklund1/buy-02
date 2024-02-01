@@ -1,5 +1,6 @@
 .profileManagmentContainer {
   margin-left: 15rem;
+  margin-top: 5rem;
   display: flex;
   width: calc(100vw - 15rem);
   height: 100vh;
@@ -98,7 +99,7 @@
 }
 @media screen and (max-width: 768px) {
   .profileManagmentContainer {
-    margin-left: 6rem;
+    margin: 1rem;
     width: calc(100vw - 6rem);
   }
   .profileManagmentContainer h1 {
