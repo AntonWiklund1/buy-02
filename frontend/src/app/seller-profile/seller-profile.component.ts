@@ -48,7 +48,7 @@ export class SellerProfileComponent implements OnInit {
       this.token = token;
       if (userId && token) {
         this.fetchUser();
-        this.fetchOrdersAndCalculateBestSellers(userId);
+        this.fetchBestSellingProducts(userId);
       }
     });
   }
@@ -63,54 +63,22 @@ export class SellerProfileComponent implements OnInit {
     });
   }
 
-
-  fetchOrdersAndCalculateBestSellers(userId: string): void {
-    this.orderService.getAllOrders().subscribe((orders: Order[]) => {
-      const productObservables = orders.map(order => {
-        return forkJoin(order.productIds.map(productId =>
-          this.productService.getProductById(productId).pipe(
-            take(1),
-            map((product: Product | null) => {
-              // Check if product is null or does not have userId
-              if (!product || product.userId !== userId) {
-                return null;
-              }
-              return { productId, userId: product.userId };
-            })
-          ))
-        );
-      });
-
-      forkJoin(productObservables).subscribe(productLists => {
-        const productSaleCounts = new Map<string, number>();
-
-        productLists.flat().forEach((productInfo) => {
-          if (productInfo) {
-            const count = productSaleCounts.get(productInfo.productId) || 0;
-            productSaleCounts.set(productInfo.productId, count + 1);
-          }
-        });
-
-        // Sort and extract product IDs
-        const sortedProductIds = Array.from(productSaleCounts.entries())
-          .sort((a, b) => b[1] - a[1])
-          .map(([productId,]) => productId);
-
-        // Fetch product details for the top-selling products
-        const detailsObservables = sortedProductIds.slice(0, 2).map(productId =>
-          this.productService.getProductById(productId)
-        );
-
-        forkJoin(detailsObservables).subscribe(productDetails => {
-          this.bestSellingProducts = productDetails.filter(product => product != null);
-          console.log(this.bestSellingProducts);
-        });
-      });
-    }, error => {
-      console.error('Error fetching orders:', error);
-      this.showNotification('Error fetching orders');
-    });
+  fetchBestSellingProducts(userId: string): void {
+    this.productService.getProductsByUserId(userId).subscribe(
+      (products: Product[]) => {
+        this.bestSellingProducts = products.slice(0, 3);
+        this.bestSellingProducts.reverse();
+        console.log(this.bestSellingProducts);
+      },
+      (error) => {
+        console.error('Error fetching best-selling products:', error);
+        this.showNotification('Error fetching best-selling products');
+      }
+    );
   }
+  
+
+  
 
   // Method to display a notification
   showNotification(message: string): void {

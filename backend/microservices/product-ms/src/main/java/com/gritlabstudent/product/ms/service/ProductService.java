@@ -8,6 +8,7 @@ import com.gritlabstudent.product.ms.producer.SellerGainProducer;
 import com.gritlabstudent.product.ms.repositories.ProductRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAll(Sort.by(Sort.Direction.DESC, "totalAmountSold"));
     }
 
     public Product getProductById(String id) {
@@ -107,8 +108,20 @@ public class ProductService {
 
         // Count the occurrences of each productId in the order
         Map<String, Long> productCount = order.getProductIds().stream()
+                .filter(productId -> productId != null)
                 .collect(Collectors.groupingBy(productId -> productId, Collectors.counting()));
         logger.debug("Product count for order: {}", productCount);
+
+
+        // Loop to update product quantities based on the productCount map
+        productCount.forEach((productId, count) -> {
+            productRepository.findById(productId).ifPresent(product -> {
+                product.setQuantity(product.getQuantity() - count.intValue());
+                product.setTotalAmountSold(product.getTotalAmountSold() + count.intValue());
+                productRepository.save(product);
+                logger.info("Updated quantity for product ID {}: new quantity {}", productId, product.getQuantity());
+            });
+        });
 
         // Retrieve product details based on productIds in the order
         List<Product> products = productRepository.findAllById(order.getProductIds());
@@ -123,7 +136,9 @@ public class ProductService {
         logger.info("Updated product details for order");
 
 
+
         sellerGains.forEach((userId, gain) -> {
+
             sellerGainProducer.sendSellerGain(userId, gain);
             logger.info("Sent seller gain to Kafka for sellerId {}: {}", userId, gain);
         });

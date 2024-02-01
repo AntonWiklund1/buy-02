@@ -3,10 +3,13 @@
 
     <div class="bestSellingContainer">
         <h2>Your Best Selling Products</h2>
-        <div *ngFor="let product of bestSellingProducts" class="product">
-            <h3>{{ product.name }}</h3>
-            <p>Description: {{ product.description.slice(0,20) }}</p>
+        <div *ngFor="let product of bestSellingProducts; let i = index" class="product">
+            <h3>{{ i + 1 }} {{ product.name }}</h3>
+            <p>Description: {{ product.description }}</p>
             <p>Price: ${{ product.price }}</p>
+            <p>Total Amount Sold: {{ product.totalAmountSold }}</p>
+            <p>Stock: {{ product.quantity }}</p>
+            <!-- Display other product details here if needed -->
         </div>
     </div>
 

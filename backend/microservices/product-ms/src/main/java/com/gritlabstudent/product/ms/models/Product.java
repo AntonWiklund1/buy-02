@@ -33,6 +33,8 @@ public class Product {
     @NotBlank(message = "Product userId cannot be empty")
     private String userId;
 
+    private Integer totalAmountSold = 0;
+
     public void setUserId(String userId) {
         // Trim the userId before setting it
         this.userId = userId != null ? userId.trim() : null;
