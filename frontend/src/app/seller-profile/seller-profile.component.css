@@ -1,3 +1,15 @@
 .SellerProfileContainer{
+    margin-top: 5rem;
     margin-left: 15rem;
+}
+
+.product{
+    border-bottom: 1px dashed rgb(204, 204, 204);
+    border-top: 1px dashed rgb(204, 204, 204);
+}
+@media screen and (max-width: 768px) {
+    .SellerProfileContainer {
+        margin: 1rem;
+    }
+    
 }

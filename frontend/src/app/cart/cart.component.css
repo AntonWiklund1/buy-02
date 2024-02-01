@@ -19,7 +19,7 @@
   gap: 1rem;
   background-color: #ffffff;
   flex: 0 0 calc(15% - 1rem); /* Will not grow, will not shrink, with the width adjusted for gap */
-  min-width: 15rem;
+  
   height: max-content;
   border-radius: 5px;
   padding: 1rem;
@@ -94,6 +94,17 @@
 }
 @media (max-width: 768px) {
   .cartContainer {
-    margin-left: 6rem;
+    margin: 1rem;
   }
+  .order {
+    width: 80vw;
+  }
+  .orderActions{
+    position: relative;
+  }
+  .cart{
+    flex-direction:column-reverse;
+  }
+
+
 }

@@ -1,26 +1,62 @@
 <div class="buyerProfielContainer">
     <h1>Buying profile</h1>
-    <div *ngIf="user">
-        <h2>Favorite Products</h2>
-        <div class="favoriteProducts">
-
+    <div *ngIf="user" class="buyerProfileContent">
+        <div class="favoriteProductsHeader">
+            <h2>Favorite Products</h2>
+            <!-- expand -->
+            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" *ngIf="showFavoriteProducts">
+                expand_more
+            </span>
+            <!-- collapse -->
+            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" *ngIf="!showFavoriteProducts">
+                expand_less
+            </span>
+        </div>
+        <div class="favoriteProducts" *ngIf="showFavoriteProducts">
             <div *ngFor="let product of favoriteProductsDetails" class="favoriteProductCard">
-                <p>{{ product.name }}</p>
-                <p>{{ product.price }}€</p>
-                <p>{{ product.description.slice(0, 20) }}</p>
-                <span class="material-symbols-outlined productAction"
-                    (click)="removeFromFavorite(product.id)">remove</span>
-                <span class="material-symbols-outlined productAction" (click)="addToCart(product.id)"> add_shopping_cart
-                </span>
+                <div class="productImageDiv">
+
+                    <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage">
+                </div>
+                <div class="productInfoDiv">
+
+                    <p>{{ product.name.slice(0, 20) }}</p>
+                    <p>{{ product.price }}€</p>
+                    <p>{{ product.description.slice(0, 20) }}</p>
+
+                </div>
+                <div class="productActionDiv">
+                    <span class="material-symbols-outlined productAction"
+                        (click)="removeFromFavorite(product.id)">remove</span>
+                    <span class="material-symbols-outlined productAction" (click)="addToCart(product.id)">
+                        add_shopping_cart
+                    </span>
+                </div>
             </div>
         </div>
+        <div class="totalAmountSpent">
+            <h2>Total amount spent</h2>
+            <p>{{ user.totalAmountSpent }}€</p>
+        </div>
+        <div class="mostBoughtProducts">
 
-        <h2>Total amount spent</h2>
-        <p>{{ user.totalAmountSpent }}€</p>
+            <h2>Most bought product</h2>
+            <div *ngIf="mostBoughtProductDetails">
+                <div class="mostBoughtProductCard">
+                    <div class="mostBoughtProductInfo">
 
-        <h2>Most bought product</h2>
-        <div *ngIf="mostBoughtProductDetails">
-            <p>{{mostBoughtProductDetails.name}}</p>
+                        <h3>{{mostBoughtProductDetails.name}}</h3>
+                        <p>{{mostBoughtProductDetails.price}}€</p>
+                        <p>{{mostBoughtProductDetails.description.slice(0, 20)}}</p>
+                    </div>
+                    <div class="mostBoughtProductAction">
+                        <span class="material-symbols-outlined productAction"
+                            (click)="addToCart(mostBoughtProductDetails.id)">
+                            add_shopping_cart
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

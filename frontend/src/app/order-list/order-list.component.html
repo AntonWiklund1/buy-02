@@ -10,6 +10,7 @@
                 <p>In cart: {{order.isInCart}}</p>
                 <p>Created at: {{order.createdAt}}</p>
                 <p>Updated at: {{order.updatedAt}}</p>
+                <p>Total: {{order.total}}€</p>
                 <span class="material-symbols-outlined expand"  *ngIf="order.expanded==false">
                     expand_more
                 </span>
@@ -21,8 +22,8 @@
                 <!-- loop all the products in the order -->
                 <div *ngFor="let product of order.products" class="productCard">
                     <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage"/>
-                        <p>{{ product.name }}</p>
-                        <p>{{ product.price }}$</p>
+                    <p>{{ product.name }}</p>
+                    <p>{{ product.price }}$</p>
                 </div>
             </div>
         </div>

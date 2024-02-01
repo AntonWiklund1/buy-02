@@ -42,7 +42,7 @@ public class UserControllerTest {
     @Test
     public void test_CreateUser_ReturnsCreated() throws Exception {
         // Given
-        UserDTO userDTO = new UserDTO("1", "John Doe", "ROLE_CLIENT", "avatar.jpg", BigDecimal.ONE, Collections.singletonList("p2"));
+        UserDTO userDTO = new UserDTO("1", "John Doe", "ROLE_CLIENT", "avatar.jpg", BigDecimal.ONE, BigDecimal.ONE ,Collections.singletonList("p2"));
         when(userService.createUser(any(User.class))).thenReturn(userDTO);
 
         User inputUser = new User();

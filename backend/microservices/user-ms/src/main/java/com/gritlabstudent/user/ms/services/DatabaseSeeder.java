@@ -31,10 +31,10 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         User user1 = new User();
         user1.setId("1");
-        user1.setName("user");
+        user1.setName("anton");
         user1.setEmail("user@example.com");
         user1.setPassword(passwordEncoder.encode("password"));
-        user1.setRole("ROLE_CLIENT");
+        user1.setRole("ROLE_SELLER");
 
         User user2 = new User();
         user2.setId("2");

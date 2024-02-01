@@ -5,7 +5,7 @@ import { AuthState } from '../state/auth/auth.reducer';
 import { selectIsAuthenticated, selectUserRole, selectUsername } from '../state/auth/auth.selector';
 import { logout } from '../state/auth/auth.actions';
 import { Observable, switchMap, catchError, of, take } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, timeout } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as AuthSelectors from '../state/auth/auth.selector';
 import * as AvatarSelectors from '../state/avatar/profile.selector';
@@ -122,6 +122,15 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
     if (thirdSection) {
       thirdSection.classList.toggle('thirdSection');
+    }
+  }
+
+  closeNavbar(): void {
+    const navbar = document.getElementById('navbar');
+    if (navbar) {
+      setTimeout(() => {
+        navbar.classList.remove('showNavbar');
+      }, 300);
     }
   }
 }

@@ -9,7 +9,8 @@
 }
 
 .mediaManagementContainer {
-  margin-left: 14rem;
+  margin-left: 15rem;
+  margin-top: 5rem;
 }
 
 .mediaUrlContainer {
@@ -115,7 +116,7 @@
 }
 @media screen and (max-width: 768px) {
   .mediaManagementContainer {
-    margin-left: 6rem;
+    margin-left: 1rem;
   }
   .mediaItem,
   .mediaImage {
