@@ -81,5 +81,8 @@
     .orderListContainer {
         margin-left: 0;
     }
+    .allOrders {
+        width: 100%;
+    }
     
 }

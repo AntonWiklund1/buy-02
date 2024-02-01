@@ -1,15 +1,33 @@
 .buyerProfielContainer {
     margin-left: 15rem;
     margin-top: 5rem;
+
 }
-.favoriteProductsHeader{
+
+.buyerProfileContent {
     display: flex;
-    align-items:stretch;
+    flex-direction: column;
+}
+
+.favoriteProductsHeader {
+    display: flex;
+    align-items: stretch;
     gap: 0.4rem;
 }
-.favoriteProductsHeader span{
+
+.favoriteProductsHeader span {
     margin-top: 4px;
 }
+
+.favoriteProducts,
+.mostBoughtProducts,
+.totalAmountSpent {
+    padding: 2rem 0rem;
+
+    border-bottom: 1px dashed rgb(204, 204, 204);
+
+}
+
 .favoriteProducts {
     display: flex;
     flex-wrap: wrap;
@@ -49,10 +67,12 @@
     border-top-right-radius: 5px;
     /* Rounded top-right corner */
 }
-.productActionDiv{
+
+.productActionDiv {
     position: relative;
     bottom: 0;
 }
+
 .productAction {
     cursor: pointer;
 }
@@ -75,4 +95,15 @@
 .mostBoughtProductInfo h3 {
     font-weight: bold;
     color: #000000;
+}
+
+@media screen and (max-width: 768px) {
+    .buyerProfielContainer {
+        margin: 1rem;
+    }
+    .favoriteProductCard {
+        flex: 0 0 calc(40% - 1rem);
+        min-width: 9rem;
+        height: 25rem;
+    }
 }

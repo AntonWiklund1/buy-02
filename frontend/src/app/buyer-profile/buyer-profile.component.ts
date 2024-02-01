@@ -91,7 +91,7 @@ fetchMediaForProduct(productId: string): void {
       let imageUrl = defaultImageUrl;
       if (Array.isArray(mediaDataArray) && mediaDataArray.length > 0) {
         const mediaObject = mediaDataArray[0];
-        if (mediaObject && mediaObject.imagePath) {
+        if (mediaObject?.imagePath) {
           imageUrl = `${backendUrl}${mediaObject.imagePath}`;
         }
       }

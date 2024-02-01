@@ -1,6 +1,6 @@
 <div class="buyerProfielContainer">
     <h1>Buying profile</h1>
-    <div *ngIf="user">
+    <div *ngIf="user" class="buyerProfileContent">
         <div class="favoriteProductsHeader">
             <h2>Favorite Products</h2>
             <!-- expand -->
@@ -33,26 +33,28 @@
                     </span>
                 </div>
             </div>
-
         </div>
+        <div class="totalAmountSpent">
+            <h2>Total amount spent</h2>
+            <p>{{ user.totalAmountSpent }}€</p>
+        </div>
+        <div class="mostBoughtProducts">
 
-        <h2>Total amount spent</h2>
-        <p>{{ user.totalAmountSpent }}€</p>
+            <h2>Most bought product</h2>
+            <div *ngIf="mostBoughtProductDetails">
+                <div class="mostBoughtProductCard">
+                    <div class="mostBoughtProductInfo">
 
-        <h2>Most bought product</h2>
-        <div *ngIf="mostBoughtProductDetails">
-            <div class="mostBoughtProductCard">
-                <div class="mostBoughtProductInfo">
-
-                    <h3>{{mostBoughtProductDetails.name}}</h3>
-                    <p>{{mostBoughtProductDetails.price}}€</p>
-                    <p>{{mostBoughtProductDetails.description.slice(0, 20)}}</p>
-                </div>
-                <div class="mostBoughtProductAction">
-                    <span class="material-symbols-outlined productAction"
-                        (click)="addToCart(mostBoughtProductDetails.id)">
-                        add_shopping_cart
-                    </span>
+                        <h3>{{mostBoughtProductDetails.name}}</h3>
+                        <p>{{mostBoughtProductDetails.price}}€</p>
+                        <p>{{mostBoughtProductDetails.description.slice(0, 20)}}</p>
+                    </div>
+                    <div class="mostBoughtProductAction">
+                        <span class="material-symbols-outlined productAction"
+                            (click)="addToCart(mostBoughtProductDetails.id)">
+                            add_shopping_cart
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
