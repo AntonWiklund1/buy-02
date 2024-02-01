@@ -2,11 +2,18 @@
     <h1>Seller Profile</h1>
 
     <div class="bestSellingContainer">
-        <h2>Your best selling product</h2>
+        <h2>Your Best Selling Products</h2>
+        <div *ngFor="let product of bestSellingProducts" class="product">
+            <h3>{{ product.name }}</h3>
+            <p>Description: {{ product.description.slice(0,20) }}</p>
+            <p>Price: ${{ product.price }}</p>
+        </div>
     </div>
 
     <div class="gainedContainer">
-        <h2>Gained</h2>
-        <p>{{totalAmountGained}}$</p>
+        <div *ngIf="user">
+            <h2>Gained</h2>
+            <p>{{ user.totalAmountGained }}$</p>
+        </div>
     </div>
 </div>

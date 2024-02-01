@@ -11,6 +11,11 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
+
+  getAllOrders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
   getOrderById(orderId: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${orderId}`);
   }
