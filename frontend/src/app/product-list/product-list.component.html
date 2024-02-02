@@ -10,7 +10,13 @@
             <input type="number" placeholder="Min Price" [(ngModel)]="minPrice" (ngModelChange)="search()">
             <input type="number" placeholder="Max Price" [(ngModel)]="maxPrice" (ngModelChange)="search()">
         </div>
-        <button (click)="toggleSortByPrice()" class="toggleSortByPrice">Sort by {{ sortByPriceAscending ? 'cheapest' : 'most expensive' }} to {{ sortByPriceAscending ? 'most expensive' : 'cheapest' }}</button>
+        <button (click)="toggleSortByPrice()" class="toggleSortByPrice">
+            Sort by {{ sortByPriceAscending ? 'most expensive' : 'cheapest' }} 
+            <span class="material-symbols-outlined">
+                arrow_forward
+            </span> 
+            {{ sortByPriceAscending ? 'cheapest' : 'most expensive' }}
+        </button>
     </div>
     <div class="productsList">
         <div *ngFor="let product of filteredProducts" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
