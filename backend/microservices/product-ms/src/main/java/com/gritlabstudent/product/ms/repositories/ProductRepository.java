@@ -1,6 +1,7 @@
 package com.gritlabstudent.product.ms.repositories;
 
 import com.gritlabstudent.product.ms.models.Product;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -12,6 +13,6 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     Optional<Product> findByProduct(Product product);
 
     @Query("{'userId': ?0}")
-    List<Product> findByUserId(String userId);
+    List<Product> findByUserId(String userId, Sort sort);
 
 }
