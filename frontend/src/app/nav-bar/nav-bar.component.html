@@ -65,6 +65,7 @@
     </div>
     <!-- profile -->
     <div class="thirdSection section" id="thirdSection">
+        
         <div class="profile" routerLink="/profileManagment"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <div *ngIf="avatarUrl$ | async as avatarUrl">
                 <img [src]="avatarUrl || ''" alt="Profile Picture" class="profileImage">
