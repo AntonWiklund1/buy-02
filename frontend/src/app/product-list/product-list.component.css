@@ -74,14 +74,16 @@
 
 .filterContainer {
   position: relative;
-  display: inline-block;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   width: calc(100% - 2rem);
   gap: 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1.5px dashed #e0e0e0;
 }
 
 .searchBox {
@@ -94,6 +96,36 @@
   box-sizing: border-box;
   outline: none;
 }
+.toggleInStock, .toggleSortByPrice{
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.toggleInStock:hover, .toggleSortByPrice:hover{
+  background-color: var(--fourth-color);
+}
+.priceRange{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.priceRange input{
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  height: 100%;
+  margin:0 4px;
+  padding: 0.3rem;
+}
+.toggleSortByPrice span{
+  font-size: 0.8rem;
+  position: relative;
+  top: 2px;
+}
+
 
 /* Responsive adjustments with fixed size */
 @media (max-width: 1400px) {
@@ -122,4 +154,8 @@
   .productsList {
     width: 100%;
   }
+  .filterContainer {
+    width: 100%;
+  }
+  
 }

@@ -9,28 +9,28 @@
     </div>
     <!-- basics -->
     <div class="firstSection section">
-        <div class="productListLink linkSection" routerLink="/productList" (click)="closeNavbar()">
+        <div class="productListLink linkSection" routerLink="/productList" routerLinkActive="activeLink" (click)="closeNavbar()">
         <span class="material-symbols-outlined">
                 shopping_bag
             </span>
             <a class="link">Products</a>
         </div>
         <!-- cart -->
-        <div class="cart linkSection" routerLink="/cart" (click)="closeNavbar()">
+        <div class="cart linkSection" routerLink="/cart" (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined cart">
                 shopping_cart
             </span>
             <a class="link">Cart</a>
         </div>
         <!-- orders -->
-        <div class="orderListLink linkSection" routerLink="/orderList"  (click)="closeNavbar()">
+        <div class="orderListLink linkSection" routerLink="/orderList"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined">
                 shopping_basket
             </span>
             <a class="link">Orders</a>
         </div>
         <!-- Buyer profile -->
-        <div class="buyerProfile linkSection" routerLink="/buyerProfile"  (click)="closeNavbar()">
+        <div class="buyerProfile linkSection" routerLink="/buyerProfile"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined">
                 person
             </span>
@@ -41,21 +41,21 @@
     <!-- Sellers Links -->
     <div class="secondSection section" *ngIf="isAdmin$ | async">
 
-        <div class="dashboardLink linkSection" routerLink="/productManagement"  (click)="closeNavbar()">
+        <div class="dashboardLink linkSection" routerLink="/productManagement"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined">
                 Dashboard
             </span>
             <a class="link">Dashboard</a>
         </div>
 
-        <div class="mediaManagementLink linkSection" routerLink="/mediaManagement"  (click)="closeNavbar()">
+        <div class="mediaManagementLink linkSection" routerLink="/mediaManagement"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined">
                 photo_library
             </span>
             <a class="link">Medias</a>
         </div>
 
-        <div class="sellerProfile linkSection" routerLink="/sellerProfile"  (click)="closeNavbar()">
+        <div class="sellerProfile linkSection" routerLink="/sellerProfile"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined">
                 leaderboard
             </span>
@@ -65,7 +65,8 @@
     </div>
     <!-- profile -->
     <div class="thirdSection section" id="thirdSection">
-        <div class="profile" routerLink="/profileManagment"  (click)="closeNavbar()">
+        
+        <div class="profile" routerLink="/profileManagment"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <div *ngIf="avatarUrl$ | async as avatarUrl">
                 <img [src]="avatarUrl || ''" alt="Profile Picture" class="profileImage">
             </div>

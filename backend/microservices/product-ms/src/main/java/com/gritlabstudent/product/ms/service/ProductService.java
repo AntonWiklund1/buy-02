@@ -83,8 +83,9 @@ public class ProductService {
     }
 
     public Iterable<Product> getProductsByUserId(String userId) {
-        return productRepository.findByUserId(userId);
-    }
+    Sort sort = Sort.by(Sort.Direction.DESC, "totalAmountSold");
+    return productRepository.findByUserId(userId, sort);
+}
     public void deleteProductsByUserId(String userId) {
 
         Iterable<Product> products = getProductsByUserId(userId);

@@ -36,6 +36,15 @@ export class ProductListComponent {
   userId$: Observable<string | null>;
   userId: string | null = null;
 
+  filterInStockOnly: boolean = false; // Add this line
+
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+
+  sortByPriceAscending: boolean = true; // Add this property
+
+
+
   constructor(
     private store: Store<AppState>, // Add cart state if it's not already included
     public productService: ProductService,
@@ -84,21 +93,44 @@ export class ProductListComponent {
     if (!this.products) {
       return;
     }
+    
+    let tempFilteredProducts = this.products.filter(product => {
+      // Apply in-stock filter if needed
+      const inStock = !this.filterInStockOnly || product.quantity > 0;
 
-    if (this.searchText.trim() === '') {
-      // If search text is empty, display all products
-      this.filteredProducts = this.products;
-    } else {
-      // Else, filter the products based on search text
-      this.filteredProducts = this.products.filter(
+      // Apply price range filter
+      const inPriceRange = (!this.minPrice || product.price >= this.minPrice) &&
+                           (!this.maxPrice || product.price <= this.maxPrice);
+
+      return inStock && inPriceRange;
+    });
+
+    if (this.searchText.trim() !== '') {
+      tempFilteredProducts = tempFilteredProducts.filter(
         (product) =>
           product.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          product.description
-            .toLowerCase()
-            .includes(this.searchText.toLowerCase())
+          product.description.toLowerCase().includes(this.searchText.toLowerCase())
       );
     }
+
+    this.filteredProducts = tempFilteredProducts;
+    this.filteredProducts = tempFilteredProducts.sort((a, b) => a.price - b.price);
+    
+    if (!this.sortByPriceAscending) {
+      this.filteredProducts = this.filteredProducts.reverse();
+    }
   }
+
+  toggleInStockFilter(): void {
+    this.filterInStockOnly = !this.filterInStockOnly;
+    this.search(); // Reapply search and filter
+  }
+
+  toggleSortByPrice(): void {
+    this.sortByPriceAscending = !this.sortByPriceAscending;
+    this.search(); // Reapply search to reflect new sort order
+  }
+  
 
   loadProducts(): void {
     this.productService.getProducts(this.token || '').subscribe(
