@@ -74,9 +74,8 @@
 
 .filterContainer {
   position: relative;
-  display: inline-block;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: flex-start;
   width: calc(100% - 2rem);
   gap: 1rem;
@@ -93,6 +92,24 @@
   padding: 1rem 2.5rem 1rem 1rem;
   box-sizing: border-box;
   outline: none;
+}
+.toggleInStock, .toggleSortByPrice{
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.toggleInStock:hover, .toggleSortByPrice:hover{
+  background-color: var(--fourth-color);
+}
+.priceRange input{
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  height: 100%;
+  margin:0 4px;
+  padding: 0.3rem;
 }
 
 /* Responsive adjustments with fixed size */

@@ -5,6 +5,12 @@
             <input type="text" placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="search()"
                 class="searchBox">
         </div>
+        <button (click)="toggleInStockFilter()" class="toggleInStock">{{ filterInStockOnly ? 'Show All Products' : 'Show in Stock Only'}}</button>
+        <div class="priceRange">
+            <input type="number" placeholder="Min Price" [(ngModel)]="minPrice" (ngModelChange)="search()">
+            <input type="number" placeholder="Max Price" [(ngModel)]="maxPrice" (ngModelChange)="search()">
+        </div>
+        <button (click)="toggleSortByPrice()" class="toggleSortByPrice">Sort by {{ sortByPriceAscending ? 'cheapest' : 'most expensive' }} to {{ sortByPriceAscending ? 'most expensive' : 'cheapest' }}</button>
     </div>
     <div class="productsList">
         <div *ngFor="let product of filteredProducts" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
