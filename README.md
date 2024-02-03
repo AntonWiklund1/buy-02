@@ -40,11 +40,22 @@ Welcome to our e-commerce platform, an end-to-end solution built with Spring Boo
    docker-compose up --build
    ```
 
-4. Navigato to <https://localhost:4200>
+4. Navigate to the frontend
+
+   ```shell
+   cd .. && cd /frontend
+   ```
+
+5. Install the dependencies and start the server
+
+   ```shell
+   npm i && npm start
+   ```
+
+6. Navigato to <https://localhost:4200>
 
 Done
 
 ![data-flow](data-flow.png)
 
-
-https://documenter.getpostman.com/view/30164392/2s9YsJAXoQ
+<https://documenter.getpostman.com/view/30164392/2s9YsJAXoQ>

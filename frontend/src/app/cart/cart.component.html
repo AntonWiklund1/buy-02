@@ -1,11 +1,11 @@
 <div class="cartContainer">
   <h1>My cart</h1>
 
-  <div *ngIf="cart.length > 0" class="orders-list">
+  <div @if="cart.length > 0" class="orders-list">
     <div class="cart">
-        <div *ngFor="let order of cart" class="order">
+        <div @for="let order of cart" class="order">
         <p>Order id: {{order.id}}</p>
-        <div *ngFor="let product of order.products" class="orderCard">
+        <div @for="let product of order.products" class="orderCard">
           <div class="orderInfo">
             <img
               [src]="getMediaUrl(product.id)"

@@ -39,7 +39,7 @@
         <hr>
     </div>
     <!-- Sellers Links -->
-    <div class="secondSection section" *ngIf="isAdmin$ | async">
+    <div class="secondSection section" @if="isAdmin$ | async">
 
         <div class="dashboardLink linkSection" routerLink="/productManagement"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined">
@@ -67,14 +67,14 @@
     <div class="thirdSection section" id="thirdSection">
         
         <div class="profile" routerLink="/profileManagment"  (click)="closeNavbar()" routerLinkActive="activeLink">
-            <div *ngIf="avatarUrl$ | async as avatarUrl">
+            <div @if="avatarUrl$ | async as avatarUrl">
                 <img [src]="avatarUrl || ''" alt="Profile Picture" class="profileImage">
             </div>
             <div>
-                <a class="profileName" *ngIf="username$ | async as username">
+                <a class="profileName" @if="username$ | async as username">
                     {{ username.length > 6 ? (username.slice(0, 6) + '...') : username }}
                 </a>
-                <p class="profileRole" *ngIf="userRole$ | async as userRole">
+                <p class="profileRole" @if="userRole$ | async as userRole">
                     {{ userRole }}
                 </p>
             </div>
@@ -84,10 +84,10 @@
     <!-- login -->
     <div class="fourthSection section">
         <div class="logOutLink linkSection" (click)="logOut()">
-            <span *ngIf="isAuthenticated$ | async" class="material-symbols-outlined">
+            <span @if="isAuthenticated$ | async" class="material-symbols-outlined">
                 logout
             </span>
-            <a *ngIf="isAuthenticated$ | async" (click)="logOut()" class="logOutLink">Log out</a>
+            <a @if="isAuthenticated$ | async" (click)="logOut()" class="logOutLink">Log out</a>
         </div>
     </div>
 </div>

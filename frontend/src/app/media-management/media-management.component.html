@@ -1,12 +1,12 @@
-<div class="bakground" *ngIf="showEdit || showDelete"></div>
+<div class="bakground" @if="showEdit || showDelete"></div>
 <div class="mediaManagementContainer">
-  <div *ngIf="username$ | async as username">
+  <div @if="username$ | async as username">
     <h1>Media management for {{ username }}</h1>
   </div>
 
   <!-- Display all of the user's media -->
   <div class="mediaUrlContainer">
-    <div *ngFor="let media of allMedia" class="mediaItem">
+    <div @for="let media of allMedia" class="mediaItem">
       <div class="infoDiv">
         <span
           class="material-symbols-outlined edit"
@@ -30,20 +30,21 @@
   </div>
 
   <!-- edit media modal -->
-  <div class="mediaEditContainer" *ngIf="showEdit">
+  <div class="mediaEditContainer" @if="showEdit">
     <span class="material-symbols-outlined close" (click)="toggleEdit()">
       close
     </span>
     <form (ngSubmit)="submitEditMedia()" class="editForm">
-      <p *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p @if="errorMessage">{{ errorMessage }}</p>
       <h1>Edit</h1>
+      <label for="file">Upload File</label>
       <input type="file" class="file" id="file" />
       <button type="submit">Edit</button>
     </form>
   </div>
 
   <!-- delete media modal -->
-  <div class="mediaDeleteContainer" *ngIf="showDelete">
+  <div class="mediaDeleteContainer" @if="showDelete">
     <span class="material-symbols-outlined close" (click)="toggleDelete()">
       close
     </span>

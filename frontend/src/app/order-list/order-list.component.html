@@ -2,7 +2,7 @@
     <h1>Orders</h1>
     <div class="allOrders">
         <!-- loop all the orders -->
-        <div *ngFor="let order of orders" [ngClass]="{'orderCard': true, 'extendOrder': order.expanded}" id="{{order.id}}" (click)="expandOrder(order)">
+        <div @for="let order of orders" [ngClass]="{'orderCard': true, 'extendOrder': order.expanded}" id="{{order.id}}" (click)="expandOrder(order)">
             <div class="orderDetails">
 
                 <p>{{ order.id }}</p>
@@ -11,16 +11,16 @@
                 <p>Created at: {{order.createdAt}}</p>
                 <p>Updated at: {{order.updatedAt}}</p>
                 <p>Total: {{order.total}}€</p>
-                <span class="material-symbols-outlined expand"  *ngIf="order.expanded==false">
+                <span class="material-symbols-outlined expand"  @if="order.expanded==false">
                     expand_more
                 </span>
-                <span class="material-symbols-outlined expand" *ngIf="order.expanded==true">
+                <span class="material-symbols-outlined expand" @if="order.expanded==true">
                     expand_less
                 </span>
             </div>
-            <div class="products" *ngIf="order.expanded">
+            <div class="products" @if="order.expanded">
                 <!-- loop all the products in the order -->
-                <div *ngFor="let product of order.products" class="productCard">
+                <div @for="let product of order.products" class="productCard">
                     <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage"/>
                     <p>{{ product.name }}</p>
                     <p>{{ product.price }}$</p>

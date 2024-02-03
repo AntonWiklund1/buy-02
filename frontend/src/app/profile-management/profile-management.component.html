@@ -9,27 +9,29 @@
                 <input type="text" class="newEmail" id="newEmail" placeholder="New email">
                 <input type="password" class="newPassword" id="newPassword" placeholder="New password">
                 <!-- dropdown -->
-                <select name="newRole" id="newRole">
+                <select name="newRole" id="newRole" title="Select your role">
                     <option value="ROLE_ClIENT">CLIENT</option>
                     <option value="ROLE_SELLER">SELLER</option>
                 </select>
-                <button (click)="editProfile()">Submit changes</button>
+                <button type="button" (click)="editProfile()">Submit changes</button>
             </form>
         </div>
-        <div class="editProfilePictureDiv" *ngIf="isAdmin$ | async">
+        <div class="editProfilePictureDiv" @if="isAdmin$ | async">
             <!-- Prevent the default form submission with (submit)="$event.preventDefault()" -->
             <form (submit)="editProfilePicture(); $event.preventDefault()" class="editProfilePicture">
                 <h3>Edit profile picture</h3>
-                <p *ngIf="confirmedProfilePicChange">You updated the profile picture</p>
+                <p @if="confirmedProfilePicChange">You updated the profile picture</p>
 
                 <!-- Use [src] for property binding and provide a descriptive alt text -->
                 <label for="profilePic">Current profile picture:</label>
-                <img *ngIf="(avatarUrl$ | async) as avatarUrl" [src]="avatarUrl" alt="Profile Picture"
+                <img @if="(avatarUrl$ | async) as avatarUrl" [src]="avatarUrl" alt="Profile Picture"
                     class="profilePic">
 
                 <!-- Display the error message only if there is one -->
-                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+                <p @if="errorMessage">{{ errorMessage }}</p>
 
+                <!-- Associate a label with the file input -->
+                <label for="newProfilePicture">Upload Profile Picture:</label>
                 <input type="file" class="newProfilePicture" id="newProfilePicture">
 
                 <!-- Specify the button type to "button" to prevent form submission -->
@@ -39,10 +41,10 @@
 
         <div class="deleteProfileDiv">
             <h3>Delete profile</h3>
-            <button (click)="checkDelete()" *ngIf="!showDelete()" class="deleteProfileButton">Delete profile</button>
-            <button (click)="deleteProfile()" *ngIf="showDelete()" class="deleteProfileButtonConfirm">Confirm
+            <button (click)="checkDelete()" @if="!showDelete()" class="deleteProfileButton">Delete profile</button>
+            <button (click)="deleteProfile()" @if="showDelete()" class="deleteProfileButtonConfirm">Confirm
                 delete</button>
-            <button (click)="checkDelete() " *ngIf="showDelete()" class="deleteProfileButtonDont">Don't delete</button>
+            <button (click)="checkDelete() " @if="showDelete()" class="deleteProfileButtonDont">Don't delete</button>
         </div>
     </div>
 

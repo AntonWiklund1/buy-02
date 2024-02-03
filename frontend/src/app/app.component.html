@@ -1,5 +1,5 @@
 <div class="content" role="main">
-  <app-home *ngIf="showWelcome"></app-home>
-  <app-nav-bar *ngIf="showNavBar"></app-nav-bar>
+  <app-home @if="showWelcome"></app-home>
+  <app-nav-bar @if="showNavBar"></app-nav-bar>
   <router-outlet></router-outlet>
 </div>

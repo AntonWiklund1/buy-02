@@ -19,21 +19,21 @@
         </button>
     </div>
     <div class="productsList">
-        <div *ngFor="let product of filteredProducts" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
+        <div @for="let product of filteredProducts" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
             <div class="productImageDiv">
 
                 <img [src]="getMediaUrl(product.id)" alt="" class="productImage">
             </div>
             <div class="productInfoDiv">
                 <h2>{{ product.name }}</h2>
-                <p *ngIf="product.description.length > 50">
-                    <span *ngIf="product.isReadMore">{{ product.description | slice:0:50 }}...</span>
-                    <span *ngIf="!product.isReadMore">{{ product.description }}</span>
-                    <span *ngIf="product.isExpanded" class="material-symbols-outlined closeIcon"
+                <p @if="product.description.length > 50">
+                    <span @if="product.isReadMore">{{ product.description | slice:0:50 }}...</span>
+                    <span @if="!product.isReadMore">{{ product.description }}</span>
+                    <span @if="product.isExpanded" class="material-symbols-outlined closeIcon"
                         (click)="toggleDescription(product)">close</span>
                     <a (click)="toggleDescription(product)">{{ product.isReadMore ? ' Read More' : ' Read Less' }}</a>
                 </p>
-                <p *ngIf="product.description.length <= 50">{{ product.description }}</p>
+                <p @if="product.description.length <= 50">{{ product.description }}</p>
 
                 <p>{{product.price}}€</p>
                 <p>{{ product.quantity}} products left</p>

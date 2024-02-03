@@ -1,19 +1,19 @@
 <div class="buyerProfielContainer">
     <h1>Buying profile</h1>
-    <div *ngIf="user" class="buyerProfileContent">
+    <div @if="user" class="buyerProfileContent">
         <div class="favoriteProductsHeader">
             <h2>Favorite Products</h2>
             <!-- expand -->
-            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" *ngIf="showFavoriteProducts">
+            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" @if="showFavoriteProducts">
                 expand_more
             </span>
             <!-- collapse -->
-            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" *ngIf="!showFavoriteProducts">
+            <span class="material-symbols-outlined" (click)="toggleFavoriteProducts()" @if="!showFavoriteProducts">
                 expand_less
             </span>
         </div>
-        <div class="favoriteProducts" *ngIf="showFavoriteProducts">
-            <div *ngFor="let product of favoriteProductsDetails" class="favoriteProductCard">
+        <div class="favoriteProducts" @if="showFavoriteProducts">
+            <div @for="let product of favoriteProductsDetails" class="favoriteProductCard">
                 <div class="productImageDiv">
 
                     <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage">
@@ -41,7 +41,7 @@
         <div class="mostBoughtProducts">
 
             <h2>Most bought product</h2>
-            <div *ngIf="mostBoughtProductDetails">
+            <div @if="mostBoughtProductDetails">
                 <div class="mostBoughtProductCard">
                     <div class="mostBoughtProductInfo">
 
