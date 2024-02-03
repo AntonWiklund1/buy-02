@@ -25,18 +25,22 @@
     "@ngrx/entity": "^17.1.0",
     "@ngrx/store": "^17.1.0",
     "@ngrx/store-devtools": "^17.1.0",
+    "@stomp/stompjs": "^7.0.0",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
     "ngx-cookie-service": "^17.0.1",
     "rxjs": "~7.8.1",
+    "sockjs-client": "^1.6.1",
     "tslib": "^2.6.2",
-    "zone.js": "~0.14.3"
+    "zone.js": "^0.14.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~17.1.0",
     "@angular/compiler-cli": "~17.1.0",
     "@types/jasmine": "~5.1.4",
+    "@types/jest": "^29.5.12",
     "@types/js-cookie": "^3.0.6",
+    "@types/sockjs-client": "^1.5.4",
     "jasmine": "^5.1.0",
     "jasmine-core": "~5.1.1",
     "jest-junit": "^16.0.0",

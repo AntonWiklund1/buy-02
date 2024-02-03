@@ -111,6 +111,12 @@
 			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- Websocket Dependencies-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

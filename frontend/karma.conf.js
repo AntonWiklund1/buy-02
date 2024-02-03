@@ -37,5 +37,10 @@ module.exports = function (config) {
     concurrency: 1,
     browsers: ["ChromeHeadless"],
     singleRun: false, // Set to true if you want Karma to exit after running the tests
+    files: [
+      { pattern: 'src/test-global-mocks.js', watched: false },
+      // ... other files
+    ],
   });
+  
 };
