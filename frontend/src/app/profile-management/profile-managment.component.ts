@@ -102,14 +102,14 @@ export class ProfileManagementComponent implements OnInit {
 
   deleteProfile(): void {
     if (this.userId && this.token) {
-      this.userService.deleteProfile(this.userId, this.token).subscribe(
-        () => {
+      this.userService.deleteProfile(this.userId, this.token).subscribe({
+        next: () => {
           console.log('Profile deleted successfully');
           localStorage.clear();
           this.router.navigate(['/logIn']);
         },
-        (error: any) => console.error('Delete profile error:', error)
-      );
+        error: (error: any) => console.error('Delete profile error:', error)
+      });
     }
   }
 
@@ -133,23 +133,23 @@ export class ProfileManagementComponent implements OnInit {
       role: this.getInputValue('newRole'),
     };
 
-    if (this.userId && this.token) {
-      this.userService.updateProfile(this.userId, newProfile, this.token).subscribe(
-        () => {
-          console.log('Profile updated successfully');
-          this.username = newProfile.name;
-
-          // Dispatch the updateProfileSuccess action
-          this.store.dispatch(AuthActions.updateProfileSuccess({
-            username: newProfile.name,
-            role: newProfile.role
-          }));
-          this.store.dispatch(AuthActions.logout());
-        },
-        (error: any) => console.error('Update profile error:', error)
-      );
-    }
+  if (this.userId && this.token) {
+    this.userService.updateProfile(this.userId, newProfile, this.token).subscribe({
+      next: () => {
+        console.log('Profile updated successfully');
+        this.username = newProfile.name;
+  
+        // Dispatch the updateProfileSuccess action
+        this.store.dispatch(AuthActions.updateProfileSuccess({
+          username: newProfile.name,
+          role: newProfile.role
+        }));
+        this.store.dispatch(AuthActions.logout());
+      },
+      error: (error: any) => console.error('Update profile error:', error)
+    });
   }
+}
 
   editProfilePicture(): void {
     const userId = this.userId;
@@ -164,18 +164,18 @@ export class ProfileManagementComponent implements OnInit {
       }
 
       const file = fileInput.files[0];
-      this.mediaService.uploadAvatar(file, userId, token).subscribe(
-        (response) => {
+      this.mediaService.uploadAvatar(file, userId, token).subscribe({
+        next: (response) => {
           const newAvatarUrl = `https://localhost:8443/${response}`;
           this.store.dispatch(AvatarActions.updateProfilePicture({ url: newAvatarUrl }));
           console.log('Profile picture updated successfully');
-          this.ngOnInit
+          this.ngOnInit();
           this.errorMessage = ''; // Clear any previous error message
         },
-        (error) => {
+        error: (error) => {
           this.handleProfilePictureUploadError(error);
         }
-      );
+      });
     } else {
       this.errorMessage = 'Authentication required.';
     }
