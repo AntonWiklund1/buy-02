@@ -2,30 +2,29 @@
     <h1>Orders</h1>
     <div class="allOrders">
         <!-- loop all the orders -->
-        <div @for="let order of orders" [ngClass]="{'orderCard': true, 'extendOrder': order.expanded}" id="{{order.id}}" (click)="expandOrder(order)">
-            <div class="orderDetails">
-
-                <p>{{ order.id }}</p>
-                <p>Status: <span class="status">{{order.status}}</span></p>
-                <p>In cart: {{order.isInCart}}</p>
-                <p>Created at: {{order.createdAt}}</p>
-                <p>Updated at: {{order.updatedAt}}</p>
-                <p>Total: {{order.total}}€</p>
-                <span class="material-symbols-outlined expand"  @if="order.expanded==false">
-                    expand_more
-                </span>
-                <span class="material-symbols-outlined expand" @if="order.expanded==true">
-                    expand_less
-                </span>
-            </div>
-            <div class="products" @if="order.expanded">
-                <!-- loop all the products in the order -->
-                <div @for="let product of order.products" class="productCard">
-                    <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage"/>
-                    <p>{{ product.name }}</p>
-                    <p>{{ product.price }}$</p>
+        @for(order of orders; track order.id){
+            <div [ngClass]="{'orderCard': true, 'extendOrder': order.expanded}" id="{{order.id}}" (click)="expandOrder(order)">
+                <div class="orderDetails">
+                    <p>{{ order.id }}</p>
+                    <p>Status: <span class="status">{{order.status}}</span></p>
+                    <p>In cart: {{order.isInCart}}</p>
+                    <p>Created at: {{order.createdAt}}</p>
+                    <p>Updated at: {{order.updatedAt}}</p>
+                    <p>Total: {{order.total}}€</p>
+                    <span class="material-symbols-outlined expand">
+                        @if(!order.expanded){ expand_more } @else { expand_less }
+                    </span>
                 </div>
-            </div>
-        </div>
+                @if(order.expanded){
+                    <div class="products">
+                        @for(product of order.products; track product.id){
+                            <div class="productCard">
+                                <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage"/>
+                                <p>{{ product.name }}</p>
+                                <p>{{ product.price }}$</p>
+                            </div>}
+                    </div>
+                }
+            </div>}
     </div>
 </div>

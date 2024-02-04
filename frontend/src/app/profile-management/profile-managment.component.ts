@@ -7,7 +7,6 @@ import * as AuthSelectors from '../state/auth/auth.selector';
 import * as AvatarSelectors from '../state/avatar/profile.selector';
 import * as AvatarActions from '../state/avatar/profile.actions';
 import { Observable, catchError, map, of, switchMap, take } from 'rxjs';
-import { AuthState } from '../state/auth/auth.reducer';
 import * as AuthActions from '../state/auth/auth.actions';
 import { selectUserRole } from '../state/auth/auth.selector';
 import { AppState } from '../state/app.state';

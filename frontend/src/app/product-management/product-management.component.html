@@ -12,72 +12,79 @@
         </span>
     </div>
     <div class="productManagmentList">
-        <div @for="let product of products" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
+        @for(product of products; track product.id){
+        <div class="productCard" [ngClass]="{'expanded': product.isExpanded}">
             <div class="productImageDiv" >
                 <img [src]="getMediaUrl(product.id)" alt="" class="productImage">
             </div>
             <div class="productInfoDiv">
                 <h2>{{ product.name }}</h2>
-                <!-- Check if the description is longer than 50 characters -->
-                <p @if="product.description.length > 50">
-                    <span @if="product.isReadMore">{{ product.description | slice:0:50 }}...</span>
-                    <span @if="!product.isReadMore">{{ product.description }}</span>
-                    <span @if="product.isExpanded" class="material-symbols-outlined closeIcon" (click)="toggleDescription(product)">close</span>
+                @if(product.description.length > 50){
+                    <p>
+                        @if(product.isReadMore){<span >{{ product.description | slice:0:50 }}...</span>}
+                        @if(!product.isReadMore){<span>{{ product.description }}</span>}
+                        @if(product.isExpanded){<span class="material-symbols-outlined closeIcon" (click)="toggleDescription(product)">close</span>}
 
-                    <a (click)="toggleDescription(product)">{{ product.isReadMore ? 'Read More' : ' Read Less' }}</a>
-                </p>
-                <!-- If not, just display the description -->
-                <p @if="product.description.length <= 50">{{ product.description }}</p>
+                        <a (click)="toggleDescription(product)">{{ product.isReadMore ? 'Read More' : ' Read Less' }}</a>
+                    </p>
+                } @else {<p>{{ product.description }}</p>}
+                
                 <p>{{product.price}}€</p>
                 <p>{{ product.quantity }}</p>
                 <p class="productId">{{ product.id }}</p>
             </div>
             
             <div class="productsControll">
-                <span class="material-symbols-outlined" (click)="editProduct(product.id)" @if="!showDelete()">
+                @if(!showDelete()){<span class="material-symbols-outlined" (click)="editProduct(product.id)">
                     edit
-                </span>
-                <span class="material-symbols-outlined" @if="!showDelete()" (click)="confirmDelete()">
+                </span>}
+                @if(!showDelete()){<span class="material-symbols-outlined" (click)="confirmDelete()">
                     delete
-                </span>
-                <div class="deleteProduct" @if="showDelete()" >
-                    <h4 class="deleteProductHeading">Do you want to delete  {{ product.name }}?</h4>
-                    <button (click)="deleteProduct(product.id)" class="yesDelete">YES</button>
-                    <button (click)="confirmDelete()" class="noDelete">NO</button>
-                </div>
-                <span class="material-symbols-outlined" (click)="showUploadMedia(product.id)" @if="!showDelete()">
+                </span>}
+                @if(showDelete()){
+                    <div class="deleteProduct" >
+                        <h4 class="deleteProductHeading">Do you want to delete  {{ product.name }}?</h4>
+                        <button type="button" (click)="deleteProduct(product.id)" class="yesDelete">YES</button>
+                        <button type="button" (click)="confirmDelete()" class="noDelete">NO</button>
+                    </div>
+                }
+                @if(!showDelete()){<span class="material-symbols-outlined" (click)="showUploadMedia(product.id)">
                     image
-                </span>
+                </span>}
             </div>
-        </div>
+        </div>}
     </div>
 </div>
 
 <!-- add product -->
-<div class="addProductContainer" @if="showProduct()">
-    <div class="addProductModal">
-        <span class="material-symbols-outlined closeModal" (click)="closeModal()">
-            close
-        </span>
-        <h1>Add a product</h1>
-        <form action="" class="formClass">
-            <input type="text" placeholder="name" id="name" class="name">
-            <input type="number" placeholder="quantity" id="quantity" class="quantity">
-            <textarea name="description" class="description" placeholder="description" id="description"></textarea>
-            <input type="number" placeholder="price" id="price" class="price">
-        </form>
-        
+@if(showProduct()){
+    <div class="addProductContainer">
+        <div class="addProductModal">
+            <span class="material-symbols-outlined closeModal" (click)="closeModal()">
+                close
+            </span>
+            <h1>Add a product</h1>
+            <form action="" class="formClass">
+                <input type="text" placeholder="name" id="name" class="name">
+                <input type="number" placeholder="quantity" id="quantity" class="quantity">
+                <textarea name="description" class="description" placeholder="description" id="description"></textarea>
+                <input type="number" placeholder="price" id="price" class="price">
+            </form>
+            
+        </div>
     </div>
-</div>
+}
 
 <!-- edit product -->
-<div class="editProductContainer" @if="showEditProduct()">
+@if(showEditProduct()){
+<div class="editProductContainer">
     <div class="editProductModal">
         <span class="material-symbols-outlined closeModal" (click)="closeModal()">
             close
         </span>
         <h1>Edit a product</h1>
-        <div @for="let editProduct of editProducts">
+        @for(editProduct of editProducts; track editProduct){
+        <div>
             <form action="" class="formClass">
                 <label for="editProductName">Name:</label>
                 <input type="text" [(ngModel)]="editProduct.name" name="name" class="name" id="editProductName">
@@ -92,11 +99,14 @@
                     (click)="updateProduct(editProduct.id,editProduct.name,editProduct.description,editProduct.price,editProduct.quantity)">Edit</button>
             </form>
         </div>
+        }
     </div>
 </div>
+}
 
 <!-- upload media -->
-<div class="mediaUploadContainer" @if="showMediaUpload()">
+@if(showMediaUpload()){
+<div class="mediaUploadContainer">
     <div class="mediaUploadModal">
         <span class="material-symbols-outlined closeModal" (click)="closeModal()">
             close
@@ -112,4 +122,4 @@
           </form>
     </div>
 </div>
-
+}

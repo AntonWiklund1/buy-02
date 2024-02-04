@@ -1,8 +1,8 @@
 <div class="loginContainer">
   <form action="" class="logInForm">
-    <h1 @if="showLogIn()">Log in</h1>
-    <h1 @if="showSignUp()">Sign up</h1>
-    <p class="error" @if="errorMessage">{{ errorMessage }}</p>
+    @if(showLogIn()){<h1>Log in</h1>}
+    @if(showSignUp()){<h1>Sign up</h1>}
+    @if(errorMessage){<p class="error">{{ errorMessage }}</p>}
     <input
       type="text"
       placeholder="Username"
@@ -12,14 +12,15 @@
       required
     />
 
-    <input
-      type="text"
-      placeholder="Email"
-      class="email"
-      name="email"
-      [(ngModel)]="email"
-      @if="showEmail()"
-    />
+    @if(showEmail()){
+      <input
+        type="text"
+        placeholder="Email"
+        class="email"
+        name="email"
+        [(ngModel)]="email"
+      />
+    }
 
     <input
       type="password"
@@ -31,52 +32,51 @@
       required
     />
 
-    <input
-      type="password"
-      placeholder="Confirm Password"
-      class="password"
-      id="confirmPassword"
-      name="confirmPassword"
-      @if="showSignUp()"
-    />
+    @if(showSignUp()){
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        class="password"
+        id="confirmPassword"
+        name="confirmPassword"
+      />
+    }
 
     <!-- checkbox to check when you want to sign up as a seller -->
-    <div class="sellerCheckbox" @if="showSignUp()">
-      <label for="seller">I want to be a seller</label>
-      <input
-        type="checkbox"
-        class="seller"
-        [(ngModel)]="isSeller"
-        name="isSeller"
-        id="seller"
-      />
-    </div>
+    @if(showSignUp()){
+      <div class="sellerCheckbox">
+        <label for="seller">I want to be a seller</label>
+        <input
+          type="checkbox"
+          class="seller"
+          [(ngModel)]="isSeller"
+          name="isSeller"
+          id="seller"
+        />
+      </div>
+    }
 
     <!-- input to upload avatar when you want to sign up as a seller -->
-    <div class="sellerMediaUpload" @if="isSeller">
-      <label for="mediaUpload">Upload avatar </label>
-      <input
-        type="file"
-        class="mediaUpload"
-        id="mediaUpload"
-        (change)="onFileSelected($event)"
-      />
-      <button type="button" class="uploadButton" (click)="triggerFileInput()">
-        Choose File
-      </button>
-      <span class="fileName">{{ selectedFileName }}</span>
-    </div>
+    @if(isSeller){
+      <div class="sellerMediaUpload">
+        <label for="mediaUpload">Upload avatar </label>
+        <input
+          type="file"
+          class="mediaUpload"
+          id="mediaUpload"
+          (change)="onFileSelected($event)"
+        />
+        <button type="button" class="uploadButton" (click)="triggerFileInput()">
+          Choose File
+        </button>
+        <span class="fileName">{{ selectedFileName }}</span>
+      </div>
+    }
 
-    <button class="submit" (click)="LogIn()" @if="showLogIn()">Log in</button>
-    <button class="signUp" (click)="validateForm()" @if="showSignUp()">
-      Sign Up
-    </button>
+    @if(showLogIn()){<button type="submit" class="submit" (click)="LogIn()">Log in</button>}
+    @if(showSignUp()){<button type="submit" class="signUp" (click)="validateForm()">Sign Up</button>}
 
-    <p @if="!showLogIn()">
-      Already have an account? <a (click)="goLogIn()">Log in</a>
-    </p>
-    <p @if="!showSignUp()">
-      Don't have an account? <a (click)="goSignUp()"> Sign Up </a>
-    </p>
+    @if(!showLogIn()){<p >Already have an account? <a (click)="goLogIn()">Log in</a></p>}
+    @if(!showSignUp()){<p >Don't have an account? <a (click)="goSignUp()"> Sign Up </a></p>}
   </form>
 </div>

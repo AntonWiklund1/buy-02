@@ -1,29 +1,33 @@
 <div class="cartContainer">
   <h1>My cart</h1>
 
-  <div @if="cart.length > 0" class="orders-list">
+  @if(cart.length > 0){
+  <div class="orders-list">
     <div class="cart">
-        <div @for="let order of cart" class="order">
+      @for(order of cart; track order.id){
+      <div class="order">
         <p>Order id: {{order.id}}</p>
-        <div @for="let product of order.products" class="orderCard">
-          <div class="orderInfo">
-            <img
-              [src]="getMediaUrl(product.id)"
-              alt="{{ product.name }}"
-              class="productImage"
-            />
-            <div class="productInfo">
-              <p>{{ product.name }}</p>
-              <p>{{ product.price }}$</p>
+        @for(product of order.products; track product.id){
+          <div class="orderCard">
+            <div class="orderInfo">
+              <img
+                [src]="getMediaUrl(product.id)"
+                alt="{{ product.name }}"
+                class="productImage"
+              />
+              <div class="productInfo">
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}$</p>
+              </div>
             </div>
-          </div>
-          <div class="productActions">
-            <span class="material-symbols-outlined delete" (click)="removeFromCart(order.id,product.id)"> delete </span>
-            <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
+            <div class="productActions">
+              <span class="material-symbols-outlined delete" (click)="removeFromCart(order.id,product.id)"> delete </span>
+              <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
 
-          </div>
-        </div>
-      </div>
+            </div>
+          </div>}
+      </div>}
+
       <div class="orderActions">
         <p>Order Summary:</p>
         <p>Total {{totalPrice}}</p>
@@ -36,4 +40,6 @@
       </div>
     </div>
   </div>
+  }
+
 </div>

@@ -16,19 +16,21 @@
                 <button type="button" (click)="editProfile()">Submit changes</button>
             </form>
         </div>
-        <div class="editProfilePictureDiv" @if="isAdmin$ | async">
-            <!-- Prevent the default form submission with (submit)="$event.preventDefault()" -->
+
+        @if(isAdmin$ | async) {
+        <div class="editProfilePictureDiv">
             <form (submit)="editProfilePicture(); $event.preventDefault()" class="editProfilePicture">
                 <h3>Edit profile picture</h3>
-                <p @if="confirmedProfilePicChange">You updated the profile picture</p>
+                @if(confirmedProfilePicChange){<p>You updated the profile picture</p>}
 
                 <!-- Use [src] for property binding and provide a descriptive alt text -->
                 <label for="profilePic">Current profile picture:</label>
-                <img @if="(avatarUrl$ | async) as avatarUrl" [src]="avatarUrl" alt="Profile Picture"
-                    class="profilePic">
+                @if(avatarUrl$ | async; as avatarUrl){
+                <img [src]="avatarUrl" alt="Profile Picture"
+                    class="profilePic">}
 
                 <!-- Display the error message only if there is one -->
-                <p @if="errorMessage">{{ errorMessage }}</p>
+                @if(errorMessage){<p>{{ errorMessage }}</p>}
 
                 <!-- Associate a label with the file input -->
                 <label for="newProfilePicture">Upload Profile Picture:</label>
@@ -38,13 +40,13 @@
                 <button type="button" (click)="editProfilePicture()">Submit changes</button>
             </form>
         </div>
+        }
 
         <div class="deleteProfileDiv">
             <h3>Delete profile</h3>
-            <button (click)="checkDelete()" @if="!showDelete()" class="deleteProfileButton">Delete profile</button>
-            <button (click)="deleteProfile()" @if="showDelete()" class="deleteProfileButtonConfirm">Confirm
-                delete</button>
-            <button (click)="checkDelete() " @if="showDelete()" class="deleteProfileButtonDont">Don't delete</button>
+            @if(!showDelete()){<button type="button" (click)="checkDelete()" class="deleteProfileButton">Delete profile</button>}
+            @if(showDelete()){<button type="button" (click)="deleteProfile()" class="deleteProfileButtonConfirm">Confirm delete</button>}
+            @if(showDelete()){<button type="button" (click)="checkDelete() " class="deleteProfileButtonDont">Don't delete</button>}
         </div>
     </div>
 

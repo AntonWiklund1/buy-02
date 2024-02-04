@@ -39,7 +39,8 @@
         <hr>
     </div>
     <!-- Sellers Links -->
-    <div class="secondSection section" @if="isAdmin$ | async">
+    @if(isAdmin$ | async){
+    <div class="secondSection section">
 
         <div class="dashboardLink linkSection" routerLink="/productManagement"  (click)="closeNavbar()" routerLinkActive="activeLink">
             <span class="material-symbols-outlined">
@@ -63,20 +64,20 @@
         </div>
         <hr>
     </div>
+    }
     <!-- profile -->
     <div class="thirdSection section" id="thirdSection">
         
         <div class="profile" routerLink="/profileManagment"  (click)="closeNavbar()" routerLinkActive="activeLink">
-            <div @if="avatarUrl$ | async as avatarUrl">
+            @if(avatarUrl$ | async; as avatarUrl){<div>
                 <img [src]="avatarUrl || ''" alt="Profile Picture" class="profileImage">
-            </div>
+            </div>}
             <div>
-                <a class="profileName" @if="username$ | async as username">
-                    {{ username.length > 6 ? (username.slice(0, 6) + '...') : username }}
-                </a>
-                <p class="profileRole" @if="userRole$ | async as userRole">
-                    {{ userRole }}
-                </p>
+                @if(username$ | async; as username){
+                    <a class="profileName">
+                        {{ username.length > 6 ? (username.slice(0, 6) + '...') : username }}
+                    </a>}
+                @if(userRole$ | async; as userRole){<p class="profileRole">{{ userRole }}</p>}
             </div>
         </div>
 
@@ -84,10 +85,9 @@
     <!-- login -->
     <div class="fourthSection section">
         <div class="logOutLink linkSection" (click)="logOut()">
-            <span @if="isAuthenticated$ | async" class="material-symbols-outlined">
-                logout
-            </span>
-            <a @if="isAuthenticated$ | async" (click)="logOut()" class="logOutLink">Log out</a>
+            @if(isAuthenticated$ | async){
+                <span class="material-symbols-outlined">logout</span>
+                <a (click)="logOut()" class="logOutLink">Log out</a>}
         </div>
     </div>
 </div>

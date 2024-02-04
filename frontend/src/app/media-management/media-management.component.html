@@ -1,12 +1,11 @@
-<div class="bakground" @if="showEdit || showDelete"></div>
+@if(showEdit || showDelete){<div class="bakground"></div>}
 <div class="mediaManagementContainer">
-  <div @if="username$ | async as username">
-    <h1>Media management for {{ username }}</h1>
-  </div>
+  @if(username$ | async; as username){<div><h1>Media management for {{ username }}</h1></div>}
 
   <!-- Display all of the user's media -->
   <div class="mediaUrlContainer">
-    <div @for="let media of allMedia" class="mediaItem">
+    @for(media of allMedia; track media){
+    <div class="mediaItem">
       <div class="infoDiv">
         <span
           class="material-symbols-outlined edit"
@@ -26,32 +25,36 @@
         alt="User's media"
         class="mediaImage"
       />
-    </div>
+    </div>}
   </div>
 
   <!-- edit media modal -->
-  <div class="mediaEditContainer" @if="showEdit">
+  @if(showEdit){
+  <div class="mediaEditContainer">
     <span class="material-symbols-outlined close" (click)="toggleEdit()">
       close
     </span>
     <form (ngSubmit)="submitEditMedia()" class="editForm">
-      <p @if="errorMessage">{{ errorMessage }}</p>
+      @if(errorMessage){<p>{{ errorMessage }}</p>}
       <h1>Edit</h1>
       <label for="file">Upload File</label>
       <input type="file" class="file" id="file" />
       <button type="submit">Edit</button>
     </form>
   </div>
+  }
 
   <!-- delete media modal -->
-  <div class="mediaDeleteContainer" @if="showDelete">
-    <span class="material-symbols-outlined close" (click)="toggleDelete()">
-      close
-    </span>
-    <form (ngSubmit)="submitDeleteMedia()" class="deleteForm">
-      <h1>Delete</h1>
-      <p>Are you sure you want to delete this media?</p>
-      <button type="submit">Delete</button>
-    </form>
-  </div>
+  @if(showDelete){
+    <div class="mediaDeleteContainer">
+      <span class="material-symbols-outlined close" (click)="toggleDelete()">
+        close
+      </span>
+      <form (ngSubmit)="submitDeleteMedia()" class="deleteForm">
+        <h1>Delete</h1>
+        <p>Are you sure you want to delete this media?</p>
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  }
 </div>

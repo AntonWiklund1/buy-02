@@ -5,12 +5,12 @@
             <input type="text" placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="search()"
                 class="searchBox">
         </div>
-        <button (click)="toggleInStockFilter()" class="toggleInStock">{{ filterInStockOnly ? 'Show All Products' : 'Show in Stock Only'}}</button>
+        <button type="button" (click)="toggleInStockFilter()" class="toggleInStock">{{ filterInStockOnly ? 'Show All Products' : 'Show in Stock Only'}}</button>
         <div class="priceRange">
             <input type="number" placeholder="Min Price" [(ngModel)]="minPrice" (ngModelChange)="search()">
             <input type="number" placeholder="Max Price" [(ngModel)]="maxPrice" (ngModelChange)="search()">
         </div>
-        <button (click)="toggleSortByPrice()" class="toggleSortByPrice">
+        <button type="button" (click)="toggleSortByPrice()" class="toggleSortByPrice">
             Sort by {{ sortByPriceAscending ? 'most expensive' : 'cheapest' }} 
             <span class="material-symbols-outlined">
                 arrow_forward
@@ -19,21 +19,23 @@
         </button>
     </div>
     <div class="productsList">
-        <div @for="let product of filteredProducts" class="productCard" [ngClass]="{'expanded': product.isExpanded}">
+        @for(product of filteredProducts; track product.id){
+        <div class="productCard" [ngClass]="{'expanded': product.isExpanded}">
             <div class="productImageDiv">
-
                 <img [src]="getMediaUrl(product.id)" alt="" class="productImage">
             </div>
             <div class="productInfoDiv">
                 <h2>{{ product.name }}</h2>
-                <p @if="product.description.length > 50">
-                    <span @if="product.isReadMore">{{ product.description | slice:0:50 }}...</span>
-                    <span @if="!product.isReadMore">{{ product.description }}</span>
-                    <span @if="product.isExpanded" class="material-symbols-outlined closeIcon"
-                        (click)="toggleDescription(product)">close</span>
+                @if(product.description.length > 50){
+                <p>
+                    @if(product.isReadMore){<span>{{ product.description | slice:0:50 }}...</span>}
+                    @if(!product.isReadMore){<span >{{ product.description }}</span>}
+                    @if(product.isExpanded){<span  class="material-symbols-outlined closeIcon"
+                        (click)="toggleDescription(product)">close</span>}
                     <a (click)="toggleDescription(product)">{{ product.isReadMore ? ' Read More' : ' Read Less' }}</a>
                 </p>
-                <p @if="product.description.length <= 50">{{ product.description }}</p>
+                }
+                @if(product.description.length <= 50){<p>{{ product.description }}</p>}
 
                 <p>{{product.price}}€</p>
                 <p>{{ product.quantity}} products left</p>
@@ -42,6 +44,6 @@
                     star
                 </span>
             </div>
-        </div>
+        </div>}
     </div>
 </div>
