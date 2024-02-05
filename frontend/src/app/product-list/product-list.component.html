@@ -19,7 +19,7 @@
         </button>
     </div>
     <div class="productsList">
-        @for (product of filteredProducts; track product) {
+        @for (product of filteredProducts; track product.id) {
 
             <div  class="productCard" [ngClass]="{'expanded': product.isExpanded}">
                 <div class="productImageDiv">

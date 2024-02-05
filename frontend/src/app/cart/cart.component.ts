@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, Subject, Subscription, forkJoin } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { take } from 'rxjs/operators';
@@ -19,6 +19,10 @@ import { Router } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { StompService } from '@stomp/ng2-stompjs';
+
+import * as SockJS from 'sockjs-client';
+
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -35,6 +39,13 @@ export class CartComponent implements OnInit {
   productMediaUrls: Map<string, string> = new Map();
   totalPrice = 0;
 
+  stompClient: any;
+  topic: String = '/topic/orderUpdate';
+  webSocketEndPoint: string = 'https://localhost:8084/ws';
+
+  messagesSubscription: Subscription | undefined;
+
+  
   constructor(
     private store: Store<AppState>,
     private orderService: OrderService,
@@ -42,12 +53,14 @@ export class CartComponent implements OnInit {
     private mediaService: MediaService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private stompService: StompService
 
     
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
     this.orderId$ = this.store.select(selectOrderId);
+    
   }
 
   ngOnInit(): void {
@@ -62,10 +75,22 @@ export class CartComponent implements OnInit {
         this.orderId = id;
       }
     });
+
+    this.messagesSubscription = this.stompService.subscribe('/topic/messages').subscribe((message) => {
+      // Handle the received message
+      console.log(message);
+    });    
+  }
+
+  ngOnDestroy() {
+    if (this.messagesSubscription) {
+      this.messagesSubscription.unsubscribe();
+    }
   }
 
 
 
+  
   // this method is used to fetch all orders and products for the current user
   fetchOrdersAndProducts(): void {
     this.orderService
@@ -178,8 +203,6 @@ export class CartComponent implements OnInit {
     console.log(this.orderId)
     this.orderService.buyProducts(this.orderId!).subscribe(() => {
       //navigate to order history
-
-      this.router.navigate(['/home']); // Navigate after orderId is set
       this.showNotification('Order placed successfully');
     });
   }

@@ -34,11 +34,11 @@ public class ConsumeStockConfirmation {
             String orderId = parts[0];
             String status = parts[1];
             if ("CONFIRMED".equals(status)) {
-                messagingTemplate.convertAndSend("/topic/orderStatus", "Order confirmed: " + orderId);
+                messagingTemplate.convertAndSend("/topic/orderUpdate", "Order confirmed: " + orderId);
                 System.out.println("Order confirmed: " + orderId);
             //orderService.processConfirmedOrder(orderId);
             } else if ("DENIED".equals(status)) {
-                messagingTemplate.convertAndSend("/topic/orderStatus", "Order denied: " + orderId);
+                messagingTemplate.convertAndSend("/topic/orderUpdate", "Order denied: " + orderId);
             System.out.println("Order denied: " + orderId);
             } else {
                 logger.error("The message does not have the expected format: {}", message);
