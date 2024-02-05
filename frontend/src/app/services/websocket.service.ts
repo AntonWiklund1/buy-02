@@ -16,8 +16,7 @@ export class WebSocketService {
 
     initializeWebSocketConnection() {
 
-        if (this.stompClient && this.stompClient.connected) {
-            // Already connected
+        if (this.stompClient?.connected) {            // Already connected
             return;
         }
         // Use SockJS as the WebSocket client
@@ -52,6 +51,6 @@ export class WebSocketService {
 
     // In the service, add a method to check if we are connected or not
     isConnected(): boolean {
-        return this.stompClient && this.stompClient.connected;
-    }
+        return this.stompClient?.connected;
+    }    
 }

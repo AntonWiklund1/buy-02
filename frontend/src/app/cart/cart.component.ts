@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,7 @@ import * as CartActions from '../state/cart/cart.actions';
 import { CartState } from '../state/cart/cart.reducer';
 import { selectOrderId } from '../state/cart/cart.selectors';
 import { AppState } from '../state/app.state';
-import { Router } from '@angular/router';
+
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 

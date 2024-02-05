@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { NavigationEnd } from '@angular/router';
-import { of } from 'rxjs';
+
+
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -34,7 +34,7 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
-    router = TestBed.inject(Router);
+
 
     // Add some debugging output to check the value of the selector
     console.log('Mocked Token:', fromAuth.selectToken);

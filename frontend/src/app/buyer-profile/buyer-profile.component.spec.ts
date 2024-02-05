@@ -25,8 +25,6 @@ describe('BuyerProfileComponent', () => {
           provide: Store,
           useValue: {
             // Mock the methods that are used by your component
-            select: jest.fn(),
-            dispatch: jest.fn(),
             // ... any other methods needed
           },
         },

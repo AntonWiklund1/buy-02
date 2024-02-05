@@ -38,7 +38,9 @@ module.exports = function (config) {
     browsers: ["ChromeHeadless"],
     singleRun: false, // Set to true if you want Karma to exit after running the tests
     files: [
+      { pattern: 'src/polyfills.ts', included: true, watched: true, served: true },
       { pattern: 'src/test-global-mocks.js', watched: false },
+      { pattern: 'src/test.ts', included: true, watched: true, served: true },
       // ... other files
     ],
   });
