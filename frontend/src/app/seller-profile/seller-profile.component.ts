@@ -67,7 +67,7 @@ export class SellerProfileComponent implements OnInit {
     this.productService.getProductsByUserId(userId).subscribe(
       (products: Product[]) => {
         this.bestSellingProducts = products.slice(0, 3);
-        this.bestSellingProducts.reverse();
+        this.bestSellingProducts;
         console.log(this.bestSellingProducts);
       },
       (error) => {

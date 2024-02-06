@@ -28,6 +28,9 @@ import { OrderService } from './services/order.service';
 import { take } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { StompConfig, StompService } from '@stomp/ng2-stompjs';
+import SockJS from 'sockjs-client';
+
 
 
 
@@ -52,6 +55,21 @@ export function initializeApp(orderService: OrderService, store: Store<AppState>
   };
 }
 
+// Define your Stomp configuration - this example assumes a SockJS endpoint
+export function stompConfigFactory() {
+  const config = new StompConfig();
+  config.url = () => new SockJS('https://localhost:8084/ws');
+  config.headers = {};
+  config.heartbeat_in = 0;
+  config.heartbeat_out = 20000;
+  config.reconnect_delay = 5000;
+  config.debug = true;
+  return config;
+ }
+
+ export function stompServiceFactory(config: StompConfig) {
+  return new StompService(config);
+}
 
 @NgModule({
   declarations: [
@@ -86,13 +104,20 @@ export function initializeApp(orderService: OrderService, store: Store<AppState>
   ],
   providers: [
     {
-
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       deps: [OrderService, Store],
-      multi: true
+      multi: true,
+    },
+    {
+      provide: StompConfig,
+      useFactory: stompConfigFactory
+    },
+    {
+      provide: StompService,
+      useFactory: stompServiceFactory,
+      deps: [StompConfig] // Dependency list for your factory
     }
-
   ],
   bootstrap: [AppComponent],
 })

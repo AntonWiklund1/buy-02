@@ -1,10 +1,12 @@
 package com.gritlabstudent.product.ms.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gritlabstudent.product.ms.config.ValidateProduct;
 import com.gritlabstudent.product.ms.exceptions.ProductCollectionException;
 import com.gritlabstudent.product.ms.models.OrderDTO;
 import com.gritlabstudent.product.ms.models.Product;
 import com.gritlabstudent.product.ms.producer.SellerGainProducer;
+import com.gritlabstudent.product.ms.producer.StockConfirmationProducer;
 import com.gritlabstudent.product.ms.repositories.ProductRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +25,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//import objectmapper
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class ProductService {
 
@@ -30,11 +36,18 @@ public class ProductService {
 
     private SellerGainProducer sellerGainProducer;
 
+    private StockConfirmationProducer stockConfirmationProducer;
+
+    private final ObjectMapper objectMapper;
+
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
-    public ProductService(ProductRepository productRepository, SellerGainProducer sellerGainProducer) {
+    public ProductService(ProductRepository productRepository, SellerGainProducer sellerGainProducer , ObjectMapper objectMapper, StockConfirmationProducer stockConfirmationProducer) {
         this.productRepository = productRepository;
         this.sellerGainProducer = sellerGainProducer;
+        this.objectMapper = objectMapper;
+        this.stockConfirmationProducer = stockConfirmationProducer;
+
     }
 
     public void createProduct(Product product) throws ConstraintViolationException, ProductCollectionException {
@@ -165,6 +178,35 @@ public class ProductService {
         // Your existing logic to update product details
         logger.debug("Updating product details");
 
+    }
+
+    public void checkInStock(String orderJson) {
+        logger.info("Checking stock for order: {}", orderJson);
+        try {
+            OrderDTO order = objectMapper.readValue(orderJson, OrderDTO.class);
+            boolean allProductsInStock = true;
+
+            for (String productId : order.getProductIds()) {
+                Optional<Product> productOpt = productRepository.findById(productId);
+                if (!productOpt.isPresent() || productOpt.get().getQuantity() < 1) {
+                    allProductsInStock = false;
+                    break;
+                }
+            }
+
+            if (allProductsInStock) {
+                // If all products are in stock, send a confirmation message back to order-ms
+                logger.info("All products are in stock for order ID: {}", order.getId());
+                stockConfirmationProducer.sendStockConfirmation(order.getId(), "CONFIRMED");
+            } else {
+                // If not all products are in stock, send a denial message back to order-ms
+                logger.info("Not all products are in stock for order ID: {}", order.getId());
+                stockConfirmationProducer.sendStockConfirmation(order.getId(), "DENIED");
+            }
+        } catch (IOException e) {
+            logger.error("Error deserializing order JSON", e);
+            // Handle the exception, possibly send a failure message back to order-ms
+        }
     }
 
 }

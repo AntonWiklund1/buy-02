@@ -31,7 +31,8 @@ public class OrderSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/orders/").permitAll() // Allow all requests to /api/orders/
                         .requestMatchers("/api/orders/**").permitAll() // Allow all requests to /api/orders/*
-                        .anyRequest().authenticated() // All other requests need authentication
+                        .requestMatchers("/ws/**").permitAll() // Allow all requests to websocket
+                        .anyRequest().permitAll() // All other requests need authentication
                 );
         return http.build();
     }

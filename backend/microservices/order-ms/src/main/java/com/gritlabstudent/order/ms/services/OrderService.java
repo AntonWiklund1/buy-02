@@ -7,6 +7,7 @@ import com.gritlabstudent.order.ms.models.ProductDTO;
 import com.gritlabstudent.order.ms.models.Status;
 import com.gritlabstudent.order.ms.models.UserDTO;
 import com.gritlabstudent.order.ms.producers.OrderPlacedProducer;
+import com.gritlabstudent.order.ms.producers.OrderProductStockProducer;
 import com.gritlabstudent.order.ms.producers.OrderValidationProducer;
 import com.gritlabstudent.order.ms.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,16 @@ public class OrderService {
 
     private final OrderPlacedProducer orderPlacedProducer; // Autowired producer
 
+    private final OrderProductStockProducer orderProductStockProducer; // Autowired producer
+
     // Include ProductService in the constructor parameters
     @Autowired
-    public OrderService(OrderRepository orderRepository, ProductService productService, UserService UserService, OrderPlacedProducer orderPlacedProducer) {
+    public OrderService(OrderRepository orderRepository, ProductService productService, UserService UserService, OrderPlacedProducer orderPlacedProducer, OrderProductStockProducer orderProductStockProducer) {
         this.orderRepository = orderRepository;
-        this.productService = productService; // Now correctly set
-        this.userService = UserService; // Now correctly set
-        this.orderPlacedProducer = orderPlacedProducer; // Now correctly set
-
+        this.productService = productService;
+        this.userService = UserService;
+        this.orderPlacedProducer = orderPlacedProducer;
+        this.orderProductStockProducer = orderProductStockProducer;
     }
 
 
@@ -130,19 +133,25 @@ public class OrderService {
         if (order == null) {
             return;
         }
-        order.setIsInCart(false);
-        order.setStatus(Status.PENDING);
-        order.setUpdatedAt(new Date());
-        // Calculate the total once and save it
-        BigDecimal total = calculateOrderTotal(orderId);
-        order.setTotal(total); // Set the total on the order before saving
-        orderRepository.save(order);
-        String orderJson = convertOrderToJson(order);
-        orderPlacedProducer.sendOrderPlaced(order.getId(), orderJson);
+        try {
+            // Properly convert order to JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            String orderJson = objectMapper.writeValueAsString(order);
 
-        // Now you can use the total that was just calculated
-        processOrder(orderId, total); // Pass the total to the processOrder method
-        System.out.println("Order total calculated: " + total);
+            orderProductStockProducer.sendOrderProductStock(order.getId(), orderJson);
+
+            order.setIsInCart(false);
+            order.setStatus(Status.PENDING);
+            order.setUpdatedAt(new Date());
+            BigDecimal total = calculateOrderTotal(orderId);
+            order.setTotal(total);
+            orderRepository.save(order);
+            processOrder(orderId, total);
+            System.out.println("Order total calculated: " + total);
+        } catch (JsonProcessingException e) {
+            // Handle JSON serialization error
+            e.printStackTrace();
+        }
     }
 
     // Method to convert Order object to JSON string

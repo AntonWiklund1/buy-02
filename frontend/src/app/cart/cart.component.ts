@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, Subject, Subscription, forkJoin } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { take } from 'rxjs/operators';
@@ -19,6 +19,10 @@ import { Router } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { StompService } from '@stomp/ng2-stompjs';
+
+import * as SockJS from 'sockjs-client';
+
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -35,6 +39,13 @@ export class CartComponent implements OnInit {
   productMediaUrls: Map<string, string> = new Map();
   totalPrice = 0;
 
+  stompClient: any;
+  topic: string = '/topic/orderUpdate';
+  webSocketEndPoint: string = 'wss://localhost:8084/ws';
+
+  messagesSubscription: Subscription | undefined;
+
+
   constructor(
     private store: Store<AppState>,
     private orderService: OrderService,
@@ -42,12 +53,14 @@ export class CartComponent implements OnInit {
     private mediaService: MediaService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private stompService: StompService
 
-    
+
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
     this.orderId$ = this.store.select(selectOrderId);
+
   }
 
   ngOnInit(): void {
@@ -55,6 +68,7 @@ export class CartComponent implements OnInit {
       this.userId = id;
       if (this.userId) {
         this.fetchOrdersAndProducts();
+        this.listenForOrderUpdates();
       }
     });
     this.orderId$.pipe(take(1)).subscribe((id) => {
@@ -64,6 +78,11 @@ export class CartComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    if (this.messagesSubscription) {
+      this.messagesSubscription.unsubscribe();
+    }
+  }
 
 
   // this method is used to fetch all orders and products for the current user
@@ -86,7 +105,7 @@ export class CartComponent implements OnInit {
     const productObservables: Observable<any>[] = [];
     this.cart.forEach((order) => {
       order.products = [];
-      
+
       order.productIds.forEach((productId: string) => {
         const productObservable = this.productService.getProductById(productId);
         productObservables.push(productObservable);
@@ -153,7 +172,7 @@ export class CartComponent implements OnInit {
   }
 
   removeFromCart(orderId: string, productId: string): void {
-    this.orderService.deleteProductFromOrder(orderId,productId).subscribe(() => {
+    this.orderService.deleteProductFromOrder(orderId, productId).subscribe(() => {
       this.fetchOrdersAndProducts();
       this.showNotification('Product removed from cart successfully');
     });
@@ -169,18 +188,45 @@ export class CartComponent implements OnInit {
       this.showNotification('Product added to cart successfully');
     });
   }
-  
+
   storeOrderIdInState(orderId: string): void {
     this.store.dispatch(CartActions.storeOrderId({ orderId }));
+  }
+
+  listenForOrderUpdates(): void {
+    this.messagesSubscription = this.stompService.subscribe(this.topic).subscribe(
+      (message) => {
+        // Handle the received message
+        console.log(message);
+        const messageBody = message.body;
+
+        // Check if the message starts with "Order confirmed:"
+        if (messageBody.startsWith('Order confirmed:')) {
+          // Extract the orderId from the message
+          const orderId = messageBody.split(':')[1].trim(); // Split by ":" and get the second part
+          this.showNotification(`Order confirmed: ${orderId}`);
+          this.router.navigate(['/home']);
+        } else if ( messageBody.startsWith('Order denied:')) {
+          // Handle other message types or conditions
+          const orderId = messageBody.split(':')[1].trim(); // Split by ":" and get the second part
+          this.showNotification(`Order denied: ${orderId}`);
+        } else {
+          this.showNotification('an error occurred during the order process');
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.showNotification('Error placing order');
+      }
+    );
   }
 
   buy(): void {
     console.log(this.orderId)
     this.orderService.buyProducts(this.orderId!).subscribe(() => {
-      //navigate to order history
-
-      this.router.navigate(['/home']); // Navigate after orderId is set
-      this.showNotification('Order placed successfully');
+      console.log('Order is being processed');
+      //clear the redux store orderId
+      this.store.dispatch(CartActions.storeOrderId({ orderId: "null" }));
     });
   }
 
@@ -189,7 +235,7 @@ export class CartComponent implements OnInit {
       panelClass: 'custom-snackbar',
       duration: 3000,
       verticalPosition: 'top',
-      horizontalPosition: 'center', 
-    });    
+      horizontalPosition: 'center',
+    });
   }
 }
