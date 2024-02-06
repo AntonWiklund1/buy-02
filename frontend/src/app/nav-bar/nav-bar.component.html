@@ -72,15 +72,16 @@
             @if(avatarUrl$ | async; as avatarUrl){
                 <div><img [src]="avatarUrl || ''" alt="Profile Picture" class="profileImage"></div>}
             <div>
-                <a class="profileName" *ngIf="username$ | async as username">
-                    {{ username.length > 6 ? (username.slice(0, 6) + '...') : username }}
-                </a>
-                <p class="profileRole" *ngIf="userRole$ | async as userRole">
-                    {{ userRole }}
-                </p>
+                @if(username$ | async; as username){
+                    <a class="profileName">
+                        {{ username.length > 6 ? (username.slice(0, 6) + '...') : username }}
+                    </a>}
+                @if(userRole$ | async; as userRole){
+                    <p class="profileRole">
+                        {{ userRole }}
+                    </p>}
             </div>
         </div>
-
     </div>
     <!-- login -->
     <div class="fourthSection section">

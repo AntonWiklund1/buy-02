@@ -1,39 +1,41 @@
 <div class="cartContainer">
   <h1>My cart</h1>
-
-  <div *ngIf="cart.length > 0" class="orders-list">
-    <div class="cart">
-        <div *ngFor="let order of cart" class="order">
-        <p>Order id: {{order.id}}</p>
-        <div *ngFor="let product of order.products" class="orderCard">
-          <div class="orderInfo">
-            <img
-              [src]="getMediaUrl(product.id)"
-              alt="{{ product.name }}"
-              class="productImage"
-            />
-            <div class="productInfo">
-              <p>{{ product.name }}</p>
-              <p>{{ product.price }}$</p>
-            </div>
+  @if(!cart.length){
+    <div class="orders-list">
+      <div class="cart">
+          @for (order of cart; track order.id){
+            <div class="order">
+              <p>Order id: {{order.id}}</p>
+              @for (product of order.products; track product.id){            
+                <div class="orderCard">
+                  <div class="orderInfo">
+                    <img
+                      [src]="getMediaUrl(product.id)"
+                      alt="{{ product.name }}"
+                      class="productImage"
+                    />
+                    <div class="productInfo">
+                      <p>{{ product.name }}</p>
+                      <p>{{ product.price }}$</p>
+                    </div>
+                  </div>
+                  <div class="productActions">
+                    <span class="material-symbols-outlined delete" (click)="removeFromCart(order.id,product.id)"> delete </span>
+                    <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
+                  </div>
+                </div>}
+            </div>}
+        <div class="orderActions">
+          <p>Order Summary:</p>
+          <p>Total {{totalPrice}}</p>
+          <!-- pay on delivery box -->
+          <div class="payOnDelivery">
+            <input type="checkbox" id="payOnDelivery" name="payOnDelivery" value="payOnDelivery">
+            <label for="payOnDelivery">Pay on delivery</label>
           </div>
-          <div class="productActions">
-            <span class="material-symbols-outlined delete" (click)="removeFromCart(order.id,product.id)"> delete </span>
-            <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
-
-          </div>
+          <button type="button" class="Checkout" (click)="buy()">Checkout</button>
         </div>
-      </div>
-      <div class="orderActions">
-        <p>Order Summary:</p>
-        <p>Total {{totalPrice}}</p>
-        <!-- pay on delivery box -->
-        <div class="payOnDelivery">
-          <input type="checkbox" id="payOnDelivery" name="payOnDelivery" value="payOnDelivery">
-          <label for="payOnDelivery">Pay on delivery</label>
-        </div>
-        <button class="Checkout" (click)="buy()">Checkout</button>
       </div>
     </div>
-  </div>
+  }
 </div>
