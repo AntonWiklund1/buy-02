@@ -59,10 +59,7 @@ export function initializeApp(orderService: OrderService, store: Store<AppState>
 export function stompConfigFactory() {
   const config = new StompConfig();
   config.url = () => new SockJS('https://localhost:8084/ws');
-  config.headers = {
-     login: 'guest',
-     passcode: 'guest',
-  };
+  config.headers = {};
   config.heartbeat_in = 0;
   config.heartbeat_out = 20000;
   config.reconnect_delay = 5000;

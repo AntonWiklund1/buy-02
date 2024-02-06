@@ -40,8 +40,8 @@ export class CartComponent implements OnInit {
   totalPrice = 0;
 
   stompClient: any;
-  topic: String = '/topic/orderUpdate';
-  webSocketEndPoint: string = 'https://localhost:8084/ws';
+  topic: string = '/topic/orderUpdate';
+  webSocketEndPoint: string = 'wss://localhost:8084/ws';
 
   messagesSubscription: Subscription | undefined;
 
@@ -76,10 +76,16 @@ export class CartComponent implements OnInit {
       }
     });
 
-    this.messagesSubscription = this.stompService.subscribe('/topic/messages').subscribe((message) => {
-      // Handle the received message
-      console.log(message);
-    });    
+    this.messagesSubscription = this.stompService.subscribe(this.topic).subscribe(
+      (message) => {
+        // Handle the received message
+        console.log(message);
+      },
+      (error) => {
+        // Handle errors
+        console.error(error);
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -87,8 +93,6 @@ export class CartComponent implements OnInit {
       this.messagesSubscription.unsubscribe();
     }
   }
-
-
 
   
   // this method is used to fetch all orders and products for the current user

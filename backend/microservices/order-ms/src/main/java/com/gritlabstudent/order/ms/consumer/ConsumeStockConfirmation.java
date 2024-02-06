@@ -22,8 +22,9 @@ public class ConsumeStockConfirmation {
     private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public ConsumeStockConfirmation(OrderService orderService) {
+    public ConsumeStockConfirmation(OrderService orderService, SimpMessagingTemplate messagingTemplate) {
         this.orderService = orderService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @KafkaListener(topics = "stock-confirmation-topic", groupId = "order-service-group")

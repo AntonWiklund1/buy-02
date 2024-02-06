@@ -1,6 +1,6 @@
 <div class="cartContainer">
   <h1>My cart</h1>
-  @if(!cart.length){
+  @if(orderId !== null){
     <div class="orders-list">
       <div class="cart">
           @for (order of cart; track order.id){
