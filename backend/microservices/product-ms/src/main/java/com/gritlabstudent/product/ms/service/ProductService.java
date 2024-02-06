@@ -180,7 +180,6 @@ public class ProductService {
 
     }
 
-    // In ProductService.java
     public void checkInStock(String orderJson) {
         logger.info("Checking stock for order: {}", orderJson);
         try {

@@ -12,11 +12,16 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class OrderPlacedConsumer {
 
     private final ProductService productService;
     private final ObjectMapper objectMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderPlacedConsumer.class);
 
     @Autowired
     public OrderPlacedConsumer(ProductService productService, ObjectMapper objectMapper) {
@@ -33,10 +38,12 @@ public class OrderPlacedConsumer {
 
             // Perform the business logic with the deserialized order object
             productService.processOrder(order);
-
         } catch (IOException e) {
-            // Handle the exception properly
-            e.printStackTrace();
+            // Log the exception
+            logger.error("Error deserializing order JSON: " + e.getMessage(), e);
+
+            // Handle the exception properly, which may include sending an error message or taking corrective action
         }
     }
 }
+

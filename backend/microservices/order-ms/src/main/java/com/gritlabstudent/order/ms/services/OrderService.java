@@ -133,23 +133,25 @@ public class OrderService {
         if (order == null) {
             return;
         }
-        //Send kafka message to validate the order products are in stock
-        String orderJson = convertOrderToJson(order);
-        orderProductStockProducer.sendOrderProductStock(order.getId(), orderJson);
+        try {
+            // Properly convert order to JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            String orderJson = objectMapper.writeValueAsString(order);
 
+            orderProductStockProducer.sendOrderProductStock(order.getId(), orderJson);
 
-        order.setIsInCart(false);
-        order.setStatus(Status.PENDING);
-        order.setUpdatedAt(new Date());
-        // Calculate the total once and save it
-        BigDecimal total = calculateOrderTotal(orderId);
-        order.setTotal(total); // Set the total on the order before saving
-        orderRepository.save(order);
-        orderPlacedProducer.sendOrderPlaced(order.getId(), orderJson);
-
-        // Now you can use the total that was just calculated
-        processOrder(orderId, total); // Pass the total to the processOrder method
-        System.out.println("Order total calculated: " + total);
+            order.setIsInCart(false);
+            order.setStatus(Status.PENDING);
+            order.setUpdatedAt(new Date());
+            BigDecimal total = calculateOrderTotal(orderId);
+            order.setTotal(total);
+            orderRepository.save(order);
+            processOrder(orderId, total);
+            System.out.println("Order total calculated: " + total);
+        } catch (JsonProcessingException e) {
+            // Handle JSON serialization error
+            e.printStackTrace();
+        }
     }
 
     // Method to convert Order object to JSON string
