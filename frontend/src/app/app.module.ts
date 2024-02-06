@@ -71,10 +71,6 @@ export function stompConfigFactory() {
   return new StompService(config);
 }
 
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -109,7 +105,6 @@ export function stompConfigFactory() {
   providers: [
     {
       provide: APP_INITIALIZER,
-      
       useFactory: initializeApp,
       deps: [OrderService, Store],
       multi: true,

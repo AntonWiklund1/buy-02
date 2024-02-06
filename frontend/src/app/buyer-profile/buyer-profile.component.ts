@@ -29,7 +29,7 @@ export class BuyerProfileComponent implements OnInit {
   productIds: string[] = [];
   mostBoughtProduct = "";
   mostBoughtProductDetails: any;
-    productMediaUrls: Map<string, string> = new Map();
+  productMediaUrls: Map<string, string> = new Map();
   showFavoriteProducts = true;
 
   constructor(
@@ -71,46 +71,45 @@ export class BuyerProfileComponent implements OnInit {
   }
 
   fetchFavoriteProductsDetails(): void {
-  if (this.user?.favoriteProducts) {
-    this.user.favoriteProducts.forEach((productId: any) => {
-      this.productService.getProductById(productId).subscribe((product: any) => {
-        this.favoriteProductsDetails.push(product);
-        // Fetch media for each product
-        this.fetchMediaForProduct(productId);
+    if (this.user?.favoriteProducts) {
+      this.user.favoriteProducts.forEach((productId: any) => {
+        this.productService.getProductById(productId).subscribe((product: any) => {
+          this.favoriteProductsDetails.push(product);
+          // Fetch media for each product
+          this.fetchMediaForProduct(productId);
+        });
       });
-    });
-  }
-}
-
-fetchMediaForProduct(productId: string): void {
-  const backendUrl = 'https://localhost:8443/';
-
-  const defaultImageUrl = 'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png';
-  this.mediaService.getMedia(productId).subscribe(
-    (mediaDataArray) => {
-      let imageUrl = defaultImageUrl;
-      if (Array.isArray(mediaDataArray) && mediaDataArray.length > 0) {
-        const mediaObject = mediaDataArray[0];
-        if (mediaObject?.imagePath) {
-          imageUrl = `${backendUrl}${mediaObject.imagePath}`;
-        }
-      }
-      this.productMediaUrls.set(productId, imageUrl);
-    },
-    (error) => {
-      console.error(error);
-      this.productMediaUrls.set(productId, defaultImageUrl);
     }
-  );
-}
+  }
 
-getMediaUrl(productId: string): string | undefined {
-  return this.productMediaUrls.get(productId);
-}
+  fetchMediaForProduct(productId: string): void {
+    const backendUrl = 'https://localhost:8443/';
+
+    const defaultImageUrl = 'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png';
+    this.mediaService.getMedia(productId).subscribe(
+      (mediaDataArray) => {
+        let imageUrl = defaultImageUrl;
+        if (Array.isArray(mediaDataArray) && mediaDataArray.length > 0) {
+          const mediaObject = mediaDataArray[0];
+          if (mediaObject?.imagePath) {
+            imageUrl = `${backendUrl}${mediaObject.imagePath}`;
+          }
+        }
+        this.productMediaUrls.set(productId, imageUrl);
+      },
+      (error) => {
+        console.error(error);
+        this.productMediaUrls.set(productId, defaultImageUrl);
+      }
+    );
+  }
+
+  getMediaUrl(productId: string): string | undefined {
+    return this.productMediaUrls.get(productId);
+  }
 
 
   fetchBoughtProducts(): void {
-
     this.orderService
       .getOrdersByUserId(this.userId!)
       .subscribe((ordersData) => {
@@ -118,37 +117,36 @@ getMediaUrl(productId: string): string | undefined {
         this.orders.forEach((order) => {
           order.productIds.forEach((productId: string) => {
             this.productIds.push(productId);
-            
           });
         });
         this.getMostBoughtProduct()
       });
   }
 
-//get the most bought product from this.productIds
+  //get the most bought product from this.productIds
   getMostBoughtProduct(): string {
     let counts: any = {};
     let compare = 0;
     for (const word of this.productIds) {
       if (counts[word] === undefined) {
-         counts[word] = 1;
+        counts[word] = 1;
       } else {
-         counts[word] = counts[word] + 1;
+        counts[word] = counts[word] + 1;
       }
       if (counts[word] > compare) {
-         compare = counts[word];
-         this.mostBoughtProduct = word;
+        compare = counts[word];
+        this.mostBoughtProduct = word;
       }
-     }
-     this.getProductById(this.mostBoughtProduct);
+    }
+    this.getProductById(this.mostBoughtProduct);
     return this.mostBoughtProduct;
   }
 
   getProductById(productId: string): any {
-      this.productService.getProductById(productId).subscribe((product: any) => {
-        this.mostBoughtProductDetails = product;
-        console.log("mostBoughtProductDetails: " + JSON.stringify(this.mostBoughtProductDetails));
-      }
+    this.productService.getProductById(productId).subscribe((product: any) => {
+      this.mostBoughtProductDetails = product;
+      console.log("mostBoughtProductDetails: " + JSON.stringify(this.mostBoughtProductDetails));
+    }
     );
   }
 
@@ -180,10 +178,10 @@ getMediaUrl(productId: string): string | undefined {
       duration: 3000,
       verticalPosition: 'top', // This positions the snackbar at the top of the screen
       horizontalPosition: 'center', // This centers the snackbar horizontally
-    });    
+    });
   }
 
-  toggleFavoriteProducts(){
+  toggleFavoriteProducts() {
     this.showFavoriteProducts = !this.showFavoriteProducts;
   }
 

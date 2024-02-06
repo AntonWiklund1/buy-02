@@ -69,7 +69,6 @@ export class CartComponent implements OnInit {
       if (this.userId) {
         this.fetchOrdersAndProducts();
         this.listenForOrderUpdates();
-
       }
     });
     this.orderId$.pipe(take(1)).subscribe((id) => {
@@ -77,8 +76,6 @@ export class CartComponent implements OnInit {
         this.orderId = id;
       }
     });
-
-
   }
 
   ngOnDestroy() {
