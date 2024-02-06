@@ -45,7 +45,7 @@ export class CartComponent implements OnInit {
 
   messagesSubscription: Subscription | undefined;
 
-  
+
   constructor(
     private store: Store<AppState>,
     private orderService: OrderService,
@@ -56,11 +56,11 @@ export class CartComponent implements OnInit {
     private snackBar: MatSnackBar,
     private stompService: StompService
 
-    
+
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
     this.orderId$ = this.store.select(selectOrderId);
-    
+
   }
 
   ngOnInit(): void {
@@ -68,6 +68,8 @@ export class CartComponent implements OnInit {
       this.userId = id;
       if (this.userId) {
         this.fetchOrdersAndProducts();
+        this.listenForOrderUpdates();
+
       }
     });
     this.orderId$.pipe(take(1)).subscribe((id) => {
@@ -76,16 +78,7 @@ export class CartComponent implements OnInit {
       }
     });
 
-    this.messagesSubscription = this.stompService.subscribe(this.topic).subscribe(
-      (message) => {
-        // Handle the received message
-        console.log(message);
-      },
-      (error) => {
-        // Handle errors
-        console.error(error);
-      }
-    );
+
   }
 
   ngOnDestroy() {
@@ -94,7 +87,7 @@ export class CartComponent implements OnInit {
     }
   }
 
-  
+
   // this method is used to fetch all orders and products for the current user
   fetchOrdersAndProducts(): void {
     this.orderService
@@ -115,7 +108,7 @@ export class CartComponent implements OnInit {
     const productObservables: Observable<any>[] = [];
     this.cart.forEach((order) => {
       order.products = [];
-      
+
       order.productIds.forEach((productId: string) => {
         const productObservable = this.productService.getProductById(productId);
         productObservables.push(productObservable);
@@ -182,7 +175,7 @@ export class CartComponent implements OnInit {
   }
 
   removeFromCart(orderId: string, productId: string): void {
-    this.orderService.deleteProductFromOrder(orderId,productId).subscribe(() => {
+    this.orderService.deleteProductFromOrder(orderId, productId).subscribe(() => {
       this.fetchOrdersAndProducts();
       this.showNotification('Product removed from cart successfully');
     });
@@ -198,16 +191,43 @@ export class CartComponent implements OnInit {
       this.showNotification('Product added to cart successfully');
     });
   }
-  
+
   storeOrderIdInState(orderId: string): void {
     this.store.dispatch(CartActions.storeOrderId({ orderId }));
+  }
+
+  listenForOrderUpdates(): void {
+    this.messagesSubscription = this.stompService.subscribe(this.topic).subscribe(
+      (message) => {
+        // Handle the received message
+        console.log(message);
+        const messageBody = message.body;
+
+        // Check if the message starts with "Order confirmed:"
+        if (messageBody.startsWith('Order confirmed:')) {
+          // Extract the orderId from the message
+          const orderId = messageBody.split(':')[1].trim(); // Split by ":" and get the second part
+          this.showNotification(`Order confirmed: ${orderId}`);
+          this.router.navigate(['/home']);
+        } else if ( messageBody.startsWith('Order denied:')) {
+          // Handle other message types or conditions
+          const orderId = messageBody.split(':')[1].trim(); // Split by ":" and get the second part
+          this.showNotification(`Order denied: ${orderId}`);
+        } else {
+          this.showNotification('an error occurred during the order process');
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.showNotification('Error placing order');
+      }
+    );
   }
 
   buy(): void {
     console.log(this.orderId)
     this.orderService.buyProducts(this.orderId!).subscribe(() => {
-      //navigate to order history
-      this.showNotification('Order placed successfully');
+      console.log('Order is being processed');
     });
   }
 
@@ -216,7 +236,7 @@ export class CartComponent implements OnInit {
       panelClass: 'custom-snackbar',
       duration: 3000,
       verticalPosition: 'top',
-      horizontalPosition: 'center', 
-    });    
+      horizontalPosition: 'center',
+    });
   }
 }
