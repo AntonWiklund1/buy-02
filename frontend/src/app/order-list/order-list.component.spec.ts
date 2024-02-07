@@ -1,59 +1,81 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OrderListComponent } from './order-list.component';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { MediaService } from '../services/media.service';
 
-// Correctly declare these at the top of your describe block
-let component: OrderListComponent;
-let fixture: ComponentFixture<OrderListComponent>;
+import { MockStore, MockOrderService, MockProductService, MockMediaService } from '../services/mock.service';
 
-// Mock classes
-class MockStore {
-  select = jasmine.createSpy().and.returnValue(of('mockUserId'));
-}
-
-class MockOrderService {
-  getOrdersByUserId = jasmine.createSpy().and.returnValue(of([{ id: 'order1', productIds: ['product1', 'product2'] }]));
-}
-
-class MockProductService {
-  getProductById = jasmine.createSpy().and.returnValue(of({ id: 'product1', name: 'Product 1' }));
-}
-
-class MockMediaService {
-  getMedia = jasmine.createSpy().and.returnValue(of([{ imagePath: 'path/to/media.jpg' }]));
-}
 
 describe('OrderListComponent', () => {
+  let component: OrderListComponent;
+  let fixture: ComponentFixture<OrderListComponent>;
+  let mockStore: MockStore;
+  let mockOrderService: MockOrderService;
+  let mockProductService: MockProductService;
+  let mockMediaService: MockMediaService;
+
   beforeEach(async () => {
+    // Recreate mock services for each test to ensure clean state
+    mockStore = new MockStore();
+    mockOrderService = new MockOrderService();
+    mockProductService = new MockProductService();
+    mockMediaService = new MockMediaService();
+
     await TestBed.configureTestingModule({
-      declarations: [OrderListComponent],
+      imports: [OrderListComponent],
       providers: [
-        { provide: Store, useClass: MockStore },
-        { provide: OrderService, useClass: MockOrderService },
-        { provide: ProductService, useClass: MockProductService },
-        { provide: MediaService, useClass: MockMediaService }
+        { provide: Store, useValue: mockStore },
+        { provide: OrderService, useValue: mockOrderService },
+        { provide: ProductService, useValue: mockProductService },
+        { provide: MediaService, useValue: mockMediaService }
       ],
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(OrderListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
+
+  afterEach(() => {
+      mockProductService.getProductById.calls.reset();
+      mockMediaService.getMedia.calls.reset();
+  });
+
+
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch orders and product media on init', () => {
-    // Make sure to call actual methods on your mock service instances if needed to verify interactions
-    // This check needs to be adjusted according to what your mock data and component logic actually does
-    expect(MockOrderService.prototype.getOrdersByUserId).toHaveBeenCalled();
-    expect(component.orders.length).toBeGreaterThan(0); // Adjust this line based on your mock logic
-    // Verify more interactions and component state as needed
+  it('should correctly fetch and process orders on init', (done) => {
+    spyOn(component, 'fetchOrdersAndProducts').and.callThrough();
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    component.userId$.subscribe(() => {
+      expect(component.fetchOrdersAndProducts).toHaveBeenCalled();
+      expect(mockOrderService.getOrdersByUserId).toHaveBeenCalledWith('mockUserId'); // Corrected to match mockStore's return
+      expect(component.orders.length).toBe(1);
+      expect(component.orders[0].productIds.length).toBe(2);
+      done();
+    });
   });
+  
+  it('should toggle order expansion', () => {
+    // Initial setup for an order
+    const order = { id: 'order1', expanded: false };
+    component.expandOrder(order);
+    expect(order.expanded).toBeTrue();
+
+    // Simulate toggling back
+    component.expandOrder(order);
+    expect(order.expanded).toBeFalse();
+  });
+
+  // Add more tests as needed to cover different scenarios and edge cases
 });

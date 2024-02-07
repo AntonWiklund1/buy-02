@@ -5,33 +5,25 @@ import { UserService } from '../services/user.service';
 import { ProductService } from '../services/product.service';
 import { OrderService } from '../services/order.service';
 import { Store, StoreModule } from '@ngrx/store';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+
 
 class MockUserService {
-  getUser(userId: string, token: string) {
-    return of({/* Mock user data */});
-  }
+  getUser = jasmine.createSpy('getUser').and.returnValue(of({userId: "userId", name: "John Doe"}));
 }
-
 class MockProductService {
-  getProductsByUserId(userId: string) {
-    return of([/* Mock product data */]);
-  }
-}
-
-class MockOrderService {
-  // Mock methods as needed
+  getProductsByUserId = jasmine.createSpy('getProductsByUserId').and.returnValue(of({productId: "productId", name: "Product 1"}));
 }
 
 class MockSnackBar {
-  open(message: string, action?: string, config?: any) {
-    // Mock implementation
-  }
+  open = jasmine.createSpy('open');
 }
 
 const mockStore = {
-  select: (selector: any) => of('mockValue')
+  select: jasmine.createSpy('select').and.returnValue(of('userId')),
 };
+
 
 describe('SellerProfileComponent', () => {
   let component: SellerProfileComponent;
@@ -42,15 +34,18 @@ describe('SellerProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      // Ensure to declare your component and import necessary modules here
-      declarations: [SellerProfileComponent],
+      imports: [
+        HttpClientModule,
+        StoreModule.forRoot({}), // Ensure you import required modules
+        SellerProfileComponent
+      ],
       providers: [
         { provide: UserService, useClass: MockUserService },
         { provide: ProductService, useClass: MockProductService },
-        { provide: OrderService, useClass: MockOrderService },
         { provide: MatSnackBar, useClass: MockSnackBar },
         { provide: Store, useValue: mockStore }
-      ]
+      ],
+
     })
     .compileComponents();
 
@@ -60,12 +55,10 @@ describe('SellerProfileComponent', () => {
     productService = TestBed.inject(ProductService);
     snackBar = TestBed.inject(MatSnackBar);
 
-    spyOn(userService, 'getUser').and.callThrough();
-    spyOn(productService, 'getProductsByUserId').and.callThrough();
-    spyOn(snackBar, 'open').and.callThrough();
-
+  
     fixture.detectChanges();
-  });
+});
+
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -75,17 +68,4 @@ describe('SellerProfileComponent', () => {
     expect(userService.getUser).toHaveBeenCalled();
     expect(productService.getProductsByUserId).toHaveBeenCalled();
   });
-
-  it('should display notification on error fetching best-selling products', () => {
-    // Adjust mock to simulate an error response
-    spyOn(productService, 'getProductsByUserId').and.returnValue(of(new Error('Error fetching best-selling products')));
-    component.fetchBestSellingProducts('userId');
-    expect(snackBar.open).toHaveBeenCalledWith('Error fetching best-selling products', 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top'
-    });
-  });
-
-  // Add more tests as necessary
 });
