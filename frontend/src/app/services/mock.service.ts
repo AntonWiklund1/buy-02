@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 // Mock Store for NGRX
 export class MockStore {

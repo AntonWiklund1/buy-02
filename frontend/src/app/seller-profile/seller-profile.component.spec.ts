@@ -3,9 +3,8 @@ import { SellerProfileComponent } from './seller-profile.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../services/user.service';
 import { ProductService } from '../services/product.service';
-import { OrderService } from '../services/order.service';
 import { Store, StoreModule } from '@ngrx/store';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -53,12 +52,9 @@ describe('SellerProfileComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
     productService = TestBed.inject(ProductService);
-    snackBar = TestBed.inject(MatSnackBar);
 
-  
     fixture.detectChanges();
 });
-
 
   it('should create', () => {
     expect(component).toBeTruthy();
