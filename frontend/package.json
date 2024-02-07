@@ -27,6 +27,7 @@
     "@ngrx/store-devtools": "^17.1.0",
     "@stomp/ng2-stompjs": "^8.0.0",
     "@stomp/stompjs": "^7.0.0",
+    "cypress": "^13.6.4",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
     "ngx-cookie-service": "^17.0.1",
