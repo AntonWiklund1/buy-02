@@ -36,7 +36,7 @@
 
     - name: Run the Docker Compose command
       command:
-        cmd: docker-compose -f docker-compose-prod.yml up -d --build
+        cmd: docker-compose -f ../buy-01/mr-jenk/backend/docker-compose-prod.yml up -d --build
         chdir: ../buy-01/mr-jenk/backend
       environment:
         mongodbusername: Gritlab

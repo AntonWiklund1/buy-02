@@ -29,7 +29,6 @@ export class MediaService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    // No need to set the Content-Type header, HttpClient will set it automatically
     return this.http.post(this.apiUploadUrl, formData, { headers: headers, responseType: 'text' });
   }
 
