@@ -4,6 +4,8 @@ import { ProductListComponent } from './product-list.component';
 import { ProductService } from '../services/product.service';
 import { MediaService } from '../services/media.service';
 import { of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 // Mock implementations for services
 class MockProductService {
@@ -29,6 +31,8 @@ describe('ProductListComponent', () => {
       imports: [
         // Mock the store module using an empty reducer or a specific mock reducer
         StoreModule.forRoot({ auth: mockAuthReducer }),
+        HttpClientModule,
+        FormsModule // Add FormsModule to the imports array
       ],
       declarations: [ProductListComponent],
       providers: [

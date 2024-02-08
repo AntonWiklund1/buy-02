@@ -8,6 +8,9 @@ import { LogInComponent } from './logIn.component';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { MediaService } from '../services/media.service';
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 // Mock implementations for services
 class MockUserService {
@@ -34,7 +37,8 @@ describe('LogInComponent', () => {
       imports: [
         FormsModule,
         RouterTestingModule,
-        StoreModule.forRoot({}, {})
+        StoreModule.forRoot({}, {}),
+        HttpClientModule
       ],
       declarations: [LogInComponent],
       providers: [

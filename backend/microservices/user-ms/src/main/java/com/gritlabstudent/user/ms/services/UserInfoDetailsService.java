@@ -30,7 +30,7 @@ public class UserInfoDetailsService implements UserDetailsService {
 
         // Initialize authorities
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
         // Return Spring Security User object
         return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),

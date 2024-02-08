@@ -9,8 +9,8 @@ import java.util.List;
 
 public class SimpleUserDetails implements UserDetails {
 
-    private String username;
-    private Collection<? extends GrantedAuthority> authorities;
+    private final String username;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     public SimpleUserDetails(String username, List<SimpleGrantedAuthority> authorities) {
         this.username = username;

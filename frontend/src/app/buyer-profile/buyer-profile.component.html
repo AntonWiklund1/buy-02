@@ -17,9 +17,9 @@
                                 <img [src]="getMediaUrl(product.id)" alt="{{ product.name }}" class="productImage">
                             </div>
                             <div class="productInfoDiv">
-                                <p>{{ product.name.slice(0, 20) }}</p>
+                                <p>{{ product.name?.slice(0, 20) }}</p>
                                 <p>{{ product.price }}€</p>
-                                <p>{{ product.description.slice(0, 20) }}</p>
+                                <p>{{ product.description?.slice(0, 20) }}</p>
                             </div>
                             <div class="productActionDiv">
                                 <span class="material-symbols-outlined productAction"
@@ -44,7 +44,7 @@
 
                                 <h3>{{mostBoughtProductDetails.name}}</h3>
                                 <p>{{mostBoughtProductDetails.price}}€</p>
-                                <p>{{mostBoughtProductDetails.description.slice(0, 20)}}</p>
+                                <p>{{mostBoughtProductDetails.description?.slice(0, 20)}}</p>
                             </div>
                             <div class="mostBoughtProductAction">
                                 <span class="material-symbols-outlined productAction"

@@ -79,13 +79,13 @@ services:
       - MONGO_HOST=mongodb
       - ENV_KAFKA_HOST=kafka
 
-  # frontend:
-  #   build:
-  #     context: ..
-  #     dockerfile: frontend/dockerfile.frontend
-  #   image: frontend:latest
-  #   ports:
-  #     - "4200:443"
+  frontend:
+    build:
+      context: ..
+      dockerfile: frontend/dockerfile.frontend
+    image: frontend:latest
+    ports:
+      - "4200:443"
 
   mongodb:
     image: mongo:latest

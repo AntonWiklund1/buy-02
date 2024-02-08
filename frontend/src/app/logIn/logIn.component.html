@@ -72,7 +72,7 @@
 
     @if(showLogIn()){
       <button type="button" class="submit" (click)="LogIn()">Log in</button>
-      <p>Don't have an account? <a (click)="goSignUp()"> Sign Up </a></p>
+      <p>Don't have an account? <a (click)="goSignUp()" class="signUp"> Sign Up </a></p>
     }
     @if(showSignUp()){
       <button type="button" class="signUp" (click)="validateForm()">Sign Up</button>

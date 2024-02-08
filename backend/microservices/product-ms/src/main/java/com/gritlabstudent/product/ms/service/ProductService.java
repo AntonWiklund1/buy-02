@@ -34,9 +34,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-    private SellerGainProducer sellerGainProducer;
+    private final SellerGainProducer sellerGainProducer;
 
-    private StockConfirmationProducer stockConfirmationProducer;
+    private final StockConfirmationProducer stockConfirmationProducer;
 
     private final ObjectMapper objectMapper;
 

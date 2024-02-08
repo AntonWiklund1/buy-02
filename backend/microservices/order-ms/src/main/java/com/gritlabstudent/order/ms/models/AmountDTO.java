@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Getter
 public class AmountDTO {
-    private BigDecimal amount;
+    private final BigDecimal amount;
 
 
     public AmountDTO(BigDecimal amount) {

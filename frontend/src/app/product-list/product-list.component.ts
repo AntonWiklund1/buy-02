@@ -3,14 +3,12 @@ import { ProductService } from '../services/product.service';
 import { MediaService } from '../services/media.service';
 
 import { Store } from '@ngrx/store';
-import { AuthState } from '../state/auth/auth.reducer';
 import * as AuthSelectors from '../state/auth/auth.selector';
 import { take } from 'rxjs/operators';
 
 import { OrderService } from '../services/order.service';
 import { selectOrderId } from '../state/cart/cart.selectors';
 import { Observable } from 'rxjs';
-import { CartState } from '../state/cart/cart.reducer';
 import { AppState } from '../state/app.state';
 
 import { MatSnackBar } from '@angular/material/snack-bar';

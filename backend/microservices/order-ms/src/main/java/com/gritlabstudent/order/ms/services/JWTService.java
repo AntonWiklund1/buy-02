@@ -22,7 +22,7 @@ import java.util.function.Function;
 @Component
 public class JWTService {
 
-    private String encodedSecretKey = "xajG3FHq3hTBkY56D9/0PJKJGqPf2bpXKAcC6KTHsZo=";
+    private final String encodedSecretKey = "xajG3FHq3hTBkY56D9/0PJKJGqPf2bpXKAcC6KTHsZo=";
     private Key SECRET;
 
     @PostConstruct
