@@ -1,6 +1,6 @@
 // src/environments/environment.prod.ts
 export const environment = {
     production: true,
-    // ... other environment specific settings
+    APIGATEWAYHOST: 'https://164.90.180.143:8443'
   };
   

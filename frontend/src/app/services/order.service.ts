@@ -10,13 +10,15 @@ import { switchMap, map, catchError, of } from 'rxjs';
 import { AppState } from '../state/app.state'; // Adjust according to your project structure
 import * as CartActions from '../state/cart/cart.actions'; // Adjust according to your project structure
 
+import { environment } from 'src/environments/environment.prod';
+
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'https://localhost:8084/api/orders';
+  private apiUrl = environment.APIGATEWAYHOST+'/api/orders';
 
   constructor(private http: HttpClient,
     private store: Store<AppState>

@@ -5,16 +5,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { environment } from 'src/environments/environment.prod';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class MediaService {
 
-  private apiUploadUrl = 'https://localhost:8443/media/upload';
-  private apiGetMediaUrl = 'https://localhost:8443/media/product/';
-  private apiUploadAvatarUrl = 'https://localhost:8443/api/users';
-  private apiGetAvatarUrl = 'https://localhost:8443/api/users';
+  private apiUploadUrl = environment.APIGATEWAYHOST + '/media/upload';
+  private apiGetMediaUrl = environment.APIGATEWAYHOST + '/media/product/';
+  private apiUploadAvatarUrl = environment.APIGATEWAYHOST + '/api/users';
+  private apiGetAvatarUrl = environment.APIGATEWAYHOST + '/api/users';
 
   constructor(private http: HttpClient) { }
 

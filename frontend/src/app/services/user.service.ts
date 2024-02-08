@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiCreateUserUrl = 'https://localhost:8443/api/users';
-  private apiGetUserUrl = 'https://localhost:8443/api/users';
-  private apiLogInUrl = 'https://localhost:8443/api/auth'; // checking out
+  private apiCreateUserUrl = environment.APIGATEWAYHOST+ '/api/users';
+  private apiGetUserUrl = environment.APIGATEWAYHOST+'/api/users';
+  private apiLogInUrl = environment.APIGATEWAYHOST+'/api/auth'; // checking out
   constructor(private http: HttpClient) {}
 
   // Create a new user with JWT token

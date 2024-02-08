@@ -86,6 +86,10 @@ services:
     image: frontend:latest
     ports:
       - "4200:443"
+    depends_on:
+      - api-gateway
+    environment:
+      - API-GATEWAY-HOST-IP=https://localhost:8443
 
   mongodb:
     image: mongo:latest
