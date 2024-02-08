@@ -88,8 +88,6 @@ services:
       - "4200:443"
     depends_on:
       - api-gateway
-    environment:
-      - API-GATEWAY-HOST-IP=https://164.90.180.143:8443
 
   mongodb:
     image: mongo:latest
