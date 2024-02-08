@@ -10,7 +10,7 @@ RUN npm install -g @angular/cli
 
 COPY frontend/ ./
 
-RUN npm run build --configuration=production
+RUN ng serve --pro
 
 FROM nginx:alpine
 
