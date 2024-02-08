@@ -46,7 +46,7 @@ public class MediaService {
         if (originalFileName != null && originalFileName.contains(".")) {
             fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
         }
-        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+        String uniqueFileName = UUID.randomUUID() + fileExtension;
 
         // Store the file on the server with the new unique file name
         Files.copy(file.getInputStream(), this.rootLocation.resolve(uniqueFileName));

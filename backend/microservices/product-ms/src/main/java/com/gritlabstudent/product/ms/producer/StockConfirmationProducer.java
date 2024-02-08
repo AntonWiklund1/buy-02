@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class StockConfirmationProducer {
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
     public StockConfirmationProducer(KafkaTemplate<String, String> kafkaTemplate) {

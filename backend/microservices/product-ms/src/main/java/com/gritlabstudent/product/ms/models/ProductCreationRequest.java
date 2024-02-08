@@ -14,7 +14,7 @@ public class ProductCreationRequest {
     @Id
     private String id;
     // This is the getProduct() method that your controller is calling
-    private Product product;
+    private final Product product;
     @Setter
     private ProductCreationStatus status;
 

@@ -113,10 +113,10 @@ public class MediaController {
     @ResponseBody
     public ResponseEntity<Resource> serveAvatar(@PathVariable String filename) {
         Path filePath = Paths.get(mediaPath, "avatars", filename);
-        log.info("Serving file: {}", filePath.toString());
+        log.info("Serving file: {}", filePath);
         Resource file = new FileSystemResource(filePath);
         if (!file.exists() || !file.isReadable()) {
-            log.warn("File not found or not readable: {}", filePath.toString());
+            log.warn("File not found or not readable: {}", filePath);
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(file);
