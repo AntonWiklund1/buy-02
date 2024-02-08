@@ -13,7 +13,21 @@ pipeline {
                 sh './create.sh'
             }
         }
-
+        stage('Deploy to Production') {
+            steps {
+                script {
+                    ansiblePlaybook(
+                      colorized: true,
+                      credentialsId: 'deployssh',
+                      disableHostKeyChecking: true,
+                      installation: 'Ansible',
+                      inventory: '/etc/ansible',
+                      playbook: './playbook.yml',
+                      vaultTmpPath: ''
+                  )
+                }
+            }
+        }
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -62,21 +76,6 @@ pipeline {
                     dir('backend/microservices/user-ms/') {
                         junit 'target/surefire-reports/TEST-*.xml'
                     }
-                }
-            }
-        }
-        stage('Deploy to Production') {
-            steps {
-                script {
-                    ansiblePlaybook(
-                      colorized: true,
-                      credentialsId: 'deployssh',
-                      disableHostKeyChecking: true,
-                      installation: 'Ansible',
-                      inventory: '/etc/ansible',
-                      playbook: './playbook.yml',
-                      vaultTmpPath: ''
-                  )
                 }
             }
         }

@@ -22,6 +22,7 @@
         else
           git pull origin test-production
         fi
+        echo *
         ls -la
 
     - name: Run ./create.sh
