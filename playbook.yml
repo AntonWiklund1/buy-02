@@ -22,9 +22,10 @@
         else
           git pull origin test-production
         fi
+        ls -la
 
-    - name: Run create.sh
-      shell: create.sh
+    - name: Run ./create.sh
+      shell: ./create.sh
 
     - name: Ensure pip is installed (Debian)
       apt:
