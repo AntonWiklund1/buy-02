@@ -7,11 +7,13 @@
   tasks:
     - name: Navigate to the repository directory and pull the latest changes
       shell: |
-        cd ../buy-01/mr-jenk
-        git pull origin main
+        mkdir buy-02
+        cd buy-02
+        ls -la
+        git pull origin test-production
 
     - name: Run create.sh
-      shell: ../buy-01/mr-jenk/create.sh
+      shell: create.sh
 
     - name: Ensure pip is installed (Debian)
       apt:
@@ -36,8 +38,8 @@
 
     - name: Run the Docker Compose command
       command:
-        cmd: docker-compose -f ../buy-01/mr-jenk/backend/docker-compose-prod.yml up -d --build
-        chdir: ../buy-01/mr-jenk/backend
+        cmd: docker-compose -f ./backend/docker-compose-prod.yml up -d --build
+        chdir: backend
       environment:
         mongodbusername: Gritlab
         mongodbpass: Gritlab
