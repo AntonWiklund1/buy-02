@@ -25,8 +25,11 @@
         echo *
         ls -la
 
-    - name: Run ./create.sh
-      shell: ./create.sh
+    - name: Run create.sh
+      command:
+        chdir: buy-ƒ02
+      shell: 
+        create.sh
 
     - name: Ensure pip is installed (Debian)
       apt:
