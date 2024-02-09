@@ -8,11 +8,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Generate Certificates') {
-            steps {
-                sh './create.sh'
-            }
-        }
         stage('Deploy to Production') {
             steps {
                 script {
