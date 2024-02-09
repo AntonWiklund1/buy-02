@@ -57,7 +57,7 @@ export function initializeApp(orderService: OrderService, store: Store<AppState>
 // Define your Stomp configuration - this example assumes a SockJS endpoint
 export function stompConfigFactory() {
   const config = new StompConfig();
-  config.url = () => new SockJS(environment.WEBSOCKETHOST);
+  config.url = () => new SockJS(environment.WEBSOCKETHOST+'/ws');
   config.headers = {};
   config.heartbeat_in = 0;
   config.heartbeat_out = 20000;
