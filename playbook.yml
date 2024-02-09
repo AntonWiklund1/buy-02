@@ -32,9 +32,7 @@
 
     - name: Run createOrderMsCert.sh
       command:
-        chdir: buy-02
         cmd: sh ./createOrderMsCert.sh
-
 
     - name: Ensure pip is installed (Debian)
       apt:
@@ -50,18 +48,17 @@
       get_url:
         url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
-        mode: 'u+x,g+x'
+        mode: "u+x,g+x"
 
     - name: Make Docker Compose executable
       file:
         path: /usr/local/bin/docker-compose
-        mode: 'u+x,g+x'
+        mode: "u+x,g+x"
 
     - name: Run the Docker Compose command
       command:
-        chdir: /root/buy-02/backend  # Adjusted path
+        chdir: /root/buy-02/backend # Adjusted path
         cmd: docker-compose -f ./docker-compose-prod.yml up -d --build
       environment:
         mongodbusername: Gritlab
         mongodbpass: Gritlab
-      
