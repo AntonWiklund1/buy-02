@@ -82,7 +82,7 @@ services:
   frontend:
     build:
       context: ..
-      dockerfile: frontend/dockerfile.frontend
+      dockerfile: frontend/dockerfile.dev
     image: frontend:latest
     ports:
       - "4200:443"

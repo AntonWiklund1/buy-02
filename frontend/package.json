@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --poll=2000",
     "build": "ng build",
+    "builddev": "ng build --configuration=development",
+    "buildprod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

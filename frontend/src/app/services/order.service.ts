@@ -1,16 +1,15 @@
 
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { selectUserId } from '../state/auth/auth.selector';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { switchMap, map, catchError, of } from 'rxjs';
+import { switchMap, map, catchError, of, Observable } from 'rxjs';
 import { AppState } from '../state/app.state'; // Adjust according to your project structure
 import * as CartActions from '../state/cart/cart.actions'; // Adjust according to your project structure
 
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 
 
