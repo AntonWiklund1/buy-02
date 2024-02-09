@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/products/status/**").permitAll()
 
                         // Order-specific endpoints
-                        .pathMatchers(HttpMethod.POST, "/api/orders").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/orders", "api/orders/**").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/orders", "/api/orders/**").permitAll()
                         .pathMatchers(HttpMethod.DELETE, "/api/orders/**").permitAll()
                         .pathMatchers(HttpMethod.PUT, "/api/orders/**").permitAll()
