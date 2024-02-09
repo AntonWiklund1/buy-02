@@ -47,6 +47,13 @@ public class SecurityConfig {
                         // kafka related endpoints
                         .pathMatchers(HttpMethod.GET, "/api/products/status/**").permitAll()
 
+                        // Order-specific endpoints
+                        .pathMatchers(HttpMethod.POST, "/api/orders").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/orders", "/api/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.DELETE, "/api/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.PUT, "/api/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.PATCH, "/api/orders/**").permitAll()
+
                         // All other requests require authentication
                         .anyExchange().authenticated());
         return http.build();
