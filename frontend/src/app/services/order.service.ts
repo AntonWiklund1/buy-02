@@ -78,8 +78,6 @@ export class OrderService {
     );
   }
 
-
-
   buyProducts(orderId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/buy/${orderId}`, null, {
       responseType: 'text',
