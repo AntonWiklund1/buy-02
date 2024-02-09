@@ -29,6 +29,7 @@
       command:
         chdir: buy-02
         cmd: sh ./create.sh
+        cmd: sh ./createOrderMsCert.sh
 
     - name: Ensure pip is installed (Debian)
       apt:
