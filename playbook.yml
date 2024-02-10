@@ -5,12 +5,6 @@
   become: true
   become_user: root
   tasks:
-    # - name: Navigate to the repository directory and pull the latest changes
-    #   shell: |
-    #     mkdir buy-02
-    #     cd buy-02
-    #     ls -la
-    #     git pull origin test-production
 
     - name: Clone the repository
       shell: |
@@ -22,8 +16,6 @@
         else
           git pull origin test-production
         fi
-        echo *
-        ls -la
 
     - name: Run create.sh
       command:
