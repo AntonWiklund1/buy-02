@@ -8,6 +8,23 @@ pipeline {
                 checkout scm
             }
         }
+        // This stage is for running end-to-end tests using Cypress
+        stage('Frontend E2E test') {
+            environment {
+                PATH = "/root/.nvm/versions/node/v20.11.0/bin:$PATH"
+            }
+            steps {
+                script {
+                    dir('frontend') {
+                        // Assuming Cypress is already a devDependency in your package.json
+                        // If not, add it using 'npm install cypress --save-dev'
+                        // No need to install Cypress globally, use npx to run it locally from the project
+                        // Run Cypress tests in headless mode
+                        sh 'npx cypress run'
+                    }
+                }
+            }
+        }
         stage('Deploy to Production') {
             steps {
                 script {
