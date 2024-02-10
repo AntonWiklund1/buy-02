@@ -41,6 +41,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~17.1.0",
     "@angular/compiler-cli": "~17.1.0",
+    "cypress": "^13.6.4",
     "@types/jasmine": "~5.1.4",
     "@types/js-cookie": "^3.0.6",
     "@types/sockjs-client": "^1.5.4",
