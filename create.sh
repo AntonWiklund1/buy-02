@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the directory where the certificates will be placed
-CERT_DIR="backend/microservices/api-gateway/src/main/resources"
+CERT_DIR="./backend/microservices/api-gateway/src/main/resources"
 
 # Create the directory if it doesn't exist
 mkdir -p $CERT_DIR
