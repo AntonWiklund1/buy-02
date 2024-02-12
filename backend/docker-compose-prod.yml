@@ -8,6 +8,11 @@ services:
     image: api-gateway:latest
     ports:
       - "8443:8443"
+    depends_on:
+      - user-ms
+      - product-ms
+      - media-ms
+      - order-ms
 
   user-ms:
     build:

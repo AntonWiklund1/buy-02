@@ -1,4 +1,4 @@
-FROM openjdk:17-slim as build
+FROM openjdk:17-slim AS build
 
 WORKDIR /tmp1/tmp2/app
 
@@ -15,7 +15,5 @@ FROM openjdk:17-slim
 WORKDIR /app
 
 COPY --from=build /tmp1/tmp2/app/target/api-gateway-0.0.1-SNAPSHOT.jar app.jar
-
-EXPOSE 8081
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

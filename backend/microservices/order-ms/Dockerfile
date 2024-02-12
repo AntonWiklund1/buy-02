@@ -3,9 +3,11 @@ FROM openjdk:17-slim as build
 WORKDIR /tmp1/tmp2/app
 
 COPY ./backend/pom.xml ../../pom.xml
+
 COPY ./backend/microservices/order-ms/ .
 
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y maven
+
 RUN mvn clean install
 
 FROM openjdk:17-slim
