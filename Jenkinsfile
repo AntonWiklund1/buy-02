@@ -14,11 +14,13 @@ pipeline {
                 PATH = "/root/.nvm/versions/node/v20.11.0/bin:$PATH"
             }
             steps {
+                script{
+                        sh 'sh create.sh'
+                }
                 script {
                     dir('frontend') {
                         sh 'npm install'
                         sh "ng serve &"
-
                         sh 'npx cypress run'
                     }
                 }
