@@ -16,7 +16,11 @@ pipeline {
                         // Start Angular application in the background
                         sh 'nohup ng serve --port 4200 &'
                         // Wait for the application to be accessible
-                        sh 'npx wait-on https://localhost:4200'
+                        sh '''
+                            source ~/.nvm/nvm.sh
+                            nvm use 20.11.0
+                            npx wait-on https://localhost:4200
+                            '''
                     }
                 }
             }
