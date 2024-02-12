@@ -14,7 +14,7 @@ pipeline {
                 script {
                     dir('frontend') {
 
-                        sh 'npm i'
+                        sh '$(which npm) i'
                         // Start Angular application in the background
                         sh 'nohup ng serve --port 4200 &'
                         // Wait for the application to be accessible
