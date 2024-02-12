@@ -1,6 +1,6 @@
 export const environment = {
-  production: false,
-  baseUrl: 'https://localhost:8443',
-  APIGATEWAYHOST: 'https://localhost:8443',
-  WEBSOCKETHOST: 'https://localhost:8084'
+  production: true,
+  APIGATEWAYHOST: 'https://164.90.180.143:8443',
+  baseUrl: 'https://164.90.180.143:8443',
+  WEBSOCKETHOST: 'https://164.90.180.143:8084'
 };
