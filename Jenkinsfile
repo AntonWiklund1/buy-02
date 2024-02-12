@@ -9,23 +9,33 @@ pipeline {
             }
         }
         // This stage is for running end-to-end tests using Cypress
-        stage('Frontend E2E test') {
+        stage('Start Angular Server') {
+            steps {
+                script {
+                    dir('frontend') {
+                        // Start Angular application in the background
+                        sh 'nohup ng serve --port 4200 &'
+                        // Wait for the application to be accessible
+                        sh 'npx wait-on https://localhost:4200'
+                    }
+                }
+            }
+        }
+
+        stage('Frontend E2E Tests') {
             environment {
                 PATH = "/root/.nvm/versions/node/v20.11.0/bin:$PATH"
             }
             steps {
-                script{
-                        sh 'sh create.sh'
-                }
                 script {
                     dir('frontend') {
-                        sh 'npm install'
-                        sh "ng serve &"
+                        // Now run Cypress tests
                         sh 'npx cypress run'
                     }
                 }
             }
         }
+
         stage('Deploy to Production') {
             steps {
                 script {
