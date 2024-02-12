@@ -17,10 +17,13 @@ pipeline {
                         sh 'nohup ng serve --port 4200 &'
                         // Wait for the application to be accessible
                         sh '''
-                            source ~/.nvm/nvm.sh
+                            /bin/bash -c '
+                            source /var/lib/jenkins/.nvm/nvm.sh
                             nvm use 20.11.0
                             npx wait-on https://localhost:4200
+                            '
                             '''
+
                     }
                 }
             }
