@@ -27,6 +27,10 @@
         chdir: buy-02
         cmd: sh ./createOrderMsCert.sh
 
+    - name: Make it trusty
+      command: 
+        cmd: mkcert -install 
+
     - name: Ensure pip is installed (Debian)
       apt:
         name: python3-pip
