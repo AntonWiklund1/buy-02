@@ -24,6 +24,10 @@ WORKDIR /app
 
 COPY --from=build /tmp1/tmp2/app/target/order-ms-0.0.1-SNAPSHOT.jar app.jar
 
+# copy the keystore and truststore to the container
+COPY --from=build /etc/ssl/certs/localhost.pem /etc/ssl/certs/localhost.pem
+COPY --from=build /etc/ssl/certs/localhost.p12 /etc/ssl/certs/localhost.p12
+COPY --from=build /etc/ssl/private/localhost-key.pem /etc/ssl/private/localhost-key.pem
 
 EXPOSE 8084
 
