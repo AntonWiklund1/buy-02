@@ -17,7 +17,7 @@ pipeline {
                 script {
                     dir('frontend') {
                         sh 'npm install'
-                        sh "npm start"
+                        sh "ng serve &"
 
                         sh 'npx cypress run'
                     }
