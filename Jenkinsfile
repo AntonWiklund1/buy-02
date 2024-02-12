@@ -10,6 +10,10 @@ pipeline {
         }
         // This stage is for running end-to-end tests using Cypress
         stage('Start Angular Server') {
+            environment {
+                PATH = "/root/.nvm/versions/node/v20.11.0/bin:$PATH"
+            }
+            
             steps {
                 script {
                     dir('frontend') {
