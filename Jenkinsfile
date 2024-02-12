@@ -16,7 +16,6 @@ pipeline {
             steps {
                 script {
                     dir('frontend') {
-                        sh 'Xvfb :1 -screen 0 1024x768x16'
                         // Assuming Cypress is already a devDependency in your package.json
                         // If not, add it using 'npm install cypress --save-dev'
                         // No need to install Cypress globally, use npx to run it locally from the project
