@@ -13,6 +13,9 @@ pipeline {
             steps {
                 script {
                     dir('frontend') {
+                        sh 'npm install -g @angular/cli'
+
+                        sh 'npm i'
                         // Start Angular application in the background
                         sh 'nohup ng serve --port 4200 &'
                         // Wait for the application to be accessible
