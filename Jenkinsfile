@@ -13,7 +13,9 @@ pipeline {
             steps {
                 script {
                     dir('frontend') {
-                        // Assuming NVM is now installed for Jenkins user and nvm.sh is in its home directory
+                        // Start Angular application in the background
+                        sh 'nohup ng serve --port 4200 &'
+                        // Wait for the application to be accessible
                         sh '''
                             /bin/bash -c '
                             source /var/lib/jenkins/.nvm/nvm.sh
