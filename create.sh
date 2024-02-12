@@ -7,7 +7,7 @@ CERT_DIR="./backend/microservices/api-gateway/src/main/resources"
 mkdir -p $CERT_DIR
 
 # Define certificate details
-CERT_NAME="localhost"
+CERT_NAME="164.90.180.143"
 CERT_FILE="$CERT_DIR/$CERT_NAME.pem"
 KEY_FILE="$CERT_DIR/$CERT_NAME-key.pem"
 PKCS12_FILE="$CERT_DIR/$CERT_NAME.p12"
