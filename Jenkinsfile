@@ -13,7 +13,6 @@ pipeline {
             steps {
                 script {
                     dir('frontend') {
-                        sh 'npm install -g @angular/cli'
 
                         sh 'npm i'
                         // Start Angular application in the background
