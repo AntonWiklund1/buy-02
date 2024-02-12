@@ -22,11 +22,6 @@
         chdir: buy-02
         cmd: sh ./create.sh
 
-    - name: Run createOrderMsCert.sh
-      command:
-        chdir: buy-02
-        cmd: sh ./createOrderMsCert.sh
-
     - name: Make it trusty
       command: 
         cmd: mkcert -install 

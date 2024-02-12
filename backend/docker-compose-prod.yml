@@ -12,7 +12,6 @@ services:
       - user-ms
       - product-ms
       - media-ms
-      - order-ms
 
   user-ms:
     build:
@@ -80,6 +79,7 @@ services:
     depends_on:
       - mongodb
       - kafka
+      - api-gateway
     environment:
       - MONGO_HOST=mongodb
       - ENV_KAFKA_HOST=kafka
