@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     dir('frontend') {
-                        sh 'apt install xvfb'
+                        sh 'apt-get install xvfb'
                         // Assuming Cypress is already a devDependency in your package.json
                         // If not, add it using 'npm install cypress --save-dev'
                         // No need to install Cypress globally, use npx to run it locally from the project
