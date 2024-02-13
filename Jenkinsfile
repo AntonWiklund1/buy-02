@@ -13,11 +13,10 @@ pipeline {
             environment {
                 PATH = "/root/.nvm/versions/node/v20.11.0/bin:$PATH"
             }
-            
+
             steps {
                 script {
                     dir('frontend') {
-
                         sh 'npm install'
                         // Start Angular application in the background
                         sh 'nohup ng serve --port 4200 &'
@@ -43,45 +42,6 @@ pipeline {
                     dir('frontend') {
                         // Now run Cypress tests
                         sh 'npx cypress run'
-                    }
-                }
-            }
-        }
-
-        stage('Deploy to Production') {
-            steps {
-                script {
-                    ansiblePlaybook(
-                      colorized: true,
-                      credentialsId: 'deployssh',
-                      disableHostKeyChecking: true,
-                      installation: 'Ansible',
-                      inventory: '/etc/ansible',
-                      playbook: './playbook.yml',
-                      vaultTmpPath: ''
-                  )
-                }
-            }
-        }
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    withSonarQubeEnv('safe-zone') {
-                        dir('backend/microservices/user-ms/') {
-                            sh '''
-                        mvn clean verify sonar:sonar \
-                          -Dsonar.projectKey=safe-zone \
-                          -Dsonar.projectName='safe-zone' \
-                          -Dsonar.host.url=http://207.154.208.44:9000 \
-                          -Dsonar.token=sqp_940f70d246a1046e0d4b2bb15c16eebae98a3590
-                        '''
-                        }
-                    }
-                    timeout(time: 1, unit: 'HOURS') {
-                        def qg = waitForQualityGate()
-                        if (qg.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        }
                     }
                 }
             }
@@ -117,6 +77,45 @@ pipeline {
                     dir('backend/microservices/order-ms/') {
                         junit 'target/surefire-reports/TEST-*.xml'
                     }
+                }
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('safe-zone') {
+                        dir('backend/microservices/user-ms/') {
+                            sh '''
+                        mvn clean verify sonar:sonar \
+                          -Dsonar.projectKey=safe-zone \
+                          -Dsonar.projectName='safe-zone' \
+                          -Dsonar.host.url=http://207.154.208.44:9000 \
+                          -Dsonar.token=sqp_940f70d246a1046e0d4b2bb15c16eebae98a3590
+                        '''
+                        }
+                    }
+                    timeout(time: 1, unit: 'HOURS') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                script {
+                    ansiblePlaybook(
+                      colorized: true,
+                      credentialsId: 'deployssh',
+                      disableHostKeyChecking: true,
+                      installation: 'Ansible',
+                      inventory: '/etc/ansible',
+                      playbook: './playbook.yml',
+                      vaultTmpPath: ''
+                  )
                 }
             }
         }
