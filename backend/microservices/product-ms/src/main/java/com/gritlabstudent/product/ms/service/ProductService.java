@@ -185,21 +185,26 @@ public class ProductService {
         try {
             OrderDTO order = objectMapper.readValue(orderJson, OrderDTO.class);
             boolean allProductsInStock = true;
+            Map<String, Integer> productQuantities = new HashMap<>();
 
+            // Count the number of times each productId appears in the order
             for (String productId : order.getProductIds()) {
-                Optional<Product> productOpt = productRepository.findById(productId);
-                if (!productOpt.isPresent() || productOpt.get().getQuantity() < 1) {
+                productQuantities.put(productId, productQuantities.getOrDefault(productId, 0) + 1);
+            }
+
+            // Check if each product is in stock in the required quantities
+            for (Map.Entry<String, Integer> entry : productQuantities.entrySet()) {
+                Optional<Product> productOpt = productRepository.findById(entry.getKey());
+                if (!productOpt.isPresent() || productOpt.get().getQuantity() < entry.getValue()) {
                     allProductsInStock = false;
                     break;
                 }
             }
 
             if (allProductsInStock) {
-                // If all products are in stock, send a confirmation message back to order-ms
                 logger.info("All products are in stock for order ID: {}", order.getId());
                 stockConfirmationProducer.sendStockConfirmation(order.getId(), "CONFIRMED");
             } else {
-                // If not all products are in stock, send a denial message back to order-ms
                 logger.info("Not all products are in stock for order ID: {}", order.getId());
                 stockConfirmationProducer.sendStockConfirmation(order.getId(), "DENIED");
             }
@@ -208,5 +213,6 @@ public class ProductService {
             // Handle the exception, possibly send a failure message back to order-ms
         }
     }
+
 
 }

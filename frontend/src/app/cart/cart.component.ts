@@ -223,9 +223,13 @@ export class CartComponent implements OnInit {
 
   buy(): void {
     console.log(this.orderId)
-    this.orderService.buyProducts(this.orderId!).subscribe(() => {
+
+    if (!this.orderId) {
+      console.error('Order ID is not set');
+      return;
+    }
+    this.orderService.buyProducts(this.orderId).subscribe(() => {
       console.log('Order is being processed');
-      //clear the redux store orderId
       this.store.dispatch(CartActions.storeOrderId({ orderId: "null" }));
     });
   }

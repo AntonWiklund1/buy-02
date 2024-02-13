@@ -50,16 +50,14 @@ export class OrderService {
 
   addProductToCart(userId: string, productId: string) {
     // Assuming selectUserId is correctly implemented to select the userId from the store
-    return this.store.select(selectUserId).pipe(
-      take(1),
-      switchMap((userId) => {
+    
         if (!userId) {
           return of('No user ID found');
         }
         // Retrieve orders and dispatch an action if a cart order is found
         return this.getOrdersByUserId(userId).pipe(
           map((ordersData) => {
-            const cartOrder = ordersData.find((order) => order.isInCart);
+            const cartOrder = ordersData.find((order) => !order.isInCart);
             if (cartOrder) {
               this.store.dispatch(CartActions.storeOrderId({ orderId: cartOrder.id }));
             }
@@ -69,13 +67,6 @@ export class OrderService {
           // Switch to the HTTP request Observable
           switchMap(() => this.http.post(`${this.apiUrl}/${userId}/cart/${productId}`, null, { responseType: 'text' }))
         );
-      }),
-      catchError((error) => {
-        // Handle any errors that occur during the process
-        console.error('Error adding product to cart', error);
-        return of(error);
-      })
-    );
   }
 
   buyProducts(orderId: string): Observable<any> {
