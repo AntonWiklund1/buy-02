@@ -140,30 +140,13 @@ public class OrderService {
 
             orderProductStockProducer.sendOrderProductStock(order.getId(), orderJson);
 
-            order.setIsInCart(false);
-            order.setStatus(Status.PENDING);
-            order.setUpdatedAt(new Date());
-            BigDecimal total = calculateOrderTotal(orderId);
-            order.setTotal(total);
-            orderRepository.save(order);
-            processOrder(orderId, total);
-            System.out.println("Order total calculated: " + total);
+
         } catch (JsonProcessingException e) {
             // Handle JSON serialization error
             e.printStackTrace();
         }
     }
 
-    // Method to convert Order object to JSON string
-    private String convertOrderToJson(Order order) {
-        // Use a JSON library like Jackson to convert the order object to a JSON string
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(order);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
     public BigDecimal calculateOrderTotal(String orderId) {
         // Retrieve the order by ID
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));

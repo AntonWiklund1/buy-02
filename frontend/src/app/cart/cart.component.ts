@@ -45,6 +45,8 @@ export class CartComponent implements OnInit {
 
   messagesSubscription: Subscription | undefined;
 
+  isPayOnDeliveryChecked = false;
+
 
   constructor(
     private store: Store<AppState>,
@@ -91,6 +93,9 @@ export class CartComponent implements OnInit {
       .getOrdersByUserId(this.userId!)
       .subscribe((ordersData) => {
         this.cart = ordersData.filter((order) => order.isInCart);
+        if (this.cart.length === 0) {
+          return;
+        }
         this.storeOrderIdInState(this.cart[0].id)
         const productIds = [
           ...new Set(this.cart.flatMap((order) => order.productIds)),
@@ -180,7 +185,7 @@ export class CartComponent implements OnInit {
 
   addToCart(productId: string): void {
     if (!this.userId) {
-      console.error('User is not logged in');
+
       return;
     }
     this.orderService.addProductToCart(this.userId, productId).subscribe(() => {
@@ -196,8 +201,6 @@ export class CartComponent implements OnInit {
   listenForOrderUpdates(): void {
     this.messagesSubscription = this.stompService.subscribe(this.topic).subscribe(
       (message) => {
-        // Handle the received message
-        console.log(message);
         const messageBody = message.body;
 
         // Check if the message starts with "Order confirmed:"
@@ -222,14 +225,17 @@ export class CartComponent implements OnInit {
   }
 
   buy(): void {
-    console.log(this.orderId)
 
+    this.orderId$.pipe(take(1)).subscribe((id) => {
+      if (id) {
+        this.orderId = id;
+      }
+    });
     if (!this.orderId) {
       console.error('Order ID is not set');
       return;
     }
     this.orderService.buyProducts(this.orderId).subscribe(() => {
-      console.log('Order is being processed');
       this.store.dispatch(CartActions.storeOrderId({ orderId: "null" }));
     });
   }
@@ -242,4 +248,9 @@ export class CartComponent implements OnInit {
       horizontalPosition: 'center',
     });
   }
+
+  togglePayOnDelivery() {
+    this.isPayOnDeliveryChecked = !this.isPayOnDeliveryChecked;
+  }
+
 }

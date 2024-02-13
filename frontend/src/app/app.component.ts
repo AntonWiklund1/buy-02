@@ -14,16 +14,6 @@ export class AppComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-
-
-    if (isDevMode()) {
-      console.log('Development!');
-    } else {
-      console.log('Production!');
-    }
-
-
-
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // Exclude the login component from showing the navbar

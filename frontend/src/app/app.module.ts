@@ -62,7 +62,7 @@ export function stompConfigFactory() {
   config.heartbeat_in = 0;
   config.heartbeat_out = 20000;
   config.reconnect_delay = 5000;
-  config.debug = true;
+  config.debug = false;
   return config;
  }
 

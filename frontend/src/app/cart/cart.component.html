@@ -30,10 +30,10 @@
           <p>Total {{totalPrice}}</p>
           <!-- pay on delivery box -->
           <div class="payOnDelivery">
-            <input type="checkbox" id="payOnDelivery" name="payOnDelivery" value="payOnDelivery">
+            <input type="checkbox" id="payOnDelivery" name="payOnDelivery" (change)="togglePayOnDelivery()">
             <label for="payOnDelivery">Pay on delivery</label>
           </div>
-          <button type="button" class="Checkout" (click)="buy()">Checkout</button>
+          <button type="button" class="Checkout" (click)="buy()" [disabled]="!isPayOnDeliveryChecked">Checkout</button>
         </div>
       </div>
     </div>

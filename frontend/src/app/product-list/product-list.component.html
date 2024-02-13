@@ -44,7 +44,7 @@
                     }
                     <p>{{product.price}}€</p>
                     <p>{{ product.quantity}} products left</p>
-                    <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
+                    @if(+product.quantity > 0){<span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>}
                     <span class="material-symbols-outlined" (click)="addtoFavorite(product.id)">
                         star
                     </span>
