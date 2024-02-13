@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = environment.APIGATEWAYHOST+'/api/orders';
+  private apiUrl = environment.ORDERMSHOST+'/api/orders';
 
   constructor(private http: HttpClient,
     private store: Store<AppState>

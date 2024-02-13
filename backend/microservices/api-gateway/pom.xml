@@ -55,6 +55,8 @@
             <artifactId>spring-security-config</artifactId>
         </dependency>
 
+            <!-- Spring WebFlux for reactive support -->
+
         <!-- Jakarta Servlet API for JWT -->
 
         <dependency>
