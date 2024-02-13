@@ -12,9 +12,9 @@
         cd buy-02
         if [ ! -d ".git" ]; then
           git clone https://github.com/AntonWiklund1/buy-02.git .
-          git checkout test-production
+          git checkout main
         else
-          git pull origin test-production
+          git pull origin main
         fi
 
     - name: Run create.sh
