@@ -105,10 +105,16 @@ pipeline {
                 dir('backend/microservices/user-ms/') {
                     sh 'mvn test'
                 }
+                dir('backend/microservices/order-ms/') {
+                    sh 'mvn test'
+                }
             }
             post {
                 always {
                     dir('backend/microservices/user-ms/') {
+                        junit 'target/surefire-reports/TEST-*.xml'
+                    }
+                    dir('backend/microservices/order-ms/') {
                         junit 'target/surefire-reports/TEST-*.xml'
                     }
                 }
