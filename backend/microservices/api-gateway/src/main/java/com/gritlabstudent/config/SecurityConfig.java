@@ -47,6 +47,13 @@ public class SecurityConfig {
                         // kafka related endpoints
                         .pathMatchers(HttpMethod.GET, "/api/products/status/**").permitAll()
 
+                        // Order-specific endpoints
+                        .pathMatchers(HttpMethod.POST, "/api/orders", "/api/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/orders", "/api/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.DELETE, "/api/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.PUT, "/api/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.PATCH, "/api/orders/**").permitAll()
+
                         // All other requests require authentication
                         .anyExchange().authenticated());
         return http.build();
@@ -55,8 +62,8 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedOrigins(List.of("https://localhost:4200", "https://164.90.180.143:4200"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 

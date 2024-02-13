@@ -93,6 +93,10 @@
   transform: translateY(-1px);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
+.Checkout:disabled{
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}
 @media (max-width: 768px) {
   .cartContainer {
     margin: 1rem;

@@ -8,12 +8,61 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Generate Certificates') {
+        // This stage is for running end-to-end tests using Cypress
+        stage('Start Angular Server') {
+            environment {
+                PATH = "/root/.nvm/versions/node/v20.11.0/bin:$PATH"
+            }
+            
             steps {
-                sh './create.sh'
+                script {
+                    dir('frontend') {
+
+                        sh 'npm install'
+                        // Start Angular application in the background
+                        sh 'nohup ng serve --port 4200 &'
+                        // Wait for the application to be accessible
+                        sh '''
+                            /bin/bash -c '
+                            source /var/lib/jenkins/.nvm/nvm.sh
+                            nvm use 20.11.0
+                            npx wait-on https://localhost:4200
+                            '
+                            '''
+                    }
+                }
             }
         }
 
+        stage('Frontend E2E Tests') {
+            environment {
+                PATH = "/root/.nvm/versions/node/v20.11.0/bin:$PATH"
+            }
+            steps {
+                script {
+                    dir('frontend') {
+                        // Now run Cypress tests
+                        sh 'npx cypress run'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                script {
+                    ansiblePlaybook(
+                      colorized: true,
+                      credentialsId: 'deployssh',
+                      disableHostKeyChecking: true,
+                      installation: 'Ansible',
+                      inventory: '/etc/ansible',
+                      playbook: './playbook.yml',
+                      vaultTmpPath: ''
+                  )
+                }
+            }
+        }
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -56,27 +105,18 @@ pipeline {
                 dir('backend/microservices/user-ms/') {
                     sh 'mvn test'
                 }
+                dir('backend/microservices/order-ms/') {
+                    sh 'mvn test'
+                }
             }
             post {
                 always {
                     dir('backend/microservices/user-ms/') {
                         junit 'target/surefire-reports/TEST-*.xml'
                     }
-                }
-            }
-        }
-        stage('Deploy to Production') {
-            steps {
-                script {
-                    ansiblePlaybook(
-                      colorized: true,
-                      credentialsId: 'deployssh',
-                      disableHostKeyChecking: true,
-                      installation: 'Ansible',
-                      inventory: '/etc/ansible',
-                      playbook: './playbook.yml',
-                      vaultTmpPath: ''
-                  )
+                    dir('backend/microservices/order-ms/') {
+                        junit 'target/surefire-reports/TEST-*.xml'
+                    }
                 }
             }
         }

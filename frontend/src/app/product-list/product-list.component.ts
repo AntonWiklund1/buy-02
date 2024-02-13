@@ -19,6 +19,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
+  //improt 
+
 })
 export class ProductListComponent {
   products: any[] | undefined;

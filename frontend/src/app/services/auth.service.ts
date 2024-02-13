@@ -12,7 +12,7 @@ export class AuthService {
     //get jwt token
     getJwtToken(username: string, password: string) {
         console.log("getJwtToken", username, password)  ;
-        return this.http.post(environment.baseUrl + "/api/auth", { username, password });
+        return this.http.post(environment.APIGATEWAYHOST + "/api/auth", { username, password });
       }
       
 }

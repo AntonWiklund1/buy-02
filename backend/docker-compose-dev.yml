@@ -8,6 +8,11 @@ services:
     image: api-gateway:latest
     ports:
       - "8443:8443"
+    depends_on:
+      - user-ms
+      - product-ms
+      - media-ms
+      - order-ms
 
   user-ms:
     build:
@@ -79,13 +84,15 @@ services:
       - MONGO_HOST=mongodb
       - ENV_KAFKA_HOST=kafka
 
-  frontend:
-    build:
-      context: ..
-      dockerfile: frontend/dockerfile.frontend
-    image: frontend:latest
-    ports:
-      - "4200:443"
+  # frontend:
+  #   build:
+  #     context: ..
+  #     dockerfile: ./frontend/dockerfile.dev
+  #   image: frontend:latest
+  #   ports:
+  #     - "4200:443"
+  #   depends_on:
+  #     - api-gateway
 
   mongodb:
     image: mongo:latest

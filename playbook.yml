@@ -5,13 +5,26 @@
   become: true
   become_user: root
   tasks:
-    - name: Navigate to the repository directory and pull the latest changes
+
+    - name: Clone the repository
       shell: |
-        cd ../buy-01/mr-jenk
-        git pull origin main
+        mkdir -p buy-02
+        cd buy-02
+        if [ ! -d ".git" ]; then
+          git clone https://github.com/AntonWiklund1/buy-02.git .
+          git checkout main
+        else
+          git pull origin main
+        fi
 
     - name: Run create.sh
-      shell: ../buy-01/mr-jenk/create.sh
+      command:
+        chdir: buy-02
+        cmd: sh ./create.sh
+
+    - name: Make it trusty
+      command: 
+        cmd: mkcert -install 
 
     - name: Ensure pip is installed (Debian)
       apt:
@@ -27,18 +40,17 @@
       get_url:
         url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
-        mode: 'u+x,g+x'
+        mode: "u+x,g+x"
 
     - name: Make Docker Compose executable
       file:
         path: /usr/local/bin/docker-compose
-        mode: 'u+x,g+x'
+        mode: "u+x,g+x"
 
     - name: Run the Docker Compose command
       command:
-        cmd: docker-compose up -d --build
-        chdir: ../buy-01/mr-jenk/backend
+        chdir: /root/buy-02/backend # Adjusted path
+        cmd: docker-compose -f ./docker-compose-prod.yml up -d --build
       environment:
         mongodbusername: Gritlab
         mongodbpass: Gritlab
-      

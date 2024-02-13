@@ -125,6 +125,9 @@
   position: relative;
   top: 2px;
 }
+.productInfoDiv span{
+  cursor: pointer;
+}
 
 
 /* Responsive adjustments with fixed size */

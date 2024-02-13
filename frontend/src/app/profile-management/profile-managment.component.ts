@@ -81,7 +81,6 @@ export class ProfileManagementComponent implements OnInit {
             return this.mediaService.getAvatar(userId, token);
           }),
           catchError(error => {
-            console.error('Error loading user avatar:', error);
             // Return the path to the image in the assets folder
             return of('/assets/images/default-avatar.png');
           })

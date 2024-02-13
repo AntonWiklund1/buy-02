@@ -12,12 +12,13 @@ import { HttpClientModule } from '@angular/common/http';
 // Import your NgRx actions and selectors
 import * as fromAuth from './state/auth/auth.selector';
 
+
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
   let store: MockStore;
   let router: Router;
-
+  
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent, HomeComponent, NavBarComponent],
@@ -31,13 +32,14 @@ describe('AppComponent', () => {
       ],
     });
 
+
+
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
     router = TestBed.inject(Router);
 
     // Add some debugging output to check the value of the selector
-    console.log('Mocked Token:', fromAuth.selectToken);
 
     // Also, log the state to see if it's initialized correctly
     store.overrideSelector(fromAuth.selectToken, 'mocked-token'); // Ensure the selector matches the mock store

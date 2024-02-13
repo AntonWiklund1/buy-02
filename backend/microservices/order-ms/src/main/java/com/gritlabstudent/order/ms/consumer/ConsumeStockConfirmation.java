@@ -3,7 +3,9 @@ package com.gritlabstudent.order.ms.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gritlabstudent.order.ms.models.Order;
+import com.gritlabstudent.order.ms.models.Status;
 import com.gritlabstudent.order.ms.producers.OrderPlacedProducer;
+import com.gritlabstudent.order.ms.repositories.OrderRepository;
 import com.gritlabstudent.order.ms.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 
 @Service
 public class ConsumeStockConfirmation {
@@ -20,6 +25,8 @@ public class ConsumeStockConfirmation {
     private final OrderService orderService;
 
     private final OrderPlacedProducer orderPlacedProducer;
+
+    private final OrderRepository orderRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(ConsumeStockConfirmation.class);
 
@@ -30,10 +37,11 @@ public class ConsumeStockConfirmation {
     private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public ConsumeStockConfirmation(OrderService orderService, SimpMessagingTemplate messagingTemplate, OrderPlacedProducer orderPlacedProducer) {
+    public ConsumeStockConfirmation(OrderService orderService, SimpMessagingTemplate messagingTemplate, OrderPlacedProducer orderPlacedProducer, OrderRepository orderRepository) {
         this.orderService = orderService;
         this.messagingTemplate = messagingTemplate;
         this.orderPlacedProducer = orderPlacedProducer;
+        this.orderRepository = orderRepository;
     }
 
     @KafkaListener(topics = "stock-confirmation-topic", groupId = "order-service-group")
@@ -51,6 +59,16 @@ public class ConsumeStockConfirmation {
 
                     logger.info("Order confirmed: {}", orderId);
                     logger.info("Order details: {}", orderJson);
+
+                    order.setIsInCart(false);
+                    order.setStatus(Status.PENDING);
+                    order.setUpdatedAt(new Date());
+                    BigDecimal total = orderService.calculateOrderTotal(orderId);
+                    order.setTotal(total);
+                    orderRepository.save(order);
+                    orderService.processOrder(orderId, total);
+                    System.out.println("Order total calculated: " + total);
+
                     orderPlacedProducer.sendOrderPlaced(orderId, orderJson);
 
                     messagingTemplate.convertAndSend("/topic/orderUpdate", "Order confirmed: " + orderId);

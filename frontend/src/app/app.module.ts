@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductManagementComponent } from './product-management/product-management.component';
 import { ProfileManagementComponent } from './profile-management/profile-managment.component';
 import { HomeComponent } from './home/home.component';
-import { StoreModule } from '@ngrx/store';
+import { StoreModule, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { authReducer } from './state/auth/auth.reducer';
@@ -19,8 +19,6 @@ import { environment } from '../environments/environment';
 import { MediaManagementComponent } from './media-management/media-management.component';
 import { CommonModule } from '@angular/common';
 import { cartReducer } from './state/cart/cart.reducer';
-import { APP_INITIALIZER } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { AppState } from './state/app.state';
 import { selectUserId } from './state/auth/auth.selector';
 import * as CartActions from './state/cart/cart.actions';
@@ -30,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StompConfig, StompService } from '@stomp/ng2-stompjs';
 import SockJS from 'sockjs-client';
+
 
 
 
@@ -58,12 +57,12 @@ export function initializeApp(orderService: OrderService, store: Store<AppState>
 // Define your Stomp configuration - this example assumes a SockJS endpoint
 export function stompConfigFactory() {
   const config = new StompConfig();
-  config.url = () => new SockJS('https://localhost:8084/ws');
+  config.url = () => new SockJS(environment.WEBSOCKETHOST+'/ws');
   config.headers = {};
   config.heartbeat_in = 0;
   config.heartbeat_out = 20000;
   config.reconnect_delay = 5000;
-  config.debug = true;
+  config.debug = false;
   return config;
  }
 

@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrlGetAllproducts = 'https://localhost:8443/api/products';
-  private apiUrlGetProductByUerId = 'https://localhost:8443/api/products/user/';
-  private apiUrlAddProduct = 'https://localhost:8443/api/products';
-  private apiUrlEditProduct = 'https://localhost:8443/api/products';
-  private apiUrlGetProductById = 'https://localhost:8443/api/products';
-  private apiUrlDeleteProduct = 'https://localhost:8443/api/products';
-  private apiUrlAddProductToFavorite = 'https://localhost:8443/api/users';
-  private apiUrlDeleteFromFavorite = 'https://localhost:8443/api/users';
+  private apiUrlGetAllproducts = environment.APIGATEWAYHOST + '/api/products';
+  private apiUrlGetProductByUerId = environment.APIGATEWAYHOST + '/api/products/user/';
+  private apiUrlAddProduct = environment.APIGATEWAYHOST + '/api/products';
+  private apiUrlEditProduct = environment.APIGATEWAYHOST + '/api/products';
+  private apiUrlGetProductById = environment.APIGATEWAYHOST + '/api/products';
+  private apiUrlDeleteProduct = environment.APIGATEWAYHOST + '/api/products';
+  private apiUrlAddProductToFavorite = environment.APIGATEWAYHOST + '/api/users';
+  private apiUrlDeleteFromFavorite = environment.APIGATEWAYHOST + '/api/users';
   private id: string | undefined;
 
   constructor(private http: HttpClient) { }

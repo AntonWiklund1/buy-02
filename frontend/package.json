@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --poll=2000",
     "build": "ng build",
+    "builddev": "ng build --configuration=development",
+    "buildprod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -39,6 +41,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~17.1.0",
     "@angular/compiler-cli": "~17.1.0",
+    "cypress": "^13.6.4",
     "@types/jasmine": "~5.1.4",
     "@types/js-cookie": "^3.0.6",
     "@types/sockjs-client": "^1.5.4",
