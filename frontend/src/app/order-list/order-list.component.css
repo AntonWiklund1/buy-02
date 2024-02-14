@@ -21,7 +21,7 @@
     border: 1px solid rgb(204, 204, 204);
     padding: 1rem;
     gap: 1rem;
-    overflow: hidden;
+    overflow: auto;
     transition: all 0.3s ease;
 }
 
@@ -31,6 +31,8 @@
     justify-content: flex-start;
     align-items: center;
     gap: 2rem;
+    margin-left: 2rem;
+
 }
 
 .status {
@@ -57,7 +59,6 @@
     border-bottom: 1px dashed rgb(204, 204, 204);
     border-top: 1px dashed rgb(204, 204, 204);
 }
-
 .productImage {
     width: 5rem;
     height: 5rem;
@@ -67,19 +68,22 @@
 
 .expand {
     position: absolute;
-    right: 1rem;
-    top: 2rem;
+    left: 1rem;
     cursor: pointer;
     z-index: 5;
 }
 
 .extendOrder {
     height: auto;
-    overflow: visible;
+    overflow: auto;
 }
 .cancelOrder, .redoOrder{
     z-index: 5;
     cursor: pointer;
+
+}
+.redoOrder{
+    margin-left: 1rem;
 }
 @media screen and (max-width: 768px) {
     .orderListContainer {

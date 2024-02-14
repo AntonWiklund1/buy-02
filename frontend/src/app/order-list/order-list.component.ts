@@ -139,8 +139,11 @@ export class OrderListComponent implements OnInit {
     this.orderService.redoOrder(orderId).subscribe(
       () => {
         // Success callback
-        this.showNotification('Order redone successfully');
-        this.fetchOrdersAndProducts();
+        //timeouts are used to simulate the delay of the backend
+        setTimeout(() => {
+          this.showNotification('Order redone successfully');
+          this.fetchOrdersAndProducts();
+        }, 700);
       },
       error => {
         // Error callback
