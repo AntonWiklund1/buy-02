@@ -87,4 +87,11 @@ public class OrderController {
         orderService.removeProductFromOrder(orderId, productId);
         return new ResponseEntity<>("Product removed successfully: " + productId, HttpStatus.OK);
     }
+
+    //cancel order
+    @PostMapping("/cancel/{orderId}")
+    public ResponseEntity<String> cancelOrder(@PathVariable String orderId) {
+        orderService.cancelOrder(orderId);
+        return new ResponseEntity<>("Order cancelled successfully: " + orderId, HttpStatus.OK);
+    }
 }

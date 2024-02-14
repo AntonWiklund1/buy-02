@@ -8,6 +8,8 @@ import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { MediaService } from '../services/media.service';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { error } from 'cypress/types/jquery';
 
 @Component({
   selector: 'app-order-list',
@@ -27,7 +29,9 @@ export class OrderListComponent implements OnInit {
     private store: Store<{ auth: AuthState }>,
     private orderService: OrderService,
     private productService: ProductService,
-    private mediaService: MediaService
+    private mediaService: MediaService,
+    private snackBar: MatSnackBar,
+
   ) {
     this.userId$ = this.store.select(AuthSelectors.selectUserId);
   }
@@ -115,5 +119,29 @@ export class OrderListComponent implements OnInit {
       orderCard.classList.toggle('extendOrder');
     }
   }
+
+  cancelOrder(orderId: string): void {
+    this.orderService.cancelOrder(orderId).subscribe(
+      () => {
+        // Success callback
+        this.showNotification('Order canceled successfully');
+        this.fetchOrdersAndProducts();
+      },
+      error => {
+        // Error callback
+        console.error(error);
+        this.showNotification('Error canceling order');
+      }
+    );
+  }
   
+
+  showNotification(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      panelClass: 'custom-snackbar',
+      duration: 3000,
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
+    });
+  }
 }

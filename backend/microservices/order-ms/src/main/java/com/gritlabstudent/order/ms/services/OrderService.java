@@ -181,4 +181,14 @@ public class OrderService {
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
+
+    public void cancelOrder(String orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return;
+        }
+        order.setStatus(Status.CANCELLED);
+        order.setUpdatedAt(new Date());
+        orderRepository.save(order);
+    }
 }
