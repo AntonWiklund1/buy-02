@@ -4,6 +4,9 @@
         <!-- loop all the orders -->
         @for(order of orders; track order.id){
             <div [ngClass]="{'orderCard': true, 'extendOrder': order.expanded}" id="{{order.id}}" (click)="expandOrder(order)">
+                <span class="material-symbols-outlined expand">
+                    @if(order.expanded){expand_less}@else{expand_more}
+                </span>
                 <div class="orderDetails">
                     <p>{{ order.id }}</p>
                     <p>Status: <span class="status">{{order.status}}</span></p>
@@ -11,17 +14,18 @@
                     <p>Created at: {{order.createdAt}}</p>
                     <p>Updated at: {{order.updatedAt}}</p>
                     <p>Total: {{order.total}}€</p>
-                    @if (order.status != "CANCELLED") {
-                        <span class="material-symbols-outlined cancelOrder" (click)="cancelOrder(order.id)">
-                            block
+                    <div class="orderActions">
+
+                        @if (order.status != "CANCELLED") {
+                            <span class="material-symbols-outlined cancelOrder" (click)="cancelOrder(order.id)">
+                                block
+                            </span>
+                        }
+                        <span class="material-symbols-outlined redoOrder" (click)="redoOrder(order.id)">
+                            cycle
                         </span>
-                    }
-                    <span class="material-symbols-outlined redoOrder" (click)="redoOrder(order.id)">
-                        redo
-                    </span>
-                    <span class="material-symbols-outlined expand">
-                        @if(order.expanded){expand_less}@else{expand_more}
-                    </span>
+                    </div>
+                    
                 </div>
                 @if(order.expanded){
                     <div class="products">
