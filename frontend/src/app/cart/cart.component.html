@@ -15,8 +15,9 @@
                       class="productImage"
                     />
                     <div class="productInfo">
-                      <p>{{ product.name }}</p>
+                      <h2>{{ product.name }}</h2>
                       <p>{{ product.price }}$</p>
+                      <p>{{ product.quantity }} left in stock</p>
                     </div>
                   </div>
                   <div class="productActions">
@@ -24,7 +25,8 @@
                     <span class="material-symbols-outlined" (click)="addToCart(product.id)"> add </span>
                   </div>
                 </div>}
-            </div>}
+            </div>
+          }
         <div class="orderActions">
           <p>Order Summary:</p>
           <p>Total {{totalPrice}}</p>
@@ -33,7 +35,7 @@
             <input type="checkbox" id="payOnDelivery" name="payOnDelivery" (change)="togglePayOnDelivery()">
             <label for="payOnDelivery">Pay on delivery</label>
           </div>
-          <button type="button" class="Checkout" (click)="buy()" [disabled]="!isPayOnDeliveryChecked">Checkout</button>
+          <button type="button" class="Checkout" (click)="buy()" [disabled]="!isPayOnDeliveryChecked ">Checkout</button>
         </div>
       </div>
     </div>

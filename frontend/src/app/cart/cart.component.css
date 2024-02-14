@@ -59,6 +59,9 @@
 .productInfo{
     margin-left: 1rem;
 }
+.productInfo p{
+  font-size: medium;
+}
 .productActions {
   display: flex;
   flex-direction: column;

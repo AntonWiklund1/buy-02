@@ -89,11 +89,11 @@
                         <label for="editProductDescription">Description:</label>
                         <textarea [(ngModel)]="editProduct.description" name="description" class="description" id="editProductDescription"></textarea>
                         <label for="editProductPrice">Price:</label>
-                        <input type="number" [(ngModel)]="editProduct.price" name="price" class="price" id="editProductPrice">
+                        <input type="number" [(ngModel)]="editProduct.price" name="price" class="price" id="editProductPrice" min="1">
                         <label for="editProductQuantity{{editProduct.id}}">Quantity:</label>
-                        <input type="number" [(ngModel)]="editProduct.quantity" name="quantity" class="quantity" id="editProductQuantity{{editProduct.id}}">
-                        <button type="submit"
-                            (click)="updateProduct(editProduct.id,editProduct.name,editProduct.description,editProduct.price,editProduct.quantity)">Edit</button>
+                        <input type="number" [(ngModel)]="editProduct.quantity" name="quantity" class="quantity" id="editProductQuantity{{editProduct.id}}" min="1">
+                        <button type="submit" (click)="updateProduct(editProduct.id, editProduct.name, editProduct.description, editProduct.price, editProduct.quantity)" [disabled]="editProduct.quantity < 1 || editProduct.price < 1">Edit</button>
+
                     </form>
                 </div>
             }
