@@ -59,14 +59,13 @@ export class BuyerProfileComponent implements OnInit {
   }
 
   fetchUser(): void {
-    console.log("fetchUser: " + this.userId + " " + this.token);
+
     if (!this.userId || !this.token) {
       return;
     }
     this.userService.getUser(this.userId, this.token).subscribe((userData) => {
       this.user = userData;
       this.fetchFavoriteProductsDetails();
-      console.log("user: " + JSON.stringify(this.user));
     });
   }
 
@@ -145,7 +144,6 @@ export class BuyerProfileComponent implements OnInit {
   getProductById(productId: string): any {
     this.productService.getProductById(productId).subscribe((product: any) => {
       this.mostBoughtProductDetails = product;
-      console.log("mostBoughtProductDetails: " + JSON.stringify(this.mostBoughtProductDetails));
     }
     );
   }
@@ -166,7 +164,6 @@ export class BuyerProfileComponent implements OnInit {
       return;
     }
     this.orderService.addProductToCart(this.userId, productId).subscribe(() => {
-      console.log("Product added to cart");
       this.showNotification('Product added to cart successfully');
     });
   }

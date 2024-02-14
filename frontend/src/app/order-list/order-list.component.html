@@ -16,6 +16,9 @@
                             block
                         </span>
                     }
+                    <span class="material-symbols-outlined redoOrder" (click)="redoOrder(order.id)">
+                        redo
+                    </span>
                     <span class="material-symbols-outlined expand">
                         @if(order.expanded){expand_less}@else{expand_more}
                     </span>

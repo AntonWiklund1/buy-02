@@ -80,4 +80,10 @@ export class OrderService {
       responseType: 'text',
     });
   }
+
+  redoOrder(orderId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/redo/${orderId}`,null, {
+      responseType: 'text',
+    });
+  }
 }

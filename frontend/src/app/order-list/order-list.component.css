@@ -77,7 +77,7 @@
     height: auto;
     overflow: visible;
 }
-.cancelOrder{
+.cancelOrder, .redoOrder{
     z-index: 5;
     cursor: pointer;
 }

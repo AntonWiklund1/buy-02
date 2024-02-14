@@ -140,7 +140,6 @@ public class OrderService {
 
             orderProductStockProducer.sendOrderProductStock(order.getId(), orderJson);
 
-
         } catch (JsonProcessingException e) {
             // Handle JSON serialization error
             e.printStackTrace();
@@ -190,5 +189,24 @@ public class OrderService {
         order.setStatus(Status.CANCELLED);
         order.setUpdatedAt(new Date());
         orderRepository.save(order);
+    }
+
+    public String redoOrder(String orderId) {
+        //copy order with new id and status and make a new order
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return "Didnt find old order";
+        }
+        Order newOrder = Order.builder()
+                .userId(order.getUserId())
+                .productIds(order.getProductIds())
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .isInCart(false)
+                .status(Status.PENDING)
+                .build();
+        orderRepository.save(newOrder);
+        buyProducts(newOrder.getId());
+        return newOrder.getId();
     }
 }

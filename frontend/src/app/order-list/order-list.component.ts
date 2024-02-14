@@ -134,6 +134,21 @@ export class OrderListComponent implements OnInit {
       }
     );
   }
+
+  redoOrder(orderId: string): void {
+    this.orderService.redoOrder(orderId).subscribe(
+      () => {
+        // Success callback
+        this.showNotification('Order redone successfully');
+        this.fetchOrdersAndProducts();
+      },
+      error => {
+        // Error callback
+        console.error(error);
+        this.showNotification('Error redoing order');
+      }
+    );
+  }
   
 
   showNotification(message: string): void {

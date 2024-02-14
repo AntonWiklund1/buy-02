@@ -94,4 +94,12 @@ public class OrderController {
         orderService.cancelOrder(orderId);
         return new ResponseEntity<>("Order cancelled successfully: " + orderId, HttpStatus.OK);
     }
+
+
+    //redo order
+    @PostMapping("/redo/{orderId}")
+    public ResponseEntity<String> redoOrder(@PathVariable String orderId) {
+        String result = orderService.redoOrder(orderId);
+        return new ResponseEntity<>( result ,HttpStatus.OK);
+    }
 }
