@@ -11,6 +11,14 @@
                     <p>Created at: {{order.createdAt}}</p>
                     <p>Updated at: {{order.updatedAt}}</p>
                     <p>Total: {{order.total}}€</p>
+                    @if (order.status != "CANCELLED") {
+                        <span class="material-symbols-outlined cancelOrder" (click)="cancelOrder(order.id)">
+                            block
+                        </span>
+                    }
+                    <span class="material-symbols-outlined redoOrder" (click)="redoOrder(order.id)">
+                        redo
+                    </span>
                     <span class="material-symbols-outlined expand">
                         @if(order.expanded){expand_less}@else{expand_more}
                     </span>
